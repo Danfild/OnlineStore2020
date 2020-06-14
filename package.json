@@ -8,9 +8,14 @@
     "express-handlebars": "^4.0.4",
     "lodash": "^4.17.15"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^7.2.0",
+    "pg": "^8.2.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dbase": "node database.js",
+    "dev": "nodemone index.js"
   },
   "author": "daniel",
   "license": "ISC"
