@@ -1,11 +1,28 @@
-const path = require('path')
-const express = require('express')
-const { Pool , Client } = require('pg')
-const fs = require("fs")
-const html_tablify = require('html-tablify')
+const express = require('express');
+const { Pool , Client } = require('pg');
+const fs = require("fs");
+const bodyParser = require('body-parser');
+const html_tablify = require('html-tablify');
+const app = express();
+const path = require('path');
 
-const app = express()
+const analitycsRoutes = require('./routes/analitycs');
+const authRoutes = require('./routes/auth');
+const categoryRoutes = require('./routes/category');
+const orderRoutes = require('./routes/order');
+const positionRoutes = require('./routes/position');
 
+app.use(require('cors')());
+app.use(require('morgan')('dev'));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+// localhost:3000/название url
+app.use('/analytics', analitycsRoutes);
+app.use('/auth', authRoutes);
+app.use('/category', categoryRoutes);
+app.use('/order', orderRoutes);
+app.use('/position', positionRoutes);
 
 var pool = new Pool()
 const client = new Client({
@@ -46,9 +63,10 @@ function queryDB(query, params, resultHandler) {
 </html>
 `
 }
+
 //
-app.get('/', function (req,res) {
-    res.ststusCode = 200;
+app.get('/', (req,res) => {
+    res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.end(fs.readFileSync("./main.html"))
 })
@@ -76,4 +94,3 @@ app.get('/products/:id', async (request, response) => {
 
 app.listen(3000)
 console.log('server started!')
-///git
