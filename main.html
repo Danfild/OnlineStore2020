@@ -2,14 +2,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Наш магазин</title>
 </head>
 <h2>Добро пожаловать!</h2>
 <body>
+<a href=/analitycs>Аналитика</a>
 <a href=/products>Товары</a>
-<a href=/login>Регистрация</a>
+<a href=/category/>Категории</a>
+<a href=/order/>Заказы</a>
+<a href=/position/>Позиция</a>
+
+
+<div id="str" class="panel well" style="width: 350px; padding:  25px; text-align: center">
+<form class="form-signin"id="log form" type='get' action="/auth/login">
+    <h2 class="form-signin-heading" style="margin-bottom: 35px">Вход в систему</h2>
+    <input type="username" id="txt" class="form-control" name="username" placeholder="Логин" />
+    <input type="password" id="pass" class="form-control" name="password" placeholder="Пароль" />
+
+    <button id="send" type='submit' class="btn btn-lg btn-primary btn-block" >Вход</button>
+
+    <script>
+    function someFunc(){
+    alert(document.getElementById("txt").value);
+    }
+    document.getElementById("send").onclick = someFunc;
+
+    </script>
+
+
+
+</form>
+</div>
+
 </body>
 </html>

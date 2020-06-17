@@ -1,26 +1,19 @@
-const User = require('../models/User')
-
+//const User = require('../models/User')
 
 module.exports.login =  function (req, res) {
-    res.status(200).json({
-        login: {
-            email: req.body.email,
-            password: req.body.password
-        }
 
-    })
+      res.status(200).json({
+      login:
+        {
+        username: req.body.username,
+        password: req.body.password
+        }
+      })
+
 }
 
-module.exports.register =  async function (req, res) {
-
-    const candidate = await User.findOne({email: req.body.email})
-
-    if (candidate) {
-    //Пользователь существует,отдаем ошибку
-    res.status(409).json({
-    message: 'Такой емейл занят.Попробуйте новый.'
+module.exports.register = function (req, res) {
+    res.status(200).json({
+    register: 'from'
     })
-    }else{
-    // НУжно создать поьзователя
-    }
 }

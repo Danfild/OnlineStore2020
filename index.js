@@ -6,6 +6,12 @@ const html_tablify = require('html-tablify');
 const app = express();
 const path = require('path');
 
+
+
+//const connectionString = "pg://admin:12345@localhost:5432/shop";
+//const client = new Client(connectionString);
+//client.connect();
+
 const analitycsRoutes = require('./routes/analitycs');
 const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/category');
@@ -26,7 +32,7 @@ app.use('/position', positionRoutes);
 
 var pool = new Pool()
 const client = new Client({
-    user: 'admin',
+    user: 'postgres',
     host: 'localhost',
     database: 'shop',
     password: '12345',
@@ -53,7 +59,6 @@ function queryDB(query, params, resultHandler) {
         var table = html_tablify.tablify ({
             data: data
         })
-
     return `<!DOCTYPE html>
 <html>
 <body>
@@ -64,6 +69,7 @@ function queryDB(query, params, resultHandler) {
 `
 }
 
+
 //
 app.get('/', (req,res) => {
     res.statusCode = 200;
@@ -72,7 +78,6 @@ app.get('/', (req,res) => {
 })
 
 app.get('/products', async (request, response) => {
-
     const query = 'SELECT * FROM shop.product.products;'
 
     queryDB(query, [], function (result) {
