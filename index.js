@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const { Pool , Client } = require('pg');
 const pool = new Pool();
+const bcrypt = require('bcrypt');
 const fs = require("fs");
 const bodyParser = require('body-parser');
 const html_tablify = require('html-tablify');
@@ -14,6 +15,7 @@ const session = require('express-session');
 const host = '127.0.0.1';
 const port = 3000;
 
+
 //роуты
 const analitycsRoutes = require('./routes/analitycs');
 const authRoutes = require('./routes/auth');
@@ -21,7 +23,15 @@ const categoryRoutes = require('./routes/category');
 const orderRoutes = require('./routes/order');
 const positionRoutes = require('./routes/position');
 
-
+//проверка авторизации
+function checkAuth() {
+     return (req, res, next) => {
+       if(req.user)
+         next();
+       else
+         res.redirect('/login');
+     };
+    }
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
@@ -32,6 +42,37 @@ app.use(session({secret: 'you secret key'}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.use(new localStrategy({
+    usernameField: null,
+    passwordField: null
+},
+function(username, password, done) {
+    fetch(username, function(err, user) {
+        if (err) {
+            return done(err);
+        }
+        if (!user) {
+            return done(null, false, {message: 'Incorrect username.'});
+        }
+        if (user.password !== password) {
+            return done(null, false, {message: 'Incorrect password.'});
+        }
+        done(null, user);
+    });
+}));
+
+function fetch(username, done){
+    pool.query(
+        'SELECT * FROM shop.product.users WHERE username = $1::text',
+        [username],
+        function (err, result) {
+           pool.end();
+           done(err, result.rows[0] || null);
+            }
+        );
+};
+
 //роуты приложения
 app.use('/analytics', analitycsRoutes);
 app.use('/auth', authRoutes);
@@ -46,25 +87,15 @@ app.get('/', (req,res) => {
     res.end(fs.readFileSync("./main.html"))
 })
 
-//проверка авторизации
-function checkAuth() {
-     return (req, res, next) => {
-       if(req.user)
-         next();
-       else
-         res.redirect('/login');
-     };
-    }
-
 //todo функция авторизации. Должна быть заменена на специальный метод, который обраается в базу и смотрит там корректны ли данные
-    passport.use(new localStrategy((user, password, done) => {
-     if(user !== 'a') //todo заменить на функцию, которая идет в базу и смотрит есть ли такой юзера
-       return done(null, false, {message: 'User not found'});
-     else if(password !== 'a') //todo заменить на функцию, котроая идет в базу и проверяет правильный ли пароль для этого юзера
-       return done(null, false, {message: 'Wrong password'});
+    //passport.use(new localStrategy((user, password, done) => {
+    // if(user !== 'a') //todo заменить на функцию, которая идет в базу и смотрит есть ли такой юзера
+     //  return done(null, false, {message: 'User not found'});
+    // else if(password !== 'a') //todo заменить на функцию, котроая идет в базу и проверяет правильный ли пароль для этого юзера
+    //   return done(null, false, {message: 'Wrong password'});
 
-     return done(null, {id: 1, name: user, password}); //todo изменить набор возвращаемых значений (см. что есть в базе)
-    }));
+    // return done(null, {id: 1, name: user, password}); //todo изменить набор возвращаемых значений (см. что есть в базе)
+   // }));
 
 //коннект к базе
 function queryDB(query, params, resultHandler) {
