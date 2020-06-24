@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const { Pool , Client } = require('pg');
 const pool = new Pool();
+const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const fs = require("fs");
 const bodyParser = require('body-parser');
@@ -143,24 +144,25 @@ app.get('/login', (req,res) => {
 app.post('/login',
     passport.authenticate('local', {
     successRedirect: '/home',
-    failureRedirect: '/loginAfterFailure', // todo сейчас специальная страница для логина
+    successFlash : "Welcome!",
+    //failureRedirect: '/loginAfterFailure', // todo сейчас специальная страница для логина
                                           //после неудачи, потому что у меня не работают flash сообщения. Починить
-    failureFlash: true })
+    failureFlash: 'invalid username or password' })
 );
 
     //todo временный костыль
-app.get('/loginAfterFailure', (req,res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.end(fs.readFileSync("./login-after-failure.html"))
-    });
+//app.get('/loginAfterFailure', (req,res) => {
+    //res.statusCode = 200;
+    //res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    //res.end(fs.readFileSync("./login-after-failure.html"))
+    //});
 
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
 
-app.use('/home', checkAuth());
+app.use('/home',checkAuth());
 app.get('/home', (req,res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -169,7 +171,7 @@ app.get('/home', (req,res) => {
 
     //todo написать кнопку logout. Сейчас надо перезагружаться:)))
    //запрос в базу
-app.get('/products', async (request, response) => {
+app.get('/products',checkAuth(), async (request, response) => {
     const query = 'SELECT * FROM shop.product.goods;'
 
     queryDB(query, [], function (result) {
