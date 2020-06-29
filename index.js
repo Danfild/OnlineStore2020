@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const fs = require("fs");
 const bodyParser = require('body-parser');
-const html_tablify = require('html-tablify');
+const exphbs = require('express-handlebars');
 const path = require('path');
 const flash = require('connect-flash');
 const passport = require('passport');
@@ -15,24 +15,31 @@ const localStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const host = '127.0.0.1';
 const port = 3000;
+const cfg = require('./config/cfg');
 
 
-//роуты
-const analitycsRoutes = require('./routes/analitycs');
-const authRoutes = require('./routes/auth');
-const categoryRoutes = require('./routes/category');
-const orderRoutes = require('./routes/order');
-const positionRoutes = require('./routes/position');
+const hbs = exphbs.create({
+    defaultLayout: 'main',
+    extname: 'hbs'
+});
 
-//проверка авторизации
-function checkAuth() {
-     return (req, res, next) => {
-       if(req.user)
-         next();
-       else
-         res.redirect('/login');
-     };
-    }
+
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
+app.set('views', 'views');
+
+//главная страница
+app.get('/', (req, res) => {
+    res.statusCode = 200;
+    res.render('index', {
+    title: "Главная страница",
+    isIndex: true
+    })
+})
+
+
+
+
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
@@ -44,96 +51,31 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+function getUser(username, done) {
+    const query = 'SELECT * FROM shop.product.users WHERE username = $1::text';
+    const  params = [username];
+    cfg.queryDB(query, params, done)
+};
+
 passport.use(new localStrategy({
     usernameField: null,
     passwordField: null
 },
 function(username, password, done) {
-    fetch(username, function(err, user) {
-        if (err) {
-            return done(err);
-        }
-        if (!user) {
+    getUser(username, function(result) {
+        if (result.rows.length == 0) {
             return done(null, false, {message: 'Incorrect username.'});
         }
+        const user = result.rows[0];
         if (user.password !== password) {
             return done(null, false, {message: 'Incorrect password.'});
+        }else {
+            return done(null, user);
         }
-        done(null, user);
     });
 }));
 
-function fetch(username, done){
-    pool.query(
-        'SELECT * FROM shop.product.users WHERE username = $1::text',
-        [username],
-        function (err, result) {
-           pool.end();
-           done(err, result.rows[0] || null);
-            }
-        );
-};
 
-//роуты приложения
-app.use('/analytics', analitycsRoutes);
-app.use('/auth', authRoutes);
-app.use('/category', categoryRoutes);
-app.use('/order', orderRoutes);
-app.use('/position', positionRoutes);
-
-//главная страница
-app.get('/', (req,res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.end(fs.readFileSync("./main.html"))
-})
-
-//todo функция авторизации. Должна быть заменена на специальный метод, который обраается в базу и смотрит там корректны ли данные
-    //passport.use(new localStrategy((user, password, done) => {
-    // if(user !== 'a') //todo заменить на функцию, которая идет в базу и смотрит есть ли такой юзера
-     //  return done(null, false, {message: 'User not found'});
-    // else if(password !== 'a') //todo заменить на функцию, котроая идет в базу и проверяет правильный ли пароль для этого юзера
-    //   return done(null, false, {message: 'Wrong password'});
-
-    // return done(null, {id: 1, name: user, password}); //todo изменить набор возвращаемых значений (см. что есть в базе)
-   // }));
-
-//коннект к базе
-function queryDB(query, params, resultHandler) {
-    pool.connect(function (err, client, done) {
-        if (err) {
-            console.log("Cannot connect to the DB" + err);
-        }
-        client.query(query, params, function (err, result) {
-            done();
-            if (err) {
-                console.log(err);
-            }
-            resultHandler(result)
-        })
-    })
-}
-
-//конвертер json в html строку для отображения на сайте
-    function jsonToHTMLTable(data) {
-        var table = html_tablify.tablify ({
-            data: data
-        })
-    return `<!DOCTYPE html>
-<html>
-<body>
-<h1>Products</h1>`
-        + table +
-        `</body>
-</html>
-`
-}
-
-app.get('/', (req,res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.end(fs.readFileSync("./index_page.html"));
-})
 
 app.get('/login', (req,res) => {
      res.statusCode = 200;
@@ -147,49 +89,65 @@ app.post('/login',
     successFlash : "Welcome!",
     //failureRedirect: '/loginAfterFailure', // todo сейчас специальная страница для логина
                                           //после неудачи, потому что у меня не работают flash сообщения. Починить
-    failureFlash: 'invalid username or password' })
-);
+    failureFlash: false}),
 
-    //todo временный костыль
-//app.get('/loginAfterFailure', (req,res) => {
-    //res.statusCode = 200;
-    //res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    //res.end(fs.readFileSync("./login-after-failure.html"))
-    //});
+);
 
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
 
-app.use('/home',checkAuth());
+app.use('/home', cfg.checkAuth());
 app.get('/home', (req,res) => {
+        res.render('index', {
+            title: "Домашняя страница",
+            isIndex: true
+            })
         res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html; charset=utf-8');
-        res.end(fs.readFileSync("./home.html"));
     })
 
-    //todo написать кнопку logout. Сейчас надо перезагружаться:)))
-   //запрос в базу
-app.get('/products',checkAuth(), async (request, response) => {
-    const query = 'SELECT * FROM shop.product.goods;'
+app.use('/analitycs', cfg.checkAuth());
+app.get('/analitycs', (req,res) => {
+        res.render('index', {
+            title: "Домашняя страница"
+            })
+        res.statusCode = 200;
 
-    queryDB(query, [], function (result) {
+    })
+   //запрос в базу
+app.get('/catalog/products', cfg.checkAuth(), async (request, response) => {
+    const query = 'SELECT name as Название,price as Цена  FROM shop.product.goods;'
+
+    cfg.queryDB(query, [], function (result) {
         response.setHeader('Content-Type', 'text/html; charset=utf-8');
-        response.send(jsonToHTMLTable(result.rows))
+        response.send(cfg.jsonToHTMLTable(result.rows))
     })
 })
+
 // запрос из базы по id
-app.get('/products/:id', async (request, response) => {
-    const query = 'SELECT * FROM shop.product.goods WHERE id=$1'
+app.get('/catalog/products/:id', async (request, response) => {
+    const query = 'SELECT  name as Название,price as Цена FROM shop.product.goods WHERE id=$1'
+
     const values = [request.params.id]
 
-    queryDB(query, values, function (result) {
+    cfg.queryDB(query, values, function (result) {
         response.setHeader('Content-Type', 'text/html; charset=utf-8');
-        response.send(jsonToHTMLTable(result.rows))
+        response.send(cfg.jsonToHTMLTable(result.rows))
 
     })
 })
+
+app.get('/order', cfg.checkAuth(), async (request, response) => {
+    const query = 'SELECT * FROM shop.product.orders;'
+
+    cfg.queryDB(query, [], function (result) {
+        response.setHeader('Content-Type', 'text/html; charset=utf-8');
+        response.send(cfg.jsonToHTMLTable(result.rows))
+    })
+})
+
+
 
 app.listen(port,host, function(){
     console.log(`Сервер запустился по адресу://${host}:${port}`)

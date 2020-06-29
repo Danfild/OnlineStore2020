@@ -1,0 +1,18 @@
+<nav class="grey darken-1">
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo">Главная</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+                {{#if isIndex}}
+            <li class="active"><a href="/home">Домашняя</a></li>
+                {{else}}
+            <li ><a href="/home">Домашняя</a></li>
+                {{/if}}
+            <li><a href=/analitycs>Аналитика</a></li>
+            <li><a href=/catalog/products>Каталог товаров</a></li>
+            <li><a href=/order/>Заказы</a></li>
+            <li><a href="/login">Залогиниться</a></li>
+
+        </ul>
+    </div>
+</nav>

@@ -34,9 +34,9 @@
     "pg": "^8.2.1"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "dbase": "node database.js",
-    "dev": "nodemone index.js"
+    "dev": "nodemon index.js"
   },
   "author": "daniel",
   "license": "ISC"
