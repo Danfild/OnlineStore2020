@@ -45,6 +45,8 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'images')));
+
 
 passport.use(new localStrategy({
     usernameField: null,
@@ -92,14 +94,36 @@ app.get('/analitycs', (req,res) => {
 
     })
 //запрос в базу
-app.get('/catalog/products', cfg.checkAuth(), async (request, response) => {
-    const query = 'SELECT name as Название,price as Цена  FROM shop.product.goods;'
+app.get('/catalog/', (req, res) => {
+        const query = 'SELECT name,description,price, image_url   FROM shop.product.goods;';
+        const values = [req.params.id]
 
-    connect.queryDB(query, [], function (result) {
-        response.setHeader('Content-Type', 'text/html; charset=utf-8');
-        response.send(cfg.jsonToHTMLTable(result.rows))
-    })
-})
+        connect.queryDB(query, [], function (result) {
+
+            res.render('layouts/catalog.hbs',
+            {
+            'rows' : result.rows,
+            'resultNotEmpty': result.rows.length !== 0
+            });
+        });
+        res.statusCode = 200;
+    });
+
+
+//app.get('/catalog/products', cfg.checkAuth(),(req, res) => {
+      //  const query = 'SELECT name as Название  FROM shop.product.categories;'
+      // const rows = [
+       //            {'name':'name', 'description': 'description', 'price': 'price', 'image_url':'image_url'},
+       //             {'name':'name', 'description': 'description', 'price': 'price', 'image_url':'image_url'}
+                //   ]
+       // res.render('layouts/catalog.hbs',
+    // {
+        //    'rows' : rows,
+       //   'resultNotEmpty': rows.length !== 0
+      // });
+
+    // res.statusCode =200;
+  //});
 
 // запрос из базы по id
 app.get('/catalog/products/:id', async (request, response) => {
