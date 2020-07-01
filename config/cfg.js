@@ -1,32 +1,25 @@
 const { Pool , Client } = require('pg');
 const pool = new Pool();
 const html_tablify = require('html-tablify');
+const connect = require('./connect');
+
 
 
 //авторизация
 module.exports.checkAuth = function () {
-                 return (req, res, next) => {
-                     if(req.user)
-                         next();
-                     else
-                     res.redirect('/login');
-                     };
-                 };
-
-module.exports.queryDB = function (query, params, resultHandler) {
-    pool.connect(function (err, client, done) {
-        if (err) {
-            console.log("Cannot connect to the DB" + err);
-        }
-        client.query(query, params, function (err, result) {
-            done();
-            if (err) {
-                console.log(err);
-            }
-            resultHandler(result)
-        })
-    })
-};
+       return (req, res, next) => {
+       if(req.user)
+          next();
+       else
+          res.redirect('/login');
+       };
+      };
+// проверка юзера по имени из бд
+module.exports.getUser = function (username, done) {
+      const query = 'SELECT username,password FROM shop.product.users WHERE username = $1::text';
+      const  params = [username];
+      connect.queryDB(query, params, done)
+  };
 
 //конвертер json в html строку для отображения на сайте
 module.exports.jsonToHTMLTable = function (data) {

@@ -4,33 +4,20 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
-    "bootstrap": "^4.5.0",
-    "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
     "express-session": "^1.17.1",
     "fs": "0.0.1-security",
     "html-tablify": "^2.0.2",
-    "jquery": "^3.5.1",
-    "knex": "^0.21.1",
-    "lodash": "^4.17.15",
-    "mongodb": "^3.5.9",
-    "mongoose": "^5.9.19",
-    "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
-    "objection": "^2.2.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pg-promise": "^10.5.6"
   },
   "devDependencies": {
-    "mocha": "^7.2.0",
     "pg": "^8.2.1"
   },
   "scripts": {
@@ -38,6 +25,6 @@
     "dbase": "node database.js",
     "dev": "nodemon index.js"
   },
-  "author": "daniel",
+  "author": "Daniel",
   "license": "ISC"
 }
