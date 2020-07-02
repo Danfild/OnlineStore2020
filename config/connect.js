@@ -1,6 +1,5 @@
 const { Pool , Client } = require('pg');
 const pool = new Pool();
-const html_tablify = require('html-tablify');
 const cfg = require('./cfg');
 
 
@@ -28,6 +27,9 @@ module.exports.authCheck = function(username, password, done) {
         const user = result.rows[0];
         if (user.password !== password) {
             return done(null, false, {message: 'Incorrect password.'});
+        if (user.is_admin){
+            return done(null, false, {message: 'User is not admin.'});
+        }
         }else {
             return done(null, user);
         }
