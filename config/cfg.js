@@ -18,7 +18,7 @@ module.exports.checkAuth = function () {
 //проверка прав админа
 module.exports.checkAdmin = function () {
        return (req, res, next) => {
-       if(res.user !== false )
+       if(res.user)
           next();
        else
           res.redirect('/login');

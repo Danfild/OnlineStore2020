@@ -1,10 +1,10 @@
 <h5><body>
 {{#if resultNotEmpty}}
     <table width="100%" border="1">
-        <td>Название категории</td> <td> </td>
+        <td>Название товара</td> <td>Описание</td> <td>Цена</td> <td> </td>
         {{#each rows}}
             <tr>
-                <td>{{name}}</td><td><img src="{{image_url}}"></td>
+                <td>{{name}}</td><td>{{description}}</td><td>{{price}}</td><td><img src="{{image_url}}"></td>
             </tr>
         {{/each}}
     </table>

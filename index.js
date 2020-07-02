@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
         const values = [req.params.id]
 
         connect.queryDB(query, [], function (result) {
-            res.render('category',
+            res.render('layouts/category.hbs',
             {
             title: "Главная Страница",
             'rows' : result.rows,
@@ -82,7 +82,7 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/login');
 });
-
+//страницы администратора
 app.use('/admin', cfg.checkAdmin());
 app.get('/admin', (req,res) => {
         res.render('index', {
@@ -91,6 +91,28 @@ app.get('/admin', (req,res) => {
         res.statusCode = 200;
         });
 
+//страница аналитики
+app.get('/analitycs', (req,res) => {
+        res.render('index', {
+            title: "Домашняя страница"
+            })
+        res.statusCode = 200;
+    })
+
+//страница аналитики
+app.get('/users', cfg.checkAuth(), (req,res) => {
+        const query = 'select email,username,last_name,phone_num from shop.product.users;'
+
+        connect.queryDB(query, [], function (result) {
+             res.render('layouts/users.hbs',
+             {
+             title: "Пользователи",
+             'rows' : result.rows,
+             'resultNotEmpty': result.rows.length !== 0
+              });
+        res.statusCode = 200;
+    });
+ });
 
 //домашняя страница
 //app.use('/home', cfg.checkAuth());
@@ -100,19 +122,11 @@ app.get('/home',(req,res) => {
             isIndex: true
             })
         res.statusCode = 200;
-    })
-//страница аналитики
-app.get('/analitycs', (req,res) => {
-        res.render('index', {
-            title: "Домашняя страница"
-            })
-        res.statusCode = 200;
+    });
 
-    })
 //запрос в базу
-app.get('/catalog/', (req, res) => {
-        const query = 'SELECT name,image_url FROM shop.product.categories;';
-
+app.get('/catalog', (req, res) => {
+        const query = 'SELECT * FROM shop.product.categories;';
 
         connect.queryDB(query, [], function (result) {
             res.render('layouts/catalog.hbs',
@@ -125,37 +139,49 @@ app.get('/catalog/', (req, res) => {
         res.statusCode = 200;
     });
 
+//app.get('/order',  (req,res) => {
+      //  const query = 'SELECT * FROM shop.product.orders;';
+        //const values = [req.params.id];
+//
+        //connect.queryDB(query, [], function (result) {
+           //  res.render('layouts/orders.hbs',
+            // {
+            // title: "Страница заказов",
+             //'rows' : result.rows,
+             //'resultNotEmpty': result.rows.length !== 0
+             //});
+       // });
+       // res.statusCode = 200;
+//});
 
-app.get('/catalog/:id',async (request, response) => {
-        const query = 'SELECT *  FROM shop.product.categories WHERE id=$1;';
-        const values = [request.params.id]
+app.get('/order', (req, res) => {
+        const query = 'SELECT name, description, price, image_url FROM shop.product.goods where category_id=$1;'
+        const values = [req.params.id]
 
         connect.queryDB(query, values, function (result) {
-            response.render('layouts/catalog.hbs',
+            res.render("layouts/orders.hbs",
             {
-            'rows' : result.rows,
-            'resultNotEmpty': result.rows.length !== 0
-            });
-        });
-        res.statusCode = 200;
-    });
-
-
-
-app.get('/order',  async (request, response) => {
-        const query = 'SELECT * FROM shop.product.orders;'
-
-
-        connect.queryDB(query,[], function (result) {
-             response.render('layouts/catalog.hbs',
-             {
              'rows' : result.rows,
-             'resultNotEmpty': result.rows.length !== 0
-             });
-        });
-        res.statusCode = 200;
-})
+             'resultNotEmpty': result.rows.length != 0,
+             'userId': session.user.id
+            });
+            res.statusCode = 200;
+        })
+});
 
+//app.get('/catalog/:id',async (request, response) => {
+        //const query = 'SELECT *  FROM shop.product.categories WHERE id=$1;';
+        //const values = [request.params.id]
+
+       // connect.queryDB(query, function (result) {
+           // response.render('layouts/catalog.hbs',
+           // {
+           // 'rows' : result.rows,
+           // 'resultNotEmpty': result.rows.length !== 0
+           // });
+        //});
+        //res.statusCode = 200;
+   // });
 
 app.listen(port,host, function(){
     console.log(`Сервер запустился по адресу://${host}:${port}`)

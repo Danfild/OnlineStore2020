@@ -1,0 +1,30 @@
+h5><body>
+{{#if resultNotEmpty}}
+    <table width="100%" border="1">
+        <td>Название товара</td> <td>Описание</td> <td>Цена</td> <td> </td>
+        {{#each rows}}
+            <tr>
+                <td>{{name}}</td><td>{{description}}</td><td>{{price}}</td><td><img src="{{image_url}}"></td>
+                <td>
+
+                  {{#if inStock}}
+                  <form action="/book_good" method="post">
+                        <input type="hidden" name="goodId" value="{{goodId}}" />
+                        <input type="hidden" name="userId" value="{{userId}}" />
+                    <div>
+                        <input type="submit" value="В корзину"/>
+                    </div>
+                  </form>
+                  {{else}}
+                    <input type="submit" name="submit" value="Нет в наличие" disabled>
+                  {{/if}}
+
+                </td>
+            </tr>
+        {{/each}}
+    </table>
+{{else}}
+    <p>Нет данных</p>
+{{/if}}
+</body></h5>
+<br>
