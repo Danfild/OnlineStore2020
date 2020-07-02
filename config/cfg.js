@@ -15,10 +15,10 @@ module.exports.checkAuth = function () {
 //проверка прав админа
 module.exports.checkAdmin = function () {
        return (req, res, next) => {
-       if(res.user.is_admin)
+       if(req.user && req.user.is_admin)
           next();
        else
-          res.redirect('/login');
+          res.redirect('/');
        };
       };
 

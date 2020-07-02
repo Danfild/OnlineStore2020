@@ -5,6 +5,15 @@
         {{#each rows}}
             <tr>
                 <td>{{name}}</td><td>{{description}}</td><td>{{price}}</td><td><img src="{{image_url}}"></td>
+                {{#if ../userId}}
+                <td><form action="/book_good" method="post">
+                    <input  name="goodId" value="{{goodId}}" hidden/>
+                    <input  name="userId" value="{{../userId}}" hidden/>
+                    <div>
+                        <input type="submit" value="В корзину"/>
+                    </div>
+                </form></td>
+                {{/if}}
             </tr>
         {{/each}}
     </table>

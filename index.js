@@ -20,53 +20,36 @@ const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: 'hbs'
 });
-
-
-app.engine('hbs', hbs.engine);
-app.set('view engine', 'hbs');
-app.set('views', 'views');
-
-//главная страница
-app.get('/', (req, res) => {
-        const query = 'select name, description, image_url, price from product.goods where category_id = 2 order by sold_times desc limit 5;'
-        const values = [req.params.id]
-
-        connect.queryDB(query, [], function (result) {
-            res.render('layouts/category.hbs',
-            {
-            title: "Главная Страница",
-            'rows' : result.rows,
-            'resultNotEmpty': result.rows.length !== 0
-            });
-        });
-        res.statusCode = 200;
-    });
-
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(session({secret: 'you secret key'}));
+app.use(session({
+    secret: 'abcdefg',
+    resave: true,
+    saveUninitialized: false
+}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'images')));
 
-//авторизация
-passport.use(new localStrategy({
-    usernameField: null,
-    passwordField: null
-},
-    connect.authCheck
-));
+
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
+app.set('views', 'views');
+
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
+
+passport.use(new localStrategy((user, password, done) => {connect.authCheck(user, password, done)}))
+
 //авторизация
 app.get('/login', (req,res) => {
      res.statusCode = 200;
      res.setHeader('Content-Type', 'text/html; charset=utf-8');
      res.end(fs.readFileSync("./login.html"))
 });
+
 //авторизация
 app.post('/login',
     passport.authenticate('local', {
@@ -75,8 +58,8 @@ app.post('/login',
     //failureRedirect: ,// todo сейчас специальная страница для логина
                                           //после неудачи, потому что у меня не работают flash сообщения. Починить
     failureFlash: false}),
-
 );
+
 //лог-аут
 app.get('/logout', function(req, res){
   req.logout();
@@ -99,8 +82,34 @@ app.get('/analitycs', (req,res) => {
         res.statusCode = 200;
     })
 
+//главная страница
+app.get('/', (req, res) => {
+        const query = 'select id as goodId ,name, description, image_url, price from product.goods where category_id = 2 order by sold_times desc limit 5;'
+        console.log(req.user);
+        connect.queryDB(query, [], function (result) {
+       var userId;
+            console.log(req.user);
+         if (req.user ){
+         console.log(req.user.id)
+               userId = req.user.id
+               } else {
+               userId = null
+               }
+            res.render('layouts/category.hbs',
+            {
+            title: "Главная Страница",
+            'userId' :  req.user ? req.user.id : null,
+           // 'userId' : true,
+            'rows' : result.rows,
+            'resultNotEmpty': result.rows.length !== 0 // todo: in_stock != 0
+            });
+        });
+        res.statusCode = 200;
+    });
+
 //страница аналитики
-app.get('/users', cfg.checkAuth(), (req,res) => {
+app.use('/users', cfg.checkAdmin());
+app.get('/users', (req,res) => {
         const query = 'select email,username,last_name,phone_num from shop.product.users;'
 
         connect.queryDB(query, [], function (result) {
@@ -114,9 +123,17 @@ app.get('/users', cfg.checkAuth(), (req,res) => {
     });
  });
 
+app.use('/ewe', cfg.checkAuth());
+app.get('/ewe', (req, res) => {
+    console.log(req.user);
+    res.send(req.user);
+
+    res.statusCode = 200;
+  });
+
 //домашняя страница
-//app.use('/home', cfg.checkAuth());
-app.get('/home',(req,res) => {
+app.use('/home', cfg.checkAuth());
+app.get('/home', (req,res) => {
         res.render('index', {
             title: "Домашняя страница",
             isIndex: true
@@ -139,35 +156,34 @@ app.get('/catalog', (req, res) => {
         res.statusCode = 200;
     });
 
-//app.get('/order',  (req,res) => {
+app.get('/order',  (req,res) => {
       //  const query = 'SELECT * FROM shop.product.orders;';
         //const values = [req.params.id];
 //
         //connect.queryDB(query, [], function (result) {
-           //  res.render('layouts/orders.hbs',
-            // {
-            // title: "Страница заказов",
+          res.render('layouts/orders.hbs',{
+            title: "Страница заказов"
              //'rows' : result.rows,
              //'resultNotEmpty': result.rows.length !== 0
-             //});
-       // });
-       // res.statusCode = 200;
-//});
 
-app.get('/order', (req, res) => {
-        const query = 'SELECT name, description, price, image_url FROM shop.product.goods where category_id=$1;'
-        const values = [req.params.id]
-
-        connect.queryDB(query, values, function (result) {
-            res.render("layouts/orders.hbs",
-            {
-             'rows' : result.rows,
-             'resultNotEmpty': result.rows.length != 0,
-             'userId': session.user.id
-            });
-            res.statusCode = 200;
-        })
+        });
+        res.statusCode = 200;
 });
+
+//app.get('/order', (req, res) => {
+      //  const query = 'SELECT name, description, price, image_url FROM shop.product.goods where category_id=$1;'
+        //const values = [req.params.id]
+
+        //connect.queryDB(query, values, function (result) {
+           // res.render("layouts/orders.hbs",
+           // {
+             //'rows' : result.rows,
+            // 'resultNotEmpty': result.rows.length != 0,
+             //'userId': req.user.id
+            //});
+       //     res.statusCode = 200;
+       // })
+//});
 
 //app.get('/catalog/:id',async (request, response) => {
         //const query = 'SELECT *  FROM shop.product.categories WHERE id=$1;';
