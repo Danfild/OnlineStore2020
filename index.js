@@ -16,7 +16,6 @@ const port = 3000;
 const cfg = require('./config/cfg');
 const connect = require('./config/connect');
 
-
 const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: 'hbs'
@@ -29,11 +28,19 @@ app.set('views', 'views');
 
 //главная страница
 app.get('/', (req, res) => {
-    res.statusCode = 200;
-    res.render('index', {
-    title: "Главная страница"
-    })
-})
+        const query = 'select name, description, image_url, price from product.goods where category_id = 2 order by sold_times desc limit 5;'
+        const values = [req.params.id]
+
+        connect.queryDB(query, [], function (result) {
+            res.render('category',
+            {
+            title: "Главная Страница",
+            'rows' : result.rows,
+            'resultNotEmpty': result.rows.length !== 0
+            });
+        });
+        res.statusCode = 200;
+    });
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
@@ -47,20 +54,20 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'images')));
 
-
+//авторизация
 passport.use(new localStrategy({
     usernameField: null,
     passwordField: null
 },
     connect.authCheck
 ));
-
+//авторизация
 app.get('/login', (req,res) => {
      res.statusCode = 200;
      res.setHeader('Content-Type', 'text/html; charset=utf-8');
      res.end(fs.readFileSync("./login.html"))
 });
-
+//авторизация
 app.post('/login',
     passport.authenticate('local', {
     successRedirect: '/home',
@@ -70,22 +77,31 @@ app.post('/login',
     failureFlash: false}),
 
 );
-
+//лог-аут
 app.get('/logout', function(req, res){
   req.logout();
-  res.redirect('/');
+  res.redirect('/login');
 });
 
-app.use('/home', cfg.checkAuth());
-app.get('/home', (req,res) => {
+app.use('/admin', cfg.checkAdmin());
+app.get('/admin', (req,res) => {
+        res.render('index', {
+            title: "Страница админа"
+            })
+        res.statusCode = 200;
+        });
+
+
+//домашняя страница
+//app.use('/home', cfg.checkAuth());
+app.get('/home',(req,res) => {
         res.render('index', {
             title: "Домашняя страница",
             isIndex: true
             })
         res.statusCode = 200;
     })
-
-app.use('/analitycs', cfg.checkAuth());
+//страница аналитики
 app.get('/analitycs', (req,res) => {
         res.render('index', {
             title: "Домашняя страница"
@@ -95,12 +111,27 @@ app.get('/analitycs', (req,res) => {
     })
 //запрос в базу
 app.get('/catalog/', (req, res) => {
-        const query = 'SELECT name,description,price, image_url   FROM shop.product.goods;';
-        const values = [req.params.id]
+        const query = 'SELECT name,image_url FROM shop.product.categories;';
+
 
         connect.queryDB(query, [], function (result) {
-
             res.render('layouts/catalog.hbs',
+            {
+            title: "Каталог товаров",
+            'rows' : result.rows,
+            'resultNotEmpty': result.rows.length !== 0
+            });
+        });
+        res.statusCode = 200;
+    });
+
+
+app.get('/catalog/:id',async (request, response) => {
+        const query = 'SELECT *  FROM shop.product.categories WHERE id=$1;';
+        const values = [request.params.id]
+
+        connect.queryDB(query, values, function (result) {
+            response.render('layouts/catalog.hbs',
             {
             'rows' : result.rows,
             'resultNotEmpty': result.rows.length !== 0
@@ -110,42 +141,21 @@ app.get('/catalog/', (req, res) => {
     });
 
 
-//app.get('/catalog/products', cfg.checkAuth(),(req, res) => {
-      //  const query = 'SELECT name as Название  FROM shop.product.categories;'
-      // const rows = [
-       //            {'name':'name', 'description': 'description', 'price': 'price', 'image_url':'image_url'},
-       //             {'name':'name', 'description': 'description', 'price': 'price', 'image_url':'image_url'}
-                //   ]
-       // res.render('layouts/catalog.hbs',
-    // {
-        //    'rows' : rows,
-       //   'resultNotEmpty': rows.length !== 0
-      // });
 
-    // res.statusCode =200;
-  //});
+app.get('/order',  async (request, response) => {
+        const query = 'SELECT * FROM shop.product.orders;'
 
-// запрос из базы по id
-app.get('/catalog/products/:id', async (request, response) => {
-    const query = 'SELECT  name as Название,price as Цена FROM shop.product.goods WHERE id=$1'
 
-    const values = [request.params.id]
-
-    connect.queryDB(query, values, function (result) {
-        response.setHeader('Content-Type', 'text/html; charset=utf-8');
-        response.send(cfg.jsonToHTMLTable(result.rows))
-
-    })
+        connect.queryDB(query,[], function (result) {
+             response.render('layouts/catalog.hbs',
+             {
+             'rows' : result.rows,
+             'resultNotEmpty': result.rows.length !== 0
+             });
+        });
+        res.statusCode = 200;
 })
 
-app.get('/order', cfg.checkAuth(), async (request, response) => {
-    const query = 'SELECT * FROM shop.product.orders;'
-
-    connect.queryDB(query, [], function (result) {
-        response.setHeader('Content-Type', 'text/html; charset=utf-8');
-        response.send(cfg.jsonToHTMLTable(result.rows))
-    })
-})
 
 app.listen(port,host, function(){
     console.log(`Сервер запустился по адресу://${host}:${port}`)

@@ -5,7 +5,7 @@ const connect = require('./connect');
 
 
 
-//авторизация
+//проверка авторизации
 module.exports.checkAuth = function () {
        return (req, res, next) => {
        if(req.user)
@@ -14,9 +14,21 @@ module.exports.checkAuth = function () {
           res.redirect('/login');
        };
       };
+
+//проверка прав админа
+module.exports.checkAdmin = function () {
+       return (req, res, next) => {
+       if(res.user !== false )
+          next();
+       else
+          res.redirect('/login');
+       };
+      };
+
+
 // проверка юзера по имени из бд
 module.exports.getUser = function (username, done) {
-      const query = 'SELECT username,password FROM shop.product.users WHERE username = $1::text';
+      const query = 'SELECT username,password  FROM shop.product.users WHERE username = $1::text';
       const  params = [username];
       connect.queryDB(query, params, done)
   };

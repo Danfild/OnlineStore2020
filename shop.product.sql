@@ -66,7 +66,7 @@ insert into product."categories" ("name",image_url) values ('SSD-накопит�
 
 INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('AMD Ryzen 5 2600','8399', 1,'ryzen2600.jpg',10,'6 ядерный процессор амд');
 INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('Intel Core i5-9400F','11399', 1,'9400.jpg',10,'6 ядерный процессор интел');
-INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('RTX 2080 TI', '83999', 2,'rtx2080.jpg',5,'Видеокарта с трассировкой');
+INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('RTX 2080 TI', '83999', 2,'2080.jpg',5,'Видеокарта с трассировкой');
 INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('RX 5700 XT', '38911', 2,'rx5700.jpg',10,'Видеокарта от амд');
 INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('MSI B450M','5750', 3,'b450.jpg',12,'Материнская плата.');
 INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('MSI Z390','14790',3,'z390.jpg',10,'Материнская плата.');
@@ -91,3 +91,33 @@ INSERT INTO product.items (good_id , is_sold,order_id) VALUES (2, true, 1);
 INSERT INTO product.items (good_id, is_sold,order_id) VALUES (1, false,2);
 INSERT INTO product.items (good_id, is_sold,order_id) VALUES (2, true, 3);
 
+--сумма заказа
+select product.orders.sum     as сумма,
+       product.orders.address as адрес,
+       product.orders.id as Номер_заказа,
+       product.goods."name"
+from product.orders  right join product.items on orders.id = items.order_id
+                     join product.goods on product.items.good_id =goods.id;
+
+--заказ инфо
+select product.orders.address as Адресс,
+       product.orders.order_date as Дата,
+       product.items.order_id as "Номер заказа",
+       product.goods.name as "Название товара",
+       product.users.username as Имя
+
+from product.orders  right join product.items on orders.id = items.order_id
+                     join product.goods on product.items.good_id = goods.id
+                     left join product.categories on product.goods.category_id=product.categories.id
+                     join product.users on  product.orders.user_id=product.users.id;
+
+
+--сколько товара есть
+select product.categories.name as "Название категории",
+       product.goods.name as "Название товара",
+       product.goods.in_stock as "Кол-во",
+       product.goods.price as "Цена"
+from product.categories  join  product.goods on product.categories.id=product.goods.category_id;
+
+--топ-5
+select name, description, image_url, price from product.goods where category_id = ? order by sold_times desc limit 5
