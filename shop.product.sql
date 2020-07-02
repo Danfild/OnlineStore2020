@@ -64,7 +64,7 @@ INSERT INTO product."categories" ("name",image_url)VALUES ('Матерински
 insert into product."categories" ("name",image_url)VALUES ('Корпуса','category4.jpg');
 insert into product."categories" ("name",image_url) values ('SSD-накопители','category5.jpg');
 
-INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('AMD Ryzen 5 2600','8399', 1,'ryzen2600.jpg',10,'6 ядерный процессор амд');
+INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('AMD Ryzen 5 2600','8399', 1,'2600.jpg',10,'6 ядерный процессор амд');
 INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('Intel Core i5-9400F','11399', 1,'9400.jpg',10,'6 ядерный процессор интел');
 INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('RTX 2080 TI', '83999', 2,'2080.jpg',5,'Видеокарта с трассировкой');
 INSERT INTO product.goods ("name",price,category_id,image_url,in_stock,description)VALUES ('RX 5700 XT', '38911', 2,'rx5700.jpg',10,'Видеокарта от амд');
@@ -87,7 +87,7 @@ INSERT INTO product.orders (user_id, sum, address,  order_date) VALUES (1,500,'�
 INSERT INTO product.orders (user_id, sum, address,  order_date) VALUES (2,500,'ул.Ленина 17','now');
 INSERT INTO product.orders (user_id, sum, address,  order_date) VALUES (3,500,'ул.Колотушнкино','now');
 
-INSERT INTO product.items (good_id , is_sold,order_id) VALUES (2, true, 1);
+INSERT INTO product.items (good_id, booked_by_user, is_sold, order_id) VALUES (2, 1, true, 1);
 INSERT INTO product.items (good_id, is_sold,order_id) VALUES (1, false,2);
 INSERT INTO product.items (good_id, is_sold,order_id) VALUES (2, true, 3);
 
