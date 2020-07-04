@@ -20,6 +20,7 @@ const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: 'hbs'
 });
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({
@@ -40,15 +41,19 @@ app.set('views', 'views');
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
-
 passport.use(new localStrategy((user, password, done) => {connect.authCheck(user, password, done)}))
 
 //авторизация
 app.get('/login', (req,res) => {
-     res.statusCode = 200;
-     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-     res.end(fs.readFileSync("./login.html"))
-});
+
+     res.render('./partials/login.hbs', {
+                 title: "Страница админа"
+                 })
+             res.statusCode = 200;
+             });
+    // res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    //res.end(fs.readFileSync("./login.html"))
+//});
 
 //авторизация
 app.post('/login',
@@ -84,11 +89,11 @@ app.get('/analitycs', (req,res) => {
 
 //главная страница
 app.get('/', (req, res) => {
-        const query = 'select id as goodId ,name, description, image_url, price from product.goods where category_id = 2 order by sold_times desc limit 5;'
-        console.log(req.user);
+        const query = 'select id as goodId,name, description, image_url,price, in_stock from product.goods where category_id = 1 order by sold_times desc limit 5;'
+
         connect.queryDB(query, [], function (result) {
-       var userId;
-            console.log(req.user);
+        var userId;
+
          if (req.user ){
          console.log(req.user.id)
                userId = req.user.id
@@ -99,13 +104,36 @@ app.get('/', (req, res) => {
             {
             title: "Главная Страница",
             'userId' :  req.user ? req.user.id : null,
-           // 'userId' : true,
             'rows' : result.rows,
-            'resultNotEmpty': result.rows.length !== 0 // todo: in_stock != 0
+            'resultNotEmpty': result.rows.length !== 0
             });
+            console.log(result.rows)
         });
         res.statusCode = 200;
     });
+
+app.post('/book_good',  (req,res) => {
+      //const query = 'select MAX(shop.product.goods.id) as goodId,MAX(shop.product.goods.name) as name,MAX(shop.product.goods.description) as description,MAX(shop.product.goods.image_url) as image_url,MAX(shop.product.goods.price) as price, count(shop.product.items.id) as in_stock from shop.product.goods join shop.product.items on goods.id = items.good_id where goods.category_id = 1;'
+        const query = 'update shop.product.items set  booked_by_user = ! where id = 2;'
+      connect.queryDB(query, [], function (result) {
+      var userId;
+        console.log(req.user);
+      if (req.user ){
+       console.log(req.user.id)
+       userId = req.user.id
+        } else {K
+        userId = null
+         }
+          res.render('layouts/orders.hbs',
+          {
+            title: "Страница заказов",
+             'rows' : result.rows,
+             'resultNotEmpty': result.rows.in_stock !=0
+
+        });
+        });
+        res.statusCode = 200;
+});
 
 //страница аналитики
 app.use('/users', cfg.checkAdmin());
@@ -122,14 +150,6 @@ app.get('/users', (req,res) => {
         res.statusCode = 200;
     });
  });
-
-app.use('/ewe', cfg.checkAuth());
-app.get('/ewe', (req, res) => {
-    console.log(req.user);
-    res.send(req.user);
-
-    res.statusCode = 200;
-  });
 
 //домашняя страница
 app.use('/home', cfg.checkAuth());
@@ -156,48 +176,10 @@ app.get('/catalog', (req, res) => {
         res.statusCode = 200;
     });
 
-app.get('/order',  (req,res) => {
-      //  const query = 'SELECT * FROM shop.product.orders;';
-        //const values = [req.params.id];
-//
-        //connect.queryDB(query, [], function (result) {
-          res.render('layouts/orders.hbs',{
-            title: "Страница заказов"
-             //'rows' : result.rows,
-             //'resultNotEmpty': result.rows.length !== 0
 
-        });
-        res.statusCode = 200;
-});
 
-//app.get('/order', (req, res) => {
-      //  const query = 'SELECT name, description, price, image_url FROM shop.product.goods where category_id=$1;'
-        //const values = [req.params.id]
 
-        //connect.queryDB(query, values, function (result) {
-           // res.render("layouts/orders.hbs",
-           // {
-             //'rows' : result.rows,
-            // 'resultNotEmpty': result.rows.length != 0,
-             //'userId': req.user.id
-            //});
-       //     res.statusCode = 200;
-       // })
-//});
 
-//app.get('/catalog/:id',async (request, response) => {
-        //const query = 'SELECT *  FROM shop.product.categories WHERE id=$1;';
-        //const values = [request.params.id]
-
-       // connect.queryDB(query, function (result) {
-           // response.render('layouts/catalog.hbs',
-           // {
-           // 'rows' : result.rows,
-           // 'resultNotEmpty': result.rows.length !== 0
-           // });
-        //});
-        //res.statusCode = 200;
-   // });
 
 app.listen(port,host, function(){
     console.log(`Сервер запустился по адресу://${host}:${port}`)
