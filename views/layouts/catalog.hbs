@@ -1,10 +1,11 @@
 <h5><body>
 {{#if resultNotEmpty}}
-    <table width="100%" border="1">
+    <table class="highlight">
         <td>Название категории</td> <td> </td>
         {{#each rows}}
             <tr>
-                <td>{{name}}</td><td><img src="{{image_url}}"></td>
+                <td><a href="/catalog/{{id}}">{{name}}</td><td><a href="/catalog/{{id}}"><img src="{{image_url}}"></a></td>
+
             </tr>
         {{/each}}
     </table>
