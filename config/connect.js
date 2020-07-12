@@ -2,7 +2,6 @@ const { Pool , Client } = require('pg');
 const pool = new Pool();
 const cfg = require('./cfg');
 
-
 //коннект к базе
 module.exports.queryDB = function (query, params, resultHandler) {
     pool.connect(function (err, client, done) {

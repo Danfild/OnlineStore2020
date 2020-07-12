@@ -1,0 +1,13 @@
+<form action="/book_good" method="post">
+    <input  name="goodId" value="{{good.id}}" hidden/>
+    <input  name="name" value="{{good.name}}" hidden/>
+    <input  name="userId" value="{{userId}}"  hidden/>
+    <div>
+        {{#if good.is_available}}<a class="waves-effect waves-light btn-small">
+            <input type="submit" value="В корзину"/>
+        </a>
+        {{else}}
+            <input type="submit" value="Нет в наличие" disabled/>
+        {{/if}}
+        </div>
+</form>

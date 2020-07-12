@@ -1,0 +1,14 @@
+<h5><body>
+{{message}}
+
+<br>{{good.name}} <br> {{good.description}} <br> {{good.price}}<br> <img src="/{{good.image_url}}" > <br>
+<p>Товаров в налчиие: {{good.in_stock}}</p>
+
+{{#if userId}}
+    {{> form_add_good }}
+{{/if}}
+
+
+
+</body></h5>
+<br>

@@ -1,0 +1,38 @@
+
+
+<script type="text/javascript">
+    (function() {
+        var blinks = document.getElementsByTagName('blink');
+        var visibility = 'hidden';
+        window.setInterval(function() {
+            for (var i = blinks.length - 1; i >= 0; i--) {
+                blinks[i].style.visibility = visibility;
+            }
+            visibility =  'hidden' ;
+        }, 2000);
+    })();
+</script>
+<blink>{{message}} </blink>
+
+<form action="/register" method="post">
+    <div>
+        <p><label>Почтовый ящик</label>
+            <input required type="email" name="email"  value="{{email}}" placeholder="example@mail.com">
+        </p>
+        <p><label>Ваше имя:</label>
+            <input required type="text" name="username" value="{{username}}" placeholder="Имя" >
+        </p>
+        <p><label>Ваша фамилия:</label>
+            <input type="text" name="last_name" value="{{last_name}}" placeholder="Фамилия">
+        </p>
+        <p><label>Пароль:</label>
+            <input required type="password" name="password" value="{{password}}" placeholder="*******">
+        </p>
+        <p><label>Номер телефона:</label>
+            <input required type="tel" name="phone_num"  value="{{phone_num}}" placeholder="+79998882233" pattern="+7[0-9]{3}-[0-9]{3}-[0-9]{4}">
+        </p>
+        <p><a class="waves-effect waves-light btn-small">
+            <input  type="submit" value="Зарегистрироваться"/> </a>
+        </p>
+    </div>
+</form>
