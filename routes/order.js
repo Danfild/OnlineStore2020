@@ -70,12 +70,12 @@ app.get('/order', (request,response) => {
 
 app.post('/order', (request,response) => {
         const values = [request.user.id, request.body.good_id];
-        const good_name = request.user.good_name;
+        const good_name = request.body.good_name;
         const query = `update shop.product.items set booked_by_user = null
         where shop.product.items.booked_by_user = $1 and shop.product.items.id = $2`
 
 
-               console.log(request.user.id)
+
               connect.queryDB(query, values, function (result) {
 
                   request.flash('info', 'Товар убран из корзины ' + good_name);
