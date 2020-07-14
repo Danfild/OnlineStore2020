@@ -9,6 +9,7 @@ module.exports = function(app) {
 //авторизация
 app.get('/login', (request,response) => {
 
+
      response.render('./layouts/login.hbs', {
                  title: "Страница админа"
                  })
@@ -20,9 +21,8 @@ app.post('/login',
     passport.authenticate('local', {
     successRedirect: '/home',
     successFlash : "Welcome!",
-    //failureRedirect: ,// todo сейчас специальная страница для логина
-                                          //после неудачи, потому что у меня не работают flash сообщения. Починить
-    failureFlash: false}),
+    failureRedirect: '/login',
+    failureFlash: true}),
 );
 
 //лог-аут

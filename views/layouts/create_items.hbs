@@ -1,0 +1,22 @@
+
+    <form  action="/create_items" enctype="multipart/form-data"  method="post"   >
+
+        <p>Название товара</p>
+        <input required type="text" name="name" value="{{name}}" style="display: block">
+        <p>Категория товара</p>
+        <input  required type="number" name="category_id" value="{{category_id}}">
+        <p>Цена товара</p>
+        <input  required type="text" name="price" value="{{price}}">
+        <p>Описание товара</p>
+        <input required type="text" name="description" value="{{description}}">
+        <p>Полное описанин товара</p>
+        <textarea name="full_description" cols="40" rows="10" value="{{full_description}}"></textarea>
+        <p>Изображение товара</p>
+        <input type="file"  name="image_url" value="{{image_url}}" />
+        <p><a class="waves-effect waves-light btn-small">
+        <input  type="submit"   value="Добавить товар"/> </a>
+        </p>
+
+        </form>
+
+

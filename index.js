@@ -64,17 +64,10 @@ require('./routes/login')(app);
 require('./routes/analitycs')(app);
 require('./routes/order')(app);
 require('./routes/home')(app);
-require('./routes/top5')(app);
-
-
-
-
-
-
-
+//require('./routes/top5')(app);
 
 //главная страница
-app.get('/64564', (request,response) => {
+app.get('/', (request,response) => {
         const query = fs.readFileSync("./sql/top5_per_category.sql" ).toString('utf-8');
         var adminId;
         var userId;
@@ -144,11 +137,6 @@ app.get('/64564', (request,response) => {
 
         //});
     });
-
-
-
-
-
 
 app.listen(port,host, function(){
     console.log(`Сервер запустился по адресу://${host}:${port}`)

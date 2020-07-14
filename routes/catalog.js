@@ -34,7 +34,12 @@ app.get('/catalog/:id', (request,response) => {
                      where  goods.category_id = $1
                      group by goods.id
                      order by name;`
-
+            var userId;
+            if (request.user ){
+             userId = request.user.id
+             } else {
+             userId = null
+              }
         connect.queryDB(query, values, function (result) {
 
             response.render('layouts/catalog_per_category.hbs',
@@ -45,6 +50,7 @@ app.get('/catalog/:id', (request,response) => {
             'userId' :  request.user ? request.user.id : null,
             'resultNotEmpty': result.rows.length !== 0
             });
+            console.log(userId)
         });
         response.statusCode = 200;
     });

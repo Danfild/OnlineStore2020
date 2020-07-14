@@ -17,7 +17,12 @@ app.get('/goods/:id', (request,response) =>  {
                               left join free_items on goods.id = free_items.good_id
                      where goods.id = $1
                      order by name;`
-
+         var userId;
+         if (request.user ){
+           userId = request.user.id
+         } else {
+           userId = null
+         }
 
        connect.queryDB(query, values, function (result) {
        const good = result.rows[0];
@@ -26,9 +31,11 @@ app.get('/goods/:id', (request,response) =>  {
           title: good.name,
           'good' : good,
           'message' : request.flash('info'),
-           'userId' :  request.user ? request.user.id : null,
+          'userId' :  request.user ? request.user.id : null,
            //'resultNotEmpty': result.rows.length !== 0
+
            });
+            console.log(userId);
         });
            response.statusCode = 200;
       });
