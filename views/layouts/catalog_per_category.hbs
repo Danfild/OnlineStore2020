@@ -18,7 +18,7 @@
         <td>Название товара</td><td>Описание</td> <td>Цена</td> <td> </td>
         {{#each rows}}
             <tr>
-                <td><a href="/goods/{{good_id}}">{{name}}</a></td><td>{{description}}</td><td>{{price}} руб.</td><td><img src="/{{image_url}}" width="125"></td>
+                <td><a href="/goods/{{good_id}}">{{name}}</a></td><td>{{description}}</td><td>{{price}} руб.</td><td><img src="/{{image_url}}" width="125"></td><td hidden>{{../userId}}</td>
                 {{#if ../userId}}
                     <td>{{> form_add_in_cart }}</td>
                 {{/if}}

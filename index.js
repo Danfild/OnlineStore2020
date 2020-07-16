@@ -62,12 +62,14 @@ require('./routes/users')(app);
 require('./routes/book_good')(app);
 require('./routes/login')(app);
 require('./routes/analitycs')(app);
-require('./routes/order')(app);
+require('./routes/orders')(app);
+require('./routes/cart')(app);
 require('./routes/home')(app);
+require('./routes/not_found')(app);
 //require('./routes/top5')(app);
 
 //главная страница
-app.get('/', (request,response) => {
+app.get('/home', (request,response) => {
         const query = fs.readFileSync("./sql/top5_per_category.sql" ).toString('utf-8');
         var adminId;
         var userId;
@@ -98,15 +100,7 @@ app.get('/', (request,response) => {
                                all_results[3].rows = cat_result4
                                all_results[4].rows = cat_result5
 
-                               response.render('layouts/top_items.hbs',{
 
-                                            title: "Главная Страница",
-                                           'userId' :  request.user ? request.user.id : null,
-                                           'adminId': adminId,
-                                           'rows' : result.rows,
-                                           'message' : request.flash('info'),
-                                           'resultNotEmpty': result.rows.length !== 0
-                                           });
                                response.statusCode = 200;
                                //response.set({ 'content-type': 'application/json; charset=utf-8' });
                                //response.send(JSON.stringify(all_results).toString('utf-8'));

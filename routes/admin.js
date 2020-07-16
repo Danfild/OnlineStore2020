@@ -69,6 +69,7 @@ app.post('/create_items', (request,response) => {
               {
               title: "Страница админа",
               'adminId': adminId,
+              isIndex: true
               });
          response.statusCode = 200;
          });

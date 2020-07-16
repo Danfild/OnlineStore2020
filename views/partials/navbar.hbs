@@ -1,15 +1,15 @@
 <nav class="grey darken-1">
     <div class="nav-wrapper">
-        <a href="/" class="brand-logo ">Главная</a>
+        <a href="/home" class="brand-logo ">Главная</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
 
                 {{#if isIndex}}
-            <li class="active"><a href="/home">Домашняя</a></li>
+            <li class="active"><a href=/admin >Админ меню</a></li>
                 {{else}}
-            <li ><a href="/home">Домашняя</a></li>
+                    <li><a href=/admin >Админ меню</a></li>
                 {{/if}}
             {{#if adminId}}
-                <li><a href=/admin >Админ меню</a></li>
+
                 <li><a href=/analitycs >Аналитика</a></li>
                 <li><a href="/admin/create_items">Добавление товара</a></li>
                 <li><a href=/users>Пользователи</a></li>
@@ -22,7 +22,7 @@
                 <li><a href=/orders hidden>Заказы</a></li>
             {{/if}}
             <li><a href=/catalog>Каталог товаров</a></li>
-            <li><a href="/order">Корзина</a></li>
+            <li><a href="/cart">Корзина</a></li>
             <li><a href="/login">Авторизация</a></li>
             <li><a href="/register">Регистрация</a></li>
         </ul>

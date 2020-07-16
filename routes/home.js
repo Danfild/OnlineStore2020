@@ -1,24 +1,83 @@
 const cfg = require('../config/cfg');
+const connect = require('../config/connect');
+const fs = require("fs");
 
 
 
 module.exports = function (app) {
 
 //домашняя страница
-app.use('/home', cfg.checkAuth());
+//app.use('/home', cfg.checkAuth());
 app.get('/home', (request,response) => {
-            var adminId;
-          if (request.user){
-           adminId = request.user.is_admin
-          } else {
-          adminId = null
-          }
-        response.render('index', {
-            title: "Домашняя страница",
-            'adminId': adminId,
-            isIndex: true
-            })
-        response.statusCode = 200;
+        const query = fs.readFileSync("./sql/top5_per_category.sql" ).toString('utf-8');
+        var adminId;
+        var userId;
+        if (request.user ){
+        userId = request.user.id
+        adminId= request.user.is_admin
+         } else {
+         userId = null
+         adminId = null
+        }
+     const category_query = 'select id,name from shop.product.categories'
+     connect.queryDB(category_query, [],  function  (result) {
+         all_results = result.rows;
+         connect.queryDB(query, [1],  function  (result) {
+             cat_result1 = result.rows;
+              connect.queryDB(query, [2],  function  (result) {
+                  cat_result2 = result.rows;
+                  connect.queryDB(query, [3],  function  (result) {
+                      cat_result3 = result.rows;
+                      connect.queryDB(query, [4],  function  (result) {
+                          cat_result4 = result.rows;
+                           connect.queryDB(query, [5],  function  (result) {
+                               cat_result5 = result.rows;
+
+                               all_results[0].rows = cat_result1
+                               all_results[1].rows = cat_result2
+                               all_results[2].rows = cat_result3
+                               all_results[3].rows = cat_result4
+                               all_results[4].rows = cat_result5
+
+                               response.render('layouts/top_items.hbs',{
+
+                                            title: "Главная Страница",
+                                           'userId' :  request.user ? request.user.id : null,
+                                           'adminId': adminId,
+                                           'all_results' : all_results,
+                                           'message' : request.flash('info'),
+                                           'resultNotEmpty': all_results.length !== 0
+                                           });
+                               response.statusCode = 200;
+                                    console.log(all_results)
+                              // response.set({ 'content-type': 'application/json; charset=utf-8' });
+                              // response.send(JSON.stringify(all_results).toString('utf-8'));
+
+                           });
+                      });
+                  });
+             });
+         });
+     })
+
+
+
+
+
+        //connect.queryDB(query, [1], function (result) {
+
+            //response.render('layouts/top_items.hbs',
+            //{
+            //title: "Главная Страница",
+            //'userId' :  request.user ? request.user.id : null,
+            //'adminId': adminId,
+            //'rows' : result.rows,
+            //'message' : request.flash('info'),
+            //'resultNotEmpty': result.rows.length !== 0
+            //});
+            //console.log(result.rows)
+
+        //});
     });
 
 }

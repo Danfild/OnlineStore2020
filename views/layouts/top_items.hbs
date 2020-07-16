@@ -1,32 +1,28 @@
-
-<h5><body>
-<script type="text/javascript">
-    (function() {
-        var blinks = document.getElementsByTagName('blink');
-        var visibility = 'hidden';
-        window.setInterval(function() {
-            for (var i = blinks.length - 1; i >= 0; i--) {
-                blinks[i].style.visibility = visibility;
-            }
-            visibility =  'hidden' ;
-        }, 5000);
-    })();
-</script>
-<blink>{{message}} </blink>
-
+<body>
+<h3><p align="center">Самые продаваемые товары</p></h3>
+<h5>
 {{#if resultNotEmpty}}
-    <table class="highlight" >
-        <td>Название товара</td><td>Описание</td> <td>Цена</td> <td> </td>
-        {{#each rows}}
-            <tr>
-                <td><a href="/catalog/{{id}}">{{name}}</td><td>{{description}}</td><td>{{price}} руб.</td><td><a href="/catalog/{{id}}"><img src="/{{image_url}}" width="125"></a></td>
-                {{#if ../userId}}
-                {{/if}}
-            </tr>
+
+        {{#each all_results}}
+            {{name}}
+            <table class="highlight" >
+                <tr>
+                    <th>Название товара</th>
+                    <th>Описание</th>
+                    <th>Цена</th>
+                    <th></th>
+                </tr>
+            {{#each rows}}
+
+
+                <tr><td>{{name}}</td><td>{{description}}</td><td>{{price}}</td><td><a><img src="/{{image_url}}" width="125"></a></td></tr>
+
+            {{/each}}
+            </table>
         {{/each}}
-    </table>
+
 {{else}}
     <p>Нет данных</p>
-{{/if}}
-</body></h5>
+{{/if}}</h5>
+</body>
 <br>

@@ -50,7 +50,7 @@ app.get('/catalog/:id', (request,response) => {
             'userId' :  request.user ? request.user.id : null,
             'resultNotEmpty': result.rows.length !== 0
             });
-            console.log(userId)
+            //console.log(request.user.id)
         });
         response.statusCode = 200;
     });

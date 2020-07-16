@@ -1,9 +1,9 @@
-body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-}
 
-main {
-    flex: 1 0 auto;
+
+.b-page__footer
+{
+    height: 30px;
+    margin-top:35px;
+    position: relative;
+    width: 100%;
 }

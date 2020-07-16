@@ -41,4 +41,4 @@ select general_info.good_id      as good_id,
 from general_info
          join sold_stats on general_info.good_id = sold_stats.good_id
 order by sold_stats.sold_times desc
-limit 5;
+limit 1;

@@ -7,15 +7,15 @@ create table shop.product.categories (
     primary key (id)
 );
 
-;create table shop.product.goods (
+create table shop.product.goods (
     id serial ,
     name text not null ,
     price float8 not null ,
     category_id integer not null,
     image_url text,
     description text not null,
+    full_description text ,
     primary key (id)
-
 );
 
 create table shop.product.items (
@@ -26,13 +26,14 @@ create table shop.product.items (
     order_id integer ,
     primary key (id)
 );
-
+--CREATE TYPE mood AS ENUM ('created', 'send', 'delivered');
 create table shop.product.orders (
     id serial ,
     user_id integer not null ,
-    sum float8 not null ,
     address text,
+    price float8 not null ,
     order_date timestamp with time zone,
+    order_status mood default 'created',
     primary key (id)
 );
 
@@ -76,84 +77,12 @@ insert into product.users (email,username,last_name,password,phone_num, is_admin
 insert into product.users (email,username,last_name,password,phone_num, is_admin)values ('Petr1337@mail.ru','Аня','Емец','123456','89439650203',false);
 insert into product.users (email,username,last_name,password,phone_num, is_admin) values('Vlad007@mail.ru','Ваня','Багуров','пароль12345','89879780506',false);
 
-INSERT INTO product.orders (user_id, sum, address,  order_date) VALUES (1,500,'ул.Пушкина 1','now');
-INSERT INTO product.orders (user_id, sum, address,  order_date) VALUES (2,500,'ул.Ленина 17','now');
-INSERT INTO product.orders (user_id, sum, address,  order_date) VALUES (3,500,'ул.Колотушнкино','now');
 
--- INSERT INTO product.items (good_id, booked_by_user, is_sold,order_id) VALUES (1,1,true, null);
--- INSERT INTO product.items (good_id, booked_by_user, is_sold, order_id) VALUES (1, null,false, null);
--- INSERT INTO product.items (good_id, booked_by_user, is_sold, order_id) VALUES (2, 2, true, null );
--- INSERT INTO product.items (good_id, booked_by_user, is_sold, order_id) VALUES (2, null, false, null );
--- INSERT INTO product.items (good_id, booked_by_user, is_sold, order_id) VALUES (3, 3,true,null );
--- INSERT INTO product.items (good_id, booked_by_user, is_sold, order_id) VALUES (4, 4, false, null);
 
 do $$
 begin
-for r in 1..10 loop
-insert into product.items (good_id) values(1);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 11..20 loop
-insert into product.items (good_id) values(2);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 21..30 loop
-insert into product.items (good_id) values(3);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 31..40 loop
-insert into product.items (good_id) values(4);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 41..50 loop
-insert into product.items (good_id) values(5);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 51..60 loop
-insert into product.items (good_id) values(6);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 61..71 loop
-insert into product.items (good_id) values(7);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 71..80 loop
-insert into product.items (good_id) values(8);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 81..90 loop
-insert into product.items (good_id) values(9);
-end loop;
-end;
-$$;
-do $$
-begin
-for r in 91..100 loop
-insert into product.items (good_id) values(10);
+for r in 0..99 loop
+insert into product.items (good_id) values(r/10+1);
 end loop;
 end;
 $$;
