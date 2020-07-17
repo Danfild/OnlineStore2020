@@ -45,7 +45,6 @@ app.post('/create_items', (request,response) => {
             request.body.full_description, request.body.image_url];
             console.log(values);
             const name = request.body.name;
-                //console.log(image_url);
 
 
              connect.queryDB(query, values, function (result) {

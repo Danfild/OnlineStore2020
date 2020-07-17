@@ -20,7 +20,7 @@ app.get('/orders', (request,response) => {
           }
         const query = `select shop.product.items.id       as good_id,
                        shop.product.goods.name     as good_name,
-                       shop.product.goods.price    as price,
+                       shop.product.goods.price    as good_price,
                        shop.product.users.username as user_name
 
                        from shop.product.items
@@ -30,13 +30,14 @@ app.get('/orders', (request,response) => {
 
         connect.queryDB(query, values, function (result) {
         const total = result.rows.map(function(row) {
-                           return row.price;
+                           return row.good_price;
                          }).reduce((a, b) => a + b, 0)
         response.render('./layouts/orders.hbs', {
               title: "Корзина",
               'total': total,
               'userId' : userId,
               'username': username,
+              'message' : request.flash('info'),
               'rows' : result.rows,
               'resultNotEmpty': result.rows.length !== 0
               })
@@ -46,16 +47,15 @@ app.get('/orders', (request,response) => {
     });
 
 app.post('/orders', (request,response) => {
-             const values = [request.user.id , request.body.address, request.body.total];
-
+             const values = [request.user.id , request.body.address, request.body.price];
 
             const query = `insert into shop.product.orders (user_id, address, price, order_date)
-                          values ($1, $2, $3, 'now')`
-
+                          values ($1, $2, $3, 'now')`;
+            //console.log(values)
              connect.queryDB(query, values, function (result) {
 
-              //request.flash('info',/);
-              response.redirect('/home');
+              request.flash('info', 'Заказ оформлен');
+              response.redirect('back');
              });
 
 });

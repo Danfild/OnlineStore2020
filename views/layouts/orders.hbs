@@ -1,4 +1,19 @@
+
 <h5><body>
+<script type="text/javascript">
+    (function () {
+        var blinks = document.getElementsByTagName('blink');
+        var visibility = 'hidden';
+        window.setInterval(function () {
+            for (var i = blinks.length - 1; i >= 0; i--) {
+                blinks[i].style.visibility = visibility;
+            }
+            visibility = 'hidden';
+        }, 5000);
+    })();
+</script>
+<blink>{{message}} </blink>
+
 <h6>
 {{#if resultNotEmpty}}
     <table class="highlight">
@@ -9,26 +24,31 @@
         {{#each rows}}
             <tr>
                 <td>{{good_name}}</td>
-                <td>{{price}} руб.</td>
+                <td>{{good_price}} руб.</td>
             </tr>
         {{/each}}
 
 
     </table>
+    <h6>
+        <form action="/orders" method="post">
+        <input  type="text" name="user_id" value="{{userId}}" hidden/>
+        <p>Имя получателя:<input type="text" name="user_name" value="{{username}}"/></p>
+        <p>Адрес получателя:</p>
+            <input required type="text" name="address"  value="{{address}}"/>
+        <p> Общая сумма заказа: {{total}}</p>
+            <input type="number" name="price" value="{{total}}"  hidden/>
+
+            <a class="waves-effect waves-light btn-small">
+            <input type="submit" value="Оформить заказ"/>
+        </a>
+    </form>
+    </h6>
 
 {{else}}
     <p>В корзине пусто</p>
 {{/if}}
 </h6>
-<h6><form action="/orders" method="post">
-    <input name="user_id" value="{{userId}}" hidden/>
-    <p>Имя получателя:<input name="user_name" value="{{username}}"/></p>
-    <p>Адрес получателя:<input name="address" /></p>
-    <p> Общая сумма заказа:<input name="price" value="{{total}} руб." disabled /> </p>
-    <a class="waves-effect waves-light btn-small">
-        <input type="submit" value="Оформить заказ"/>
-    </a>
-</form>
-</h6>
+
 </body></h5>
 <br>
