@@ -10,7 +10,6 @@ module.exports = function(app)  {
 app.use('/cart', cfg.checkAuth());
 app.get('/cart', (request,response) => {
 
-
        const values = [request.user.id];
         const query = `select shop.product.items.id       as good_id,
                               shop.product.goods.name     as good_name,
@@ -22,6 +21,7 @@ app.get('/cart', (request,response) => {
                                 join shop.product.users on items.booked_by_user = users.id
                        where shop.product.users.id = $1`
 
+
         connect.queryDB(query,values, function (result) {
                  const total = result.rows.map(function(row) {
                    return row.price;
@@ -29,6 +29,7 @@ app.get('/cart', (request,response) => {
                 response.render('./layouts/cart.hbs', {
                       title: "Корзина",
                       'total': total,
+                      'userId' : request.user ? request.user.id : null,
                       'rows' : result.rows,
                       'message' : request.flash('info'),
                       'resultNotEmpty': result.rows.length !== 0,

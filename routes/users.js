@@ -18,6 +18,7 @@ app.get('/users', (request,response) => {
              {
              title: "Пользователи",
              'rows' : result.rows,
+             'userId' : request.user ? request.user.id : null,
              'adminId': adminId,
              'resultNotEmpty': result.rows.length !== 0
               });

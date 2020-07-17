@@ -29,7 +29,8 @@ const storageConfig = multer.diskStorage({
       response.render('./layouts/create_items.hbs', {
           title: 'Добавление товара',
           'message' : request.flash('info'),
-          'adminId': adminId
+          'adminId': adminId,
+          'userId' : userId
       })
       response.statusCode = 200;
   });
@@ -68,6 +69,7 @@ app.post('/create_items', (request,response) => {
               response.render('./layouts/create_items.hbs',
               {
               title: "Страница админа",
+              'userId' : request.user ? request.user.id : null,
               'adminId': adminId,
               isIndex: true
               });

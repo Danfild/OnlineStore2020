@@ -16,6 +16,7 @@ app.get('/analitycs', (request,response) => {
         response.render('index', {
             title: "Домашняя страница",
             'adminId': adminId,
+             'userId' : request.user ? request.user.id : null
             })
         response.statusCode = 200;
     })

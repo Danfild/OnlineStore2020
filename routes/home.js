@@ -49,7 +49,6 @@ app.get('/home', (request,response) => {
                                            'resultNotEmpty': all_results.length !== 0
                                            });
                                response.statusCode = 200;
-                                    console.log(all_results)
                               // response.set({ 'content-type': 'application/json; charset=utf-8' });
                               // response.send(JSON.stringify(all_results).toString('utf-8'));
 
@@ -60,24 +59,6 @@ app.get('/home', (request,response) => {
          });
      })
 
-
-
-
-
-        //connect.queryDB(query, [1], function (result) {
-
-            //response.render('layouts/top_items.hbs',
-            //{
-            //title: "Главная Страница",
-            //'userId' :  request.user ? request.user.id : null,
-            //'adminId': adminId,
-            //'rows' : result.rows,
-            //'message' : request.flash('info'),
-            //'resultNotEmpty': result.rows.length !== 0
-            //});
-            //console.log(result.rows)
-
-        //});
     });
 
 }

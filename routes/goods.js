@@ -35,7 +35,6 @@ app.get('/goods/:id', (request,response) =>  {
            //'resultNotEmpty': result.rows.length !== 0
 
            });
-            console.log(userId);
         });
            response.statusCode = 200;
       });

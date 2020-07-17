@@ -1,15 +1,34 @@
 <h5><body>
+<h6>
 {{#if resultNotEmpty}}
-    <table width="100%" border="1">
-        <td>Имя</td> <td>Фамилия</td> <td>Номер телефона</td> <td>Адресс</td> <td>Цена заказа</td>
+    <table class="highlight">
+        <p>Заказаные товары</p>
+        <td>Наименование товара</td>
+        <td> Стоимость товара</td>
+        <td></td>
         {{#each rows}}
             <tr>
-        <td>{{name}}</td><td>{{lastname}}</td><td>{{phone}}</td><td>{{adress}}</td><td>{{price}} руб.</td>
+                <td>{{good_name}}</td>
+                <td>{{price}} руб.</td>
             </tr>
         {{/each}}
+
+
     </table>
+
 {{else}}
-    <p>Нет данных</p>
+    <p>В корзине пусто</p>
 {{/if}}
+</h6>
+<h6><form action="/orders" method="post">
+    <input name="user_id" value="{{userId}}" hidden/>
+    <p>Имя получателя:<input name="user_name" value="{{username}}"/></p>
+    <p>Адрес получателя:<input name="address" /></p>
+    <p> Общая сумма заказа:<input name="price" value="{{total}} руб." disabled /> </p>
+    <a class="waves-effect waves-light btn-small">
+        <input type="submit" value="Оформить заказ"/>
+    </a>
+</form>
+</h6>
 </body></h5>
 <br>

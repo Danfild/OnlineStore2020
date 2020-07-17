@@ -12,6 +12,7 @@ app.get('/catalog', (request,response) => {
             {
             title: "Каталог товаров",
             'rows' : result.rows,
+            'userId' : request.user ? request.user.id : null,
             'resultNotEmpty': result.rows.length !== 0
             });
         });
@@ -50,7 +51,6 @@ app.get('/catalog/:id', (request,response) => {
             'userId' :  request.user ? request.user.id : null,
             'resultNotEmpty': result.rows.length !== 0
             });
-            //console.log(request.user.id)
         });
         response.statusCode = 200;
     });
