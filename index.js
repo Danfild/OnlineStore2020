@@ -27,7 +27,7 @@ const hbs = exphbs.create({
     extname: 'hbs'
 });
 
-//app.use(express.cookieParser('keyboard cat'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({

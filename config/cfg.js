@@ -1,6 +1,13 @@
 const { Pool , Client } = require('pg');
 const pool = new Pool();
 const connect = require('./connect');
+const bcrypt = require('bcrypt');
+
+
+
+var passwordFromUser =
+
+
 
 //проверка авторизации
 module.exports.checkAuth = function () {
