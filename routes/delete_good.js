@@ -5,11 +5,7 @@ const connect = require('../config/connect');
 module.exports = function (app) {
 
 app.use('/edit', cfg.checkAdmin());
-app.get('/edit', (request, response) => {
-        const query = '';
-        const values
-
-})
+//app.get('/edit', (request, response) => {
 
 
 
@@ -27,7 +23,7 @@ app.post('/delete_good', (request,response) => {
         });
 
 
-})
+
 
 
 }

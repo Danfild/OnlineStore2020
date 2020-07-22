@@ -22,6 +22,9 @@
                 {{#if ../userId}}
                     <td>{{> form_add_in_cart }}</td>
                 {{/if}}
+                {{#if ../adminId }}
+                    <td>{{> form_delete_good }}</td>
+                {{/if}}
             </tr>
         {{/each}}
     </table>

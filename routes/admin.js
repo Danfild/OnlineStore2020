@@ -32,6 +32,7 @@ const storageConfig = multer.diskStorage({
           'adminId': adminId,
           'userId' : userId
       })
+      console.log(adminId)
       response.statusCode = 200;
   });
 
@@ -59,17 +60,12 @@ app.post('/create_items', (request,response) => {
  //страницы администратора
  app.use('/admin', cfg.checkAdmin());
  app.get('/admin', (request,response) => {
-          var adminId;
-          if (request.user){
-              adminId = request.user.is_admin
-              } else {
-              adminId = null
-              }
+
               response.render('./layouts/create_items.hbs',
               {
               title: "Страница админа",
               'userId' : request.user ? request.user.id : null,
-              'adminId': adminId,
+              'adminId': request.user.is_admin,
               isIndex: true
               });
          response.statusCode = 200;

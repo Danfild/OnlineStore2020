@@ -59,11 +59,11 @@ require('./routes/users')(app);
 require('./routes/book_good')(app);
 require('./routes/login')(app);
 require('./routes/analitycs')(app);
-require('./routes/orders')(app);
+require('./routes/order')(app);
 require('./routes/cart')(app);
 require('./routes/home')(app);
 require('./routes/not_found')(app);
-//require('./routes/top5')(app);
+require('./routes/delete_good')(app);
 
 
 

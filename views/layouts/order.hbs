@@ -31,7 +31,7 @@
 
     </table>
     <h6>
-        <form action="/orders" method="post">
+        <form action="/order" method="post">
         <input  type="text" name="user_id" value="{{userId}}" hidden/>
         <p>Имя получателя:<input type="text" name="user_name" value="{{username}}"/></p>
         <p>Адрес получателя:</p>
@@ -46,7 +46,7 @@
     </h6>
 
 {{else}}
-    <p>В корзине пусто</p>
+    <p>Вы еще не добавили в свою корнзину ни одного товара!</p>
 {{/if}}
 </h6>
 

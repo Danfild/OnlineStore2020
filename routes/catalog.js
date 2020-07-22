@@ -35,11 +35,14 @@ app.get('/catalog/:id', (request,response) => {
                      where  goods.category_id = $1
                      group by goods.id
                      order by name;`
+            var adminId;
             var userId;
             if (request.user ){
-             userId = request.user.id
+            userId = request.user.id
+            adminId= request.user.is_admin
              } else {
              userId = null
+             adminId = null
               }
         connect.queryDB(query, values, function (result) {
 
@@ -47,10 +50,12 @@ app.get('/catalog/:id', (request,response) => {
             {
             title: "Каталог товаров",
             'rows' : result.rows,
+            'adminId' :adminId,
             'message' : request.flash('info'),
-            'userId' :  request.user ? request.user.id : null,
+            'userId' :  userId,
             'resultNotEmpty': result.rows.length !== 0
             });
+            console.log(adminId,userId)
         });
         response.statusCode = 200;
     });

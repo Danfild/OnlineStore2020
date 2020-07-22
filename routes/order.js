@@ -5,8 +5,8 @@ const connect = require('../config/connect');
 module.exports = function(app) {
 
 //заказы
-app.use('/orders', cfg.checkAuth());
-app.get('/orders', (request,response) => {
+app.use('/order', cfg.checkAuth());
+app.get('/order', (request,response) => {
          const values = [request.user.id];
 
           var username;
@@ -32,7 +32,7 @@ app.get('/orders', (request,response) => {
         const total = result.rows.map(function(row) {
                            return row.good_price;
                          }).reduce((a, b) => a + b, 0)
-        response.render('./layouts/orders.hbs', {
+        response.render('./layouts/order.hbs', {
               title: "Корзина",
               'total': total,
               'userId' : userId,
@@ -46,19 +46,27 @@ app.get('/orders', (request,response) => {
 
     });
 
-app.post('/orders', (request,response) => {
-             const values = [request.user.id , request.body.address, request.body.price];
+app.post('/order', (request,response) => {
 
-            const query = `insert into shop.product.orders (user_id, address, price, order_date)
-                          values ($1, $2, $3, 'now')`;
-            //console.log(values)
-             connect.queryDB(query, values, function (result) {
+            const values = [request.user.id , request.body.address, request.body.price];
+            const order_query = `insert into shop.product.orders (user_id, address, price, order_date)
+                          values ($1, $2, $3, 'now') returning orders.id`;
 
-              request.flash('info', 'Заказ оформлен');
-              response.redirect('back');
-             });
+            const items_query =`update shop.product.items
+                                set order_id = $1, is_sold = true, booked_by_user = null
+                                where booked_by_user = $2`;
 
-});
+            connect.queryDB(order_query, values, function (result) {
+                order_id = [result.rows[0].id, request.user.id]
+                    connect.queryDB(items_query, order_id, function (result) {
+
+                    request.flash('info', 'Заказ оформлен');
+                    response.redirect('back');
+                     })
+                console.log(result.rows[0].id , request.user.id)
+                });
+
+            });
 
 }
 
