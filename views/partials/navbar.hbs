@@ -4,24 +4,24 @@
         <ul id="nav-mobile" class="right hide-on-med-and-down">
 
                 {{#if isIndex}}
-            <li class="active"><a href=/admin >Админ меню</a></li>
+            <li class="active"><a href="/admin" >Админ меню</a></li>
                 {{else}}
-                    <li><a href=/admin >Админ меню</a></li>
+                    <li><a href="/admin" >Админ меню</a></li>
                 {{/if}}
             {{#if adminId}}
 
                 <li><a href=/analitycs >Аналитика</a></li>
                 <li><a href="/admin/create_items">Добавление товара</a></li>
-                <li><a href=/users>Пользователи</a></li>
-                <li><a href=/orders>Заказы</a></li>
+                <li><a href="/users">Пользователи</a></li>
+                <li><a href="/orders">Заказы</a></li>
             {{else}}
-                <li><a href=/admin hidden>Админ меню</a></li>
-                <li><a href=/analitycs hidden>Аналитика</a></li>
+                <li><a href="/admin" hidden>Админ меню</a></li>
+                <li><a href="/analitycs" hidden>Аналитика</a></li>
                 <li><a href="/admin/create_items" hidden="">Добавление товара</a></li>
-                <li><a href=/users hidden>Пользователи</a></li>
-                <li><a href=/orders hidden>Заказы</a></li>
+                <li><a href="/users" hidden>Пользователи</a></li>
+                <li><a href="/admin_orders" hidden>Заказы</a></li>
             {{/if}}
-            <li><a href=/catalog>Каталог товаров</a></li>
+            <li><a href="/catalog">Каталог товаров</a></li>
             <li><a href="/cart">Корзина</a></li>
 
 

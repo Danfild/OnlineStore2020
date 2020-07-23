@@ -68,6 +68,37 @@ app.post('/order', (request,response) => {
 
             });
 
+app.use('/orders', cfg.checkAdmin());
+app.get('/orders', (request,response) => {
+            const query = `
+select max(shop.product.users.email)         as email,
+       max(shop.product.users.username)      as username,
+       max(shop.product.users.phone_num)     as phone,
+       max(shop.product.orders.address)      as address,
+       max(shop.product.orders.order_date)   as date,
+       max(shop.product.orders.price)        as price,
+       max(shop.product.orders.order_status) as status
+
+
+from shop.product.items
+         join shop.product.orders on items.order_id = orders.id
+         join shop.product.users on orders.user_id = users.id
+
+`
+
+
+ connect.queryDB(query, [], function (result) {
+        response.render('./layouts/admin_orders.hbs',
+        {
+            title: "Информация о заказах",
+            'rows' : result.rows,
+            'resultNotEmpty': result.rows.length !== 0
+             });
+        response.statusCode = 200;
+     });
+    });
+
+
 }
 
 

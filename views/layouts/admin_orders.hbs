@@ -1,0 +1,15 @@
+<h5><body>
+{{#if resultNotEmpty}}
+    <table width="100%" border="1">
+        <td>Имя</td> <td>Номер телефона</td><td>Адрес</td><td>Дата заказа</td><td>Цена заказа</td><td>Статус заказа</td>
+        {{#each rows}}
+            <tr>
+            <td>{{username}}</td> <td>{{phone}}</td><td>{{address}}</td><td>{{date}}</td><td>{{price}}</td><td>{{status}}</td>
+            </tr>
+        {{/each}}
+    </table>
+{{else}}
+    <p>Нет данных</p>
+{{/if}}
+</body></h5>
+<br>
