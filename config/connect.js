@@ -1,6 +1,7 @@
 const { Pool , Client } = require('pg');
 const pool = new Pool();
 const cfg = require('./cfg');
+const bcrypt = require('bcrypt');
 
 //коннект к базе
 module.exports.queryDB = function (query, params, resultHandler) {
@@ -25,7 +26,10 @@ module.exports.authCheck = function(username, password, done) {
             return done(null, false, {message: 'Incorrect username.'});
         }
         const user = result.rows[0];
-        if (user.password !== password) {
+         const passwordFromUser = bcrypt.hashSync(password, '$2b$10$1rLs8U9ML1jEMpekTBFX3.')
+         console.log(passwordFromUser)
+         console.log(user.password)
+        if (user.password !== passwordFromUser) {
             return done(null, false, {message: 'Incorrect password.'});
         }else {
             return done(null, user);

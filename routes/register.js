@@ -1,6 +1,6 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
-
+const bcrypt = require('bcrypt');
 
 module.exports = function(app) {
 
@@ -13,7 +13,8 @@ app.post('/register', (request,response) => {
                 if (telephoneCheck(request.body.phone_num))
                 {
                 const query = `insert into product.users (email,username,last_name,password,phone_num, is_admin) values ($1, $2, $3, $4, $5, false)`
-                const values = [request.body.email , request.body.username, request.body.last_name, request.body.password, request.body.phone_num];
+                const passwordToSave = bcrypt.hashSync(request.body.password, '$2b$10$1rLs8U9ML1jEMpekTBFX3.');
+                const values = [request.body.email , request.body.username, request.body.last_name, passwordToSave, request.body.phone_num];
                 const username = request.body.username;
 
 
