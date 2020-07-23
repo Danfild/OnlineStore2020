@@ -41,7 +41,6 @@ const storageConfig = multer.diskStorage({
 //app.use(multer({dest:"uploads"}).single("image_url"));
 app.post('/create_items', (request,response) => {
 
-            console.log(request.body);
             const create_good_query = `insert into product.goods (name,category_id, price,
              description, full_description, image_url) values ($1, $2, $3, $4 , $5, $6) returning goods.id`
             const create_good_values = [request.body.name, request.body.category_id, request.body.price, request.body.description,
@@ -77,7 +76,6 @@ app.post('/create_items', (request,response) => {
               'adminId': request.user.is_admin,
               isIndex: true
               });
-              console.log(title)
          response.statusCode = 200;
          });
  }

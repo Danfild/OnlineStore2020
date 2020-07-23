@@ -63,7 +63,6 @@ app.post('/order', (request,response) => {
                     request.flash('info', 'Заказ оформлен');
                     response.redirect('back');
                      })
-                console.log(result.rows[0].id , request.user.id)
                 });
 
             });

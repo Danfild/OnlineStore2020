@@ -27,8 +27,7 @@ module.exports.authCheck = function(username, password, done) {
         }
         const user = result.rows[0];
          const passwordFromUser = bcrypt.hashSync(password, '$2b$10$1rLs8U9ML1jEMpekTBFX3.')
-         console.log(passwordFromUser)
-         console.log(user.password)
+
         if (user.password !== passwordFromUser) {
             return done(null, false, {message: 'Incorrect password.'});
         }else {

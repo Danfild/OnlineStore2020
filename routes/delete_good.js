@@ -14,7 +14,6 @@ app.post('/delete_good', (request,response) => {
       const query = `delete from shop.product.goods where id =$1`
           const values = [request.body.good_id];
           const good_name = request.body.name;
-            console.log(request.user.id)
           connect.queryDB(query, values, function (result) {
 
               request.flash('info', 'Товар'+ good_name  +'удален из каталога');
