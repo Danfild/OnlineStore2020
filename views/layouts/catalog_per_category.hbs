@@ -1,4 +1,24 @@
 <h5><body>
+<style type="text/css">
+    TABLE {
+        border-collapse: collapse; /* Убираем двойные линии между ячейками */
+
+    }
+    TH {
+
+        text-align: left; /* Выравнивание по левому краю */
+    }
+    TD {
+        background: #fff; /* Цвет фона ячеек */
+        text-align: center; /* Выравнивание по центру */
+    }
+    TH, TD {
+        /* Параметры рамки */
+        /* Поля вокруг текста */
+        width: 300px;
+    }
+
+</style>
 <script type="text/javascript">
     (function() {
         var blinks = document.getElementsByTagName('blink');
@@ -15,15 +35,16 @@
 
 {{#if resultNotEmpty}}
     <table class="highlight" >
-        <td>Название товара</td><td>Описание</td> <td>Цена</td> <td> </td>
+        <p><th>Название товара</th><td>Описание</td> <td>Цена</td> </p>
         {{#each rows}}
             <tr>
-                <td><a href="/goods/{{good_id}}">{{name}}</a></td><td>{{description}}</td><td>{{price}} руб.</td><td><img src="/{{image_url}}" width="125"></td><td hidden>{{../userId}}</td>
+                <th><a href="/goods/{{good_id}}">{{name}}</a></th><td>{{description}}</td><td>{{price}} руб.</td><td><a href="/goods/{{good_id}}"><img src="/{{image_url}}" width="125"></a></td>
+                <td hidden>{{../userId}}</td>
                 {{#if ../userId}}
-                    <td>{{> form_add_in_cart }}</td>
+                    <th>{{> form_add_in_cart }}</th>
                 {{/if}}
-                {{#if ../adminId }}
-                    <td>{{> form_delete_good }}</td>
+                {{#if ../adminId}}
+                    <th>{{> form_delete_good }}</th>
                 {{/if}}
             </tr>
         {{/each}}

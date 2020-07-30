@@ -1,28 +1,46 @@
 <body>
-<h3><p align="center">Самые продаваемые товары</p></h3>
-<h5>
-{{#if resultNotEmpty}}
+<style type="text/css">
+    TABLE {
+        border-collapse: collapse; /* Убираем двойные линии между ячейками */
 
+    }
+    TH {
+
+        text-align: left; /* Выравнивание по левому краю */
+    }
+    TD {
+        background: #fff; /* Цвет фона ячеек */
+        text-align: center; /* Выравнивание по центру */
+    }
+    TH, TD {
+       /* Параметры рамки */
+         /* Поля вокруг текста */
+        width: 300px;
+    }
+
+</style>
+<h4><p align="center">Самые продаваемые товары</p></h4>
+<h5><table class="highlight" >
+    <tr>
+        <th>Название товара</th><th>Описание</th> <th>Цена</th><th>Изображение </th>
+    </tr>
+
+{{#if resultNotEmpty}}
         {{#each all_results}}
-            {{name}}
+
             <table class="highlight" >
-                <tr>
-                    <th>Название товара</th>
-                    <th>Описание</th>
-                    <th>Цена</th>
-                    <th></th>
-                </tr>
             {{#each rows}}
 
-
-                <tr><td><a href="/goods/{{good_id}}">{{name}}</td><td>{{description}}</td><td>{{price}}</td><td><a href="/goods/{{good_id}}"><img src="/{{image_url}}" width="125"></a></td></tr>
-
+                <tr><th><a href="/goods/{{good_id}}">{{name}}</th><th>{{description}}</th><th>{{price}} руб.</th><th><a href="/goods/{{good_id}}"><img src="/{{image_url}}" width="125"></a></th></tr>
             {{/each}}
+
             </table>
         {{/each}}
-
+</table>
 {{else}}
     <p>Нет данных</p>
 {{/if}}</h5>
+
+
 </body>
 <br>

@@ -32,7 +32,6 @@ app.get('/goods/:id', (request,response) =>  {
           'good' : good,
           'message' : request.flash('info'),
           'userId' :  request.user ? request.user.id : null,
-           //'resultNotEmpty': result.rows.length !== 0
 
            });
         });

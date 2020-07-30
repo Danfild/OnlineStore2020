@@ -1,0 +1,33 @@
+<h5><body>
+
+<table class="highlight" >
+    <br>
+    <tr><th>Имя пользователя: </th><td>{{user.user_name}}</td></tr>
+
+    <tr><th>Фамилия : </th> <td>{{user.last_name}}</td></tr>
+
+    <tr><th>Почтовый ящик: </th><td>{{user.email}}</td></tr>
+    <form action="" method="post">
+    <tr><th>Номер телефона: </th><td>{{user.phone}}</td></tr>
+    </form>
+
+    <tr><th>Дата регистрации: </th><td>{{user.date_register}}</td></tr>
+
+</table>
+
+<p><th>Заказы пользователя:</th><td>{{user.user_name}}</td>
+
+{{#if resultNotEmpty}}
+    <table width="100%" border="1">
+       <td>Дата заказа</td><td>Цена заказа</td><td>Статус заказа</td>
+        {{#each rows}}
+            <tr>
+               <td><a href="/user_order/{{id}}">{{order_date}}</td></a><td>{{price}} руб.</td><td>{{order_status}}</td>
+            </tr>
+        {{/each}}
+    </table>
+{{else}}
+    <p>Ни сделано ни одного заказа</p>
+{{/if}}
+
+</body></h5>

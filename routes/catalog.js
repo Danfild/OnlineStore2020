@@ -55,7 +55,6 @@ app.get('/catalog/:id', (request,response) => {
             'userId' :  userId,
             'resultNotEmpty': result.rows.length !== 0
             });
-            console.log(adminId,userId)
         });
         response.statusCode = 200;
     });

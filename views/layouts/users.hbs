@@ -1,10 +1,10 @@
 <h5><body>
 {{#if resultNotEmpty}}
     <table width="100%" border="1">
-        <td>Почтовый ящик</td> <td>Имя</td> <td>Фамилия</td><td>Номер телефона</td>
+        <td>Почтовый ящик</td> <td>Имя</td> <td>Фамилия</td><td>Номер телефона</td><td>Дата регистрации</td>
         {{#each rows}}
             <tr>
-                <td>{{email}}</td> <td>{{username}}</td> <td>{{last_name}}</td><td>{{phone_num}}</td>
+                <td><a href="/users/{{id}}">{{email}}</td><td><a href="/users/{{id}}">{{username}}</td> <td><a href="/users/{{id}}">{{last_name}}</td><td><a href="/users/{{id}}">{{phone_num}}</td><td>{{date}}</td>
             </tr>
         {{/each}}
     </table>

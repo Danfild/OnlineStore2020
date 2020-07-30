@@ -27,8 +27,6 @@
                 <td>{{good_price}} руб.</td>
             </tr>
         {{/each}}
-
-
     </table>
     <h6>
         <form action="/order" method="post">
@@ -37,7 +35,7 @@
         <p>Адрес получателя:</p>
             <input required type="text" name="address"  value="{{address}}"/>
         <p> Общая сумма заказа: {{total}}</p>
-            <input type="number" name="price" value="{{total}}"  hidden/>
+            <input type="number" name="price" value="{{total}}" руб. hidden/>
 
             <a class="waves-effect waves-light btn-small">
             <input type="submit" value="Оформить заказ"/>

@@ -11,25 +11,36 @@
             visibility =  'hidden' ;
         }, 2000);
     })();
+    function ValidMail() {
+        var re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
+        var myMail = document.getElementById('email').value;
+        var valid = re.test(myMail);
+        if (valid) output = null;
+        else output = 'Адрес электронной почты введен неправильно!';
+        document.getElementById('reg_message').innerHTML = output;
+        return output;
+    }
 </script>
 <blink>{{message}} </blink>
+<blink>{{message_registration}}</blink>
 
-<form action="/register" method="post">
+<form action="/register" method="post" onsubmit="return ValidMail()">
     <div>
+        <p id="reg_message" >Пожалуйста, заполните все поля формы!</p>
         <p><label>Почтовый ящик</label>
-            <input required type="email" name="email"  value="{{email}}" placeholder="example@mail.com">
+            <input required id="email" type="email" name="email"   placeholder="example@mail.com">
         </p>
         <p><label>Ваше имя:</label>
-            <input required type="text" name="username" value="{{username}}" placeholder="Имя" >
+            <input required type="text" name="username"  placeholder="Имя" >
         </p>
         <p><label>Ваша фамилия:</label>
-            <input type="text" name="last_name" value="{{last_name}}" placeholder="Фамилия">
+            <input type="text" name="last_name"  placeholder="Фамилия">
         </p>
         <p><label>Пароль:</label>
-            <input required type="password" name="password" value="{{password}}" placeholder="*******">
+            <input required type="password" name="password"  placeholder="*******">
         </p>
         <p><label>Номер телефона:</label>
-            <input required type="tel" name="phone_num"  value="{{phone_num}}" placeholder="+79998882233" pattern="+7[0-9]{3}-[0-9]{3}-[0-9]{4}">
+            <input required type="tel" name="phone_num"   placeholder="+79998882233" pattern="+7[0-9]{3}-[0-9]{3}-[0-9]{4}">
         </p>
         <p><a class="waves-effect waves-light btn-small">
             <input  type="submit" value="Зарегистрироваться"/> </a>

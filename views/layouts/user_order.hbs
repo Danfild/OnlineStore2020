@@ -1,0 +1,43 @@
+<h5><body>
+<style type="text/css">
+    TABLE {
+        border-collapse: collapse; /* Убираем двойные линии между ячейками */
+
+    }
+    TH {
+
+        text-align: left; /* Выравнивание по левому краю */
+    }
+    TD {
+        background: #fff; /* Цвет фона ячеек */
+        text-align: center; /* Выравнивание по центру */
+    }
+    TH, TD {
+        /* Параметры рамки */
+        /* Поля вокруг текста */
+        width: 300px;
+    }
+
+</style>
+{{#if resultNotEmpty}}
+    <table width="100%" border="1">
+       <tr><th>Название товара</th> <th></th><th>Цена</th></tr>
+        {{#each rows}}
+            <tr>
+               <th><a href="/goods/{{good_id}}"><img src="/{{image}}" width="10%">{{good_name}}</a></th><th></th><th>{{price}} руб.</th>
+            </tr>
+        {{/each}}
+    </table>
+{{else}}
+    <p>Нет данных</p>
+{{/if}}
+<table width="100%" border="1">
+    <tr>
+    <th>Общая сумма заказа :</th> <th></th><th>{{price}} руб.</th>
+    </tr>
+
+
+
+</table>
+</body></h5>
+<br>
