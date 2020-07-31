@@ -24,7 +24,7 @@
        <tr><th>Название товара</th> <th></th><th>Цена</th></tr>
         {{#each rows}}
             <tr>
-               <th><a href="/goods/{{good_id}}"><img src="/{{image}}" width="10%">{{good_name}}</a></th><th></th><th>{{price}} руб.</th>
+               <th><a href="/goods/{{good_id}}">{{good_name}}<img src="/{{image}}" width="10%"></a></th><th></th><th>{{price}} руб.</th>
             </tr>
         {{/each}}
     </table>

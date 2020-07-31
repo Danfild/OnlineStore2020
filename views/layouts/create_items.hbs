@@ -16,8 +16,16 @@
 
         <p>Название товара</p>
         <input required type="text" name="name" >
-        <p>Категория товара</p>
-        <input  required type="number" name="category_id" >
+        <div class="form-group">
+            <p>Категория товара</p>
+            <select class="form-control" id="exampleFormControlSelect1 " name="category_id">
+                <option value="1" name="category_id">Процессоры</option>
+                <option value="2" >Видеокарты</option>
+                <option value="3" >Материнские платы</option>
+                <option value="4" >Корпуса</option>
+                <option value="5" >SSD-накопители</option>
+            </select>
+        </div>
         <p>Цена товара</p>
         <input  required type="text" name="price" >
         <p>Описание товара</p>
@@ -30,7 +38,6 @@
         <p><a class="waves-effect waves-light btn-small">
         <input  type="submit"   value="Добавить товар"/> </a>
         </p>
-
         </form>
 
 

@@ -4,11 +4,18 @@ const connect = require('../config/connect');
 module.exports = function(app) {
 app.get('/goods/:id', (request,response) =>  {
       const values = [request.params.id]
+      var adminId;
+      if (request.user){
+      adminId = request.user.is_admin
+      } else {
+      adminId = null
+      }
       const query = `with free_items as (select id, good_id from product.items where is_sold = false and booked_by_user is null)
                      select MAX(shop.product.goods.id)          as id,
                             MAX(shop.product.goods.name)        as name,
                             MAX(shop.product.goods.category_id) as category_id,
                             MAX(shop.product.goods.description) as description,
+                            MAX(shop.product.goods.full_description) as full,
                             MAX(shop.product.goods.image_url)   as image_url,
                             MAX(shop.product.goods.price)       as price,
                             count(free_items.id)                as in_stock,
@@ -17,12 +24,7 @@ app.get('/goods/:id', (request,response) =>  {
                               left join free_items on goods.id = free_items.good_id
                      where goods.id = $1
                      order by name;`
-         var userId;
-         if (request.user ){
-           userId = request.user.id
-         } else {
-           userId = null
-         }
+
 
        connect.queryDB(query, values, function (result) {
        const good = result.rows[0];
@@ -31,6 +33,7 @@ app.get('/goods/:id', (request,response) =>  {
           title: good.name,
           'good' : good,
           'message' : request.flash('info'),
+          'adminId' : adminId,
           'userId' :  request.user ? request.user.id : null,
 
            });

@@ -52,6 +52,7 @@ app.get('/users/:id', (request,response) => {
               response.render('layouts/users_id.hbs',
               {
               title: 'Пользователь ' + user.user_name,
+              'message' : request.flash('info'),
               'user': user,
               'rows' : orders_result.rows,
               'resultNotEmpty': orders_result.rows.length !== 0
@@ -92,6 +93,43 @@ app.get('/user_order/:id', (request,response) => {
         response.statusCode = 200;
     });
  });
+
+app.post ('/user_update_name', (request,response) =>{
+            const query = `update shop.product.users set username=$1  where users.id = $2;`;
+            const values = [request.body.name, request.user.id]
+            connect.queryDB(query, values, function (result) {
+
+            request.flash('info', 'Имя пользователя изменено');
+            response.redirect('back');
+            });
+});
+app.post ('/user_update_lastname', (request,response) =>{
+            const query = `update shop.product.users set username=$1  where users.id = $2;`;
+            const values = [request.body.last_name, request.user.id]
+            connect.queryDB(query, values, function (result) {
+
+            request.flash('info', 'Фамилия изменена');
+            response.redirect('back');
+            });
+});
+app.post ('/user_update_email', (request,response) =>{
+            const query = `update shop.product.users set email=$1  where users.id = $2;`;
+            const values = [request.body.email, request.user.id]
+            connect.queryDB(query, values, function (result) {
+
+            request.flash('info', 'Почтовый адрес измнен');
+            response.redirect('back');
+            });
+});
+app.post ('/user_update_phone', (request,response) =>{
+            const query = `update shop.product.users set phone_num=$1  where users.id = $2;`;
+            const values = [request.body.phone, request.user.id]
+            connect.queryDB(query, values, function (result) {
+
+            request.flash('info', 'Номер телефона изменен');
+            response.redirect('back');
+            });
+});
 
 }
 

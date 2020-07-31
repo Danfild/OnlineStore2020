@@ -1,18 +1,39 @@
 <h5><body>
 
+<script type="text/javascript">
+    (function () {
+        var blinks = document.getElementsByTagName('blink');
+        var visibility = 'hidden';
+        window.setInterval(function () {
+            for (var i = blinks.length - 1; i >= 0; i--) {
+                blinks[i].style.visibility = visibility;
+            }
+            visibility = 'hidden';
+        }, 5000);
+    })();
+</script>
+<blink>{{message}} </blink>
+
 <table class="highlight" >
-    <br>
-    <tr><th>Имя пользователя: </th><td>{{user.user_name}}</td></tr>
-
-    <tr><th>Фамилия : </th> <td>{{user.last_name}}</td></tr>
-
-    <tr><th>Почтовый ящик: </th><td>{{user.email}}</td></tr>
-    <form action="" method="post">
-    <tr><th>Номер телефона: </th><td>{{user.phone}}</td></tr>
-    </form>
+    <br><tr>
+    <form action="/user_update_name" method="post">
+    <th>Имя пользователя: </th><td><input type="text" name="name" value="{{user.user_name}}"></td>
+        <td> <p><a class="waves-effect waves-light btn-small"><input type="submit" value="Сохранить изменения"></a></p></td>
+    </form></tr>
+    <form action="/user_update_lastname" method="post">
+    <tr><th>Фамилия : </th> <td><input type="text" name="last_name" value="{{user.last_name}}"></td>
+        <td> <p><a class="waves-effect waves-light btn-small"><input type="submit" value="Сохранить изменения"></a></p></td>
+    </form></tr>
+    <form action="/user_update_email" method="post">
+    <tr><th>Почтовый ящик: </th><td><input type="text" name="email" value="{{user.email}}"></td>
+        <td> <p><a class="waves-effect waves-light btn-small"><input type="submit" value="Сохранить изменения"></a></p></td>
+    </form></tr>
+    <form action="/user_update_phone" method="post">
+    <tr><th>Номер телефона: </th><td><input type="text" name="phone" value="{{user.phone}}"></td>
+        <td> <p><a class="waves-effect waves-light btn-small"><input type="submit" value="Сохранить изменения"></a></p></td>
+    </tr></form>
 
     <tr><th>Дата регистрации: </th><td>{{user.date_register}}</td></tr>
-
 </table>
 
 <p><th>Заказы пользователя:</th><td>{{user.user_name}}</td>
