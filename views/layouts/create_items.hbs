@@ -14,10 +14,10 @@
 
     <form  action="/create_items"   method="post"   >
 
-        <p>Название товара</p>
+        <label for="exampleFormControlTextarea1">Название товара</label>
         <input required type="text" name="name" >
         <div class="form-group">
-            <p>Категория товара</p>
+            <label for="exampleFormControlTextarea1">Категория товара</label>
             <select class="form-control" id="exampleFormControlSelect1 " name="category_id">
                 <option value="1" >Процессоры</option>
                 <option value="2" >Видеокарты</option>
@@ -26,15 +26,16 @@
                 <option value="5" >SSD-накопители</option>
             </select>
         </div>
-        <p>Цена товара</p>
+        <label for="exampleFormControlTextarea1">Цена товара</label>
         <input  required type="text" name="price" >
-        <p>Описание товара</p>
+        <label for="exampleFormControlTextarea1">Описание товара</label>
         <input required type="text" name="description" >
-        <p>Полное описанин товара</p>
-        <textarea name="full_description" cols="40" rows="10" ></textarea>
-        <p>Колличество товара</p>
+        <div class="form-group">
+        <label for="exampleFormControlTextarea1">Полное описание товара</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="full_description" cols="40" rows="10" ></textarea>
+            <label for="exampleFormControlTextarea1">Колличество товара</label>
+        </div>
         <input required type="number" name="count">
-
         <p><a class="waves-effect waves-light btn-small">
         <input  type="submit"   value="Добавить товар"/> </a>
         </p>

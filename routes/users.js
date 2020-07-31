@@ -4,7 +4,7 @@ const connect = require('../config/connect');
 
 
 module.exports = function(app) {
-app.use('/users', cfg.checkAdmin());
+app.use('/users', cfg.checkAuth());
 app.get('/users', (request,response) => {
         const query = `select id, email, username, last_name, phone_num, to_char((date_register), 'DD Mon YYYY ') as date
                        from shop.product.users;`
