@@ -19,9 +19,9 @@ app.get('/order', (request,response) => {
            username = null
           }
         const query = `select shop.product.items.id       as good_id,
-                       shop.product.goods.name     as good_name,
-                       shop.product.goods.price    as good_price,
-                       shop.product.users.username as user_name
+                       shop.product.goods.name            as good_name,
+                       shop.product.goods.price           as good_price,
+                       shop.product.users.username        as user_name
 
                        from shop.product.items
                        join shop.product.goods on items.good_id = goods.id
@@ -69,33 +69,43 @@ app.post('/order', (request,response) => {
 
 app.use('/orders', cfg.checkAdmin());
 app.get('/orders', (request,response) => {
-            const query = `select max(shop.product.users.email)         as email,
-                                  max(shop.product.users.username)      as username,
-                                  max(shop.product.users.phone_num)     as phone,
-                                  max(shop.product.orders.address)      as address,
-                                 to_char(max(shop.product.orders.order_date), 'DD Mon YYYY HH:MI:SS')   as date,
-                                  max(shop.product.orders.price)        as price,
-                                  max(shop.product.orders.order_status) as status
+            const query = `select max(shop.product.users.email)                                        as email,
+                                  max(shop.product.orders.id)                                          as id,
+                                  max(shop.product.users.username)                                     as username,
+                                  max(shop.product.users.phone_num)                                    as phone,
+                                  max(shop.product.orders.address)                                     as address,
+                                  to_char(max(shop.product.orders.order_date), 'DD Mon YYYY HH:MI:SS') as date,
+                                  max(shop.product.orders.price)                                       as price,
+                                  max(shop.product.orders.order_status)                                as status
 
 
                            from shop.product.items
                                     join shop.product.orders on items.order_id = orders.id
-                                    join shop.product.users on orders.user_id = users.id
-
-`
-
-
- connect.queryDB(query, [], function (result) {
+                                    join shop.product.users on orders.user_id = users.id`
+connect.queryDB(query, [], function (result) {
         response.render('./layouts/admin_orders.hbs',
         {
             title: "Информация о заказах",
             'rows' : result.rows,
+            'message' :request.flash('info'),
             'resultNotEmpty': result.rows.length !== 0
              });
         response.statusCode = 200;
      });
     });
 
+
+app.post('/update_order', (request,response) => {
+        const values = [request.body.id,request.body.order_status ];
+        const query = `update shop.product.orders
+                       set order_status = $2
+                       where id = $1;`
+        connect.queryDB(query, values, function (result) {
+
+                request.flash('info', 'Стасус заказа обновлен');
+                response.redirect('back');
+                })
+            });
 
 }
 
