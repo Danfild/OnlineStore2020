@@ -1,12 +1,21 @@
 <h5><body>
+
 {{message}}
 
-<br>{{good.name}} <br> {{good.description}} <br> {{good.price}}<br> <img src="/{{good.image_url}}" > <br>
-<p hidden>Товаров в налчиие: {{good.in_stock}}</p>
+<h3><p></p><td>{{good.name}}</td></h3><p ><img src="/{{good.image_url}}" ></p> <h4><th>{{good.description}}</th></h4>
 
+    <h6>{{good.full}}</h6> <h4><th>{{good.price}} руб.</th></h4>
+<td>
+    <br>
+{{#if adminId}}
+    <p >Товаров в наличие: {{good.in_stock}} шт.</p>
+{{/if}}</td>
+
+<td>
+    <br>
 {{#if userId}}
     {{> form_add_good }}
-{{/if}}
+{{/if}}</td>
 
 
 

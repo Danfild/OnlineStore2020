@@ -12,7 +12,6 @@ const storageConfig = multer.diskStorage({
     }
 });
 
-
  module.exports = function (app) {
  //добавление товара
   app.use('/admin/create_items', cfg.checkAdmin());
@@ -71,7 +70,6 @@ app.post('/create_items', (request,response) => {
               response.render('./layouts/create_items.hbs',
               {
               title: "Страница админа",
-              'message' : flash('info'),
               'userId' : request.user ? request.user.id : null,
               'adminId': request.user.is_admin,
               isIndex: true
