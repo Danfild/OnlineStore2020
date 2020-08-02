@@ -18,7 +18,7 @@
         <td>Номер заказа</td><td>Имя</td> <td>Номер телефона</td><td>Адрес</td><td>Дата заказа</td><td>Цена заказа</td><td>Статус заказа</td><td></td><td></td>
         {{#each rows}}
             <tr><form action="/update_order" method="post">
-                <input type="text" name="id" hidden value="{{id}}" > <td>{{username}}</td> <td>{{phone}}</td><td>{{address}}</td><td>{{date}}</td><td>{{price}} руб.</td>
+                <input type="text" name="id" hidden value="{{id}}" ><td>{{id}}</td> <td>{{username}}</td> <td>{{phone}}</td><td>{{address}}</td><td>{{date}}</td><td>{{price}} руб.</td>
                 <td><div class="form-group">
                 <select class="form-control" id="exampleFormControlSelect1 " name="order_status">
                     <option value="{{status}}">{{status}}</option>

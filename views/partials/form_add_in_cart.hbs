@@ -3,12 +3,11 @@
     <input  name="goodId" value="{{good_id}}" hidden/>
     <input  name="name" value="{{name}}" hidden/>
     <input  name="userId" value="{{../userId}}"  hidden/>
-    <div>
-        {{#if is_available}}<a class="waves-effect waves-light btn-small">
-            <input type="submit" value="В корзину"/>
-        </a>
-        {{else}} <a class="waves-effect waves-light btn-small">
-            <input type="submit" value="Нет в наличии" disabled/></a>
+
+        {{#if is_available}}
+        <button type="submit" class="btn btn-primary" >Добавить в корзину</button>
+        {{else}}
+        <button type="submit" class="btn btn-primary" disabled>Нет в наличии</button>
         {{/if}}
-    </div>
+
     </form>

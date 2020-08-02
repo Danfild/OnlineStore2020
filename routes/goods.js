@@ -10,6 +10,8 @@ app.get('/goods/:id', (request,response) =>  {
       } else {
       adminId = null
       }
+
+
       const query = `with free_items as (select id, good_id from product.items where is_sold = false and booked_by_user is null)
                      select MAX(shop.product.goods.id)          as id,
                             MAX(shop.product.goods.name)        as name,
@@ -27,6 +29,7 @@ app.get('/goods/:id', (request,response) =>  {
 
 
        connect.queryDB(query, values, function (result) {
+
        const good = result.rows[0];
         response.render('layouts/good.hbs',
           {
@@ -40,4 +43,36 @@ app.get('/goods/:id', (request,response) =>  {
         });
            response.statusCode = 200;
       });
+
+app.post ('/good_update_price', (request,response) =>{
+            const query = `update shop.product.goods set price = $1 where id = $2;`;
+            const values = [request.body.price, request.body.id]
+
+            connect.queryDB(query, values, function (result) {
+
+            request.flash('info', 'Цена товара изменена');
+            response.redirect('back');
+            });
+});
+app.post ('/user_update_description', (request,response) =>{
+            const query = `update shop.product.goods set description = $1 where id = $2;`;
+            const values = [request.body.description, request.body.id]
+            console.log(values)
+            connect.queryDB(query, values, function (result) {
+
+            request.flash('info', 'Описание изменено');
+            response.redirect('back');
+            });
+});
+app.post ('/user_update_full', (request,response) =>{
+            const query = `update shop.product.goods set full_description = $1 where id = $2`;
+            const values = [request.body.full, request.body.id]
+            console.log(values)
+            connect.queryDB(query, values, function (result) {
+
+            request.flash('info', 'Полное описание товара изменено');
+            response.redirect('back');
+            });
+});
+
 }

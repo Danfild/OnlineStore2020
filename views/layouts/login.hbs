@@ -10,20 +10,22 @@
         }, 2000);
     })();
 </script>
+
 <blink>{{message}} </blink>
 
 <form action="/login" method="post">
-    <div>
-        <label>Имя пользователя:</label>
-        <input type="text" name="username"/>
+    <div class="form-group">
+        <label for="exampleInputLogin1">Логин</label>
+        <input type="name" name="username" class="form-control" id="exampleInputLogin1"  placeholder="Введите логин">
+        <small id="emailHelp" class="form-text text-muted">Мы никогда не передадим ваши данные кому-либо еще.</small>
     </div>
-    <div>
-        <label>Пароль:</label>
-        <input type="password" name="password"/>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Пароль</label>
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Введите пароль">
     </div>
-    <div >
-        <a class="waves-effect waves-light btn-small">
-        <input  type="submit" value="Авторизоваться"/>
-        </a>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
     </div>
+    <button type="submit" class="btn btn-primary">Авторизоваться</button>
 </form>

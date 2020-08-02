@@ -1,23 +1,90 @@
-<h5><body>
+<h5>
+    <body>
+    <style>
+        textarea {
+            height: 8rem;
+        }
 
-{{message}}
-
-<h3><p></p><td>{{good.name}}</td></h3><p ><img src="/{{good.image_url}}" ></p> <h4><th>{{good.description}}</th></h4>
-
-    <h6>{{good.full}}</h6> <h4><th>{{good.price}} руб.</th></h4>
-<td>
-    <br>
-{{#if adminId}}
-    <p >Товаров в наличие: {{good.in_stock}} шт.</p>
-{{/if}}</td>
-
-<td>
-    <br>
-{{#if userId}}
-    {{> form_add_good }}
-{{/if}}</td>
+        label {
+            font-size: 18px;
+            color: black;
+        }
+    </style>
+    {{message}}
 
 
+    {{#if adminId}}
+        <div class="form-group">
+        <h3>{{good.name}}</h3>
+        </div>
 
-</body></h5>
+        <img src="/{{good.image_url}}">
+        <h6>
+            <div class="form-group">
+                <form action="/user_update_description" method="post">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Описание товара</label>
+                        <input type="text" name="id" value="{{good.id}}" hidden>
+                        <input type="text" name="description" class="form-control" value="{{good.description}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                </form>
+            </div>
+        </h6>
+        <h6>
+            <form action="/user_update_full" method="post">
+                <label for="exampleFormControlTextarea1">
+                    <input type="text" name="id" value="{{good.id}}" hidden>
+                </label>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1" >Полное описание</label>
+                    <textarea type="text" name="full" class="form-control"  >{{good.full}}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            </form>
+        </h6>
+
+
+            <h4>
+                <form action="/good_update_price" method="post">
+                    <label for="exampleFormControlTextarea1">Цена товара</label>
+                    <input type="text" name="id" value="{{good.id}}" hidden>
+                    <div class="form-group">
+                    <input type="text" name="price" value="{{good.price}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                </form>
+            </h4>
+
+        <hr>
+
+        <h4><label for="exampleFormControlTextarea1">Товаров в наличие: {{good.in_stock}} шт.</label></h4>
+    {{else}}
+        <h3>{{good.name}}</h3>
+
+        <hr>
+        <img src="/{{good.image_url}}">
+
+        <hr>
+        <h6><label for="exampleFormControlTextarea1">Описание товара: </label>
+            {{good.description}}</h6>
+
+        <hr>
+        <h6><label for="exampleFormControlTextarea1">Полное описание товара: </label>
+            {{good.full}}</h6>
+
+        <hr>
+        <h6><label for="exampleFormControlTextarea1">Цена товара: </label>
+            {{good.price}} руб.</h6>
+        <hr>
+    {{/if}}
+
+
+    {{#if userId}}
+        {{> form_add_good }}
+    {{/if}}
+
+
+    </body>
+</h5>
 <br>

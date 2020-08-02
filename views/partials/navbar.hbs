@@ -1,39 +1,69 @@
-<nav class="grey darken-1">
-    <div class="nav-wrapper">
-        <a href="/home" class="brand-logo ">Главная</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
 
-                {{#if isIndex}}
-            <li class="active"><a href="/admin" >Админ меню</a></li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/home">Главная</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+            <ul class="navbar-nav">
+                {{#if adminId}}
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Админ Меню
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                    <a class="dropdown-item" href=/analitycs >Аналитика</a>
+                    <a class="dropdown-item" href="/admin/create_items">Добавление товара</a>
+                    <a class="dropdown-item" href="/users">Пользователи</a>
+                    <a class="dropdown-item" href="/orders">Заказы</a>
                 {{else}}
-                    <li><a href="/admin" >Админ меню</a></li>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" hidden>
+                        Админ Меню
+                    </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href=/analitycs >Аналитика</a>
+                    <a class="dropdown-item" href="/admin/create_items">Добавление товара</a>
+                    <a class="dropdown-item" href="/users">Пользователи</a>
+                    <a class="dropdown-item" href="/orders">Заказы</a>
                 {{/if}}
-            {{#if adminId}}
 
-                <li><a href=/analitycs >Аналитика</a></li>
-                <li><a href="/admin/create_items">Добавление товара</a></li>
-                <li><a href="/users">Пользователи</a></li>
-                <li><a href="/orders">Заказы</a></li>
-            {{else}}
-                <li><a href="/admin" hidden>Админ меню</a></li>
-                <li><a href="/analitycs" hidden>Аналитика</a></li>
-                <li><a href="/admin/create_items" hidden="">Добавление товара</a></li>
-                <li><a href="/users" hidden>Пользователи</a></li>
-                <li><a href="/admin_orders" hidden>Заказы</a></li>
-            {{/if}}
-            <li><a href="/catalog">Каталог товаров</a></li>
-            <li><a href="/cart">Корзина</a></li>
+            </div>
 
 
+            <li class="nav-item active">
+                <a class="nav-link" href="/catalog">Каталог товара <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="/users">Пользователи</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/cart">Корзина</a>
+            </li>
             {{#if userId}}
-                <li><a href="/logout">LogOut</a></li>
-                <li><a href="/register" hidden>Регистрация</a></li>
-                <li><a href="/login" hidden>Авторизация</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">LogOut</a>
+                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login" hidden>Авторизация</a>
+            </li><li class="nav-item">
+                <a class="nav-link" href="/register" hidden>Регистрация</a>
+            </li>
             {{else}}
-                <li><a href="/login">Авторизация</a></li>
-            <li><a href="/register">Регистрация</a></li>
-                <li><a href="/logout" hidden>LogOut</a></li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Авторизация</a>
+                </li><li class="nav-item">
+                <a class="nav-link" href="/register">Регистрация</a>
+                <li class="nav-item dropdown">
+                <li class="nav-item">
+                <a class="nav-link" href="/logout" hidden>LogOut</a>
+            </li>
             {{/if}}
+
+
+            </li>
         </ul>
     </div>
 </nav>

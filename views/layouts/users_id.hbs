@@ -1,4 +1,13 @@
 <h5><body>
+<style>
+    textarea{
+        height: 6rem;
+    }
+    label{
+        font-size: 18px;
+        color: black;
+    }
+</style>
 
 <script type="text/javascript">
     (function () {
@@ -18,19 +27,19 @@
     <br><tr>
     <form action="/user_update_name" method="post">
     <th>Имя пользователя: </th><td><input type="text" name="name" value="{{user.user_name}}"></td>
-        <td> <p><a class="waves-effect waves-light btn-small"><input type="submit" value="Сохранить изменения"></a></p></td>
-    </form></tr>
+        <td><button type="submit" class="btn btn-primary" >Сохранить изменения</td>
+    </form>
     <form action="/user_update_lastname" method="post">
     <tr><th>Фамилия : </th> <td><input type="text" name="last_name" value="{{user.last_name}}"></td>
-        <td> <p><a class="waves-effect waves-light btn-small"><input type="submit" value="Сохранить изменения"></a></p></td>
-    </form></tr>
+        <td><button type="submit" class="btn btn-primary">Сохранить изменения</td></tr>
+    </form>
     <form action="/user_update_email" method="post">
     <tr><th>Почтовый ящик: </th><td><input type="text" name="email" value="{{user.email}}"></td>
-        <td> <p><a class="waves-effect waves-light btn-small"><input type="submit" value="Сохранить изменения"></a></p></td>
-    </form></tr>
+        <td> <button type="submit" class="btn btn-primary">Сохранить изменения</td></tr>
+    </form>
     <form action="/user_update_phone" method="post">
     <tr><th>Номер телефона: </th><td><input type="text" name="phone" value="{{user.phone}}"></td>
-        <td> <p><a class="waves-effect waves-light btn-small"><input type="submit" value="Сохранить изменения"></a></p></td>
+        <td><button type="submit" class="btn btn-primary" >Сохранить изменения</td>
     </tr></form>
 
     <tr><th>Дата регистрации: </th><td>{{user.date_register}}</td></tr>
