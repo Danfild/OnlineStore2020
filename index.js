@@ -21,6 +21,8 @@ const host = '127.0.0.1';
 const port = 3000;
 const cfg = require('./config/cfg');
 const connect = require('./config/connect');
+const logger = require ('../config/logger').logger;
+
 
 const hbs = exphbs.create({
     defaultLayout: 'main',

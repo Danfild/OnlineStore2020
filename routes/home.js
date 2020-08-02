@@ -1,8 +1,7 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
 const fs = require("fs");
-
-
+const logger = require ('../config/logger').logger;
 
 module.exports = function (app) {
 
@@ -48,6 +47,7 @@ app.get('/home', (request,response) => {
                                            'message' : request.flash('info'),
                                            'resultNotEmpty': all_results.length !== 0
                                            });
+                               logger.info('Отображена главная страница. Показано товаров: %d',all_results.length );
                                response.statusCode = 200;
                               // response.set({ 'content-type': 'application/json; charset=utf-8' });
                               // response.send(JSON.stringify(all_results).toString('utf-8'));
