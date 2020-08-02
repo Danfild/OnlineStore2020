@@ -57,7 +57,7 @@ app.post ('/good_update_price', (request,response) =>{
 app.post ('/user_update_description', (request,response) =>{
             const query = `update shop.product.goods set description = $1 where id = $2;`;
             const values = [request.body.description, request.body.id]
-            console.log(values)
+
             connect.queryDB(query, values, function (result) {
 
             request.flash('info', 'Описание изменено');
@@ -67,7 +67,7 @@ app.post ('/user_update_description', (request,response) =>{
 app.post ('/user_update_full', (request,response) =>{
             const query = `update shop.product.goods set full_description = $1 where id = $2`;
             const values = [request.body.full, request.body.id]
-            console.log(values)
+
             connect.queryDB(query, values, function (result) {
 
             request.flash('info', 'Полное описание товара изменено');
