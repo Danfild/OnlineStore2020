@@ -1,7 +1,7 @@
 const { Pool , Client } = require('pg');
 const pool = new Pool();
 const cfg = require('./cfg');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 //коннект к базе
 module.exports.queryDB = function (query, params, resultHandler) {

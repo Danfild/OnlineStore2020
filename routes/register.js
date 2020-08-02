@@ -1,6 +1,6 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 module.exports = function(app) {
 
