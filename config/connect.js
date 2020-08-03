@@ -12,6 +12,9 @@ module.exports.queryDB = function (query, params, resultHandler) {
         client.query(query, params, function (err, result) {
             done();
             if (err) {
+             console.log("Cannot query  the DB" + err);
+             console.log("query: " + query);
+             console.log("params: " + params);
             }
             resultHandler(result)
         })
