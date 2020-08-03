@@ -1,0 +1,73 @@
+<h5>
+    <body>
+    <style>
+        textarea {
+            height: 6rem;
+        }
+
+        label {
+            font-size: 18px;
+            color: black;
+        }
+    </style>
+    <script type="text/javascript">
+        (function () {
+            var blinks = document.getElementsByTagName('blink');
+            var visibility = 'hidden';
+            window.setInterval(function () {
+                for (var i = blinks.length - 1; i >= 0; i--) {
+                    blinks[i].style.visibility = visibility;
+                }
+                visibility = 'hidden';
+            }, 5000);
+        })();
+    </script>
+    <blink>{{message}} </blink>
+
+    <table class="table table-hover">
+
+        <tr>
+            <th>Имя пользователя:</th>
+            <td>{{user.user_name}}</td>
+        <tr>
+            <th>Фамилия :</th>
+            <td>{{user.last_name}}</td>
+
+        <tr>
+            <th>Дата регистрации:</th>
+            <td>{{user.date_register}}</td>
+        </tr>
+
+
+        </table>
+
+    <th>Заказы пользователя:</th>
+    <td>{{user.user_name}}</td>
+    {{#if resultNotEmpty}}
+        <table class="table table-hover">
+            <td>Дата заказа</td>
+            <td>Цена заказа</td>
+            <td>Статус заказа</td>
+            {{#if adminId}}
+            {{#each rows}}
+                    <tr>
+                        <td><a href="/user_order/{{id}}">{{order_date}}</a></td>
+                        <td>{{price}} руб.</td>
+                        <td>{{order_status}}</td>
+                    </tr>
+            {{/each}}
+            {{else}}
+                {{#each rows}}
+                    <tr>
+                        <td>{{order_date}}</a></td>
+                        <td>{{price}} руб.</td>
+                        <td>{{order_status}}</td>
+                    </tr>
+                {{/each}}
+                {{/if}}
+        </table>
+    {{else}}
+        <p>Ни сделано ни одного заказа</p>
+    {{/if}}
+    </body>
+</h5>

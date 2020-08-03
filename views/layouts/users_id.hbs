@@ -1,63 +1,105 @@
-<h5><body>
-<style>
-    textarea{
-        height: 6rem;
-    }
-    label{
-        font-size: 18px;
-        color: black;
-    }
-</style>
+<h5>
+    <body>
+    <style>
+        textarea {
+            height: 6rem;
+        }
 
-<script type="text/javascript">
-    (function () {
-        var blinks = document.getElementsByTagName('blink');
-        var visibility = 'hidden';
-        window.setInterval(function () {
-            for (var i = blinks.length - 1; i >= 0; i--) {
-                blinks[i].style.visibility = visibility;
-            }
-            visibility = 'hidden';
-        }, 5000);
-    })();
-</script>
-<blink>{{message}} </blink>
+        label {
+            font-size: 18px;
+            color: black;
+        }
+    </style>
 
-<table class="highlight" >
-    <br><tr>
-    <form action="/user_update_name" method="post">
-    <th>Имя пользователя: </th><td><input type="text" name="name" value="{{user.user_name}}"></td>
-        <td><button type="submit" class="btn btn-primary" >Сохранить изменения</td>
-    </form>
-    <form action="/user_update_lastname" method="post">
-    <tr><th>Фамилия : </th> <td><input type="text" name="last_name" value="{{user.last_name}}"></td>
-        <td><button type="submit" class="btn btn-primary">Сохранить изменения</td></tr>
-    </form>
-    <form action="/user_update_email" method="post">
-    <tr><th>Почтовый ящик: </th><td><input type="text" name="email" value="{{user.email}}"></td>
-        <td> <button type="submit" class="btn btn-primary">Сохранить изменения</td></tr>
-    </form>
-    <form action="/user_update_phone" method="post">
-    <tr><th>Номер телефона: </th><td><input type="text" name="phone" value="{{user.phone}}"></td>
-        <td><button type="submit" class="btn btn-primary" >Сохранить изменения</td>
-    </tr></form>
+    <script type="text/javascript">
+        (function () {
+            var blinks = document.getElementsByTagName('blink');
+            var visibility = 'hidden';
+            window.setInterval(function () {
+                for (var i = blinks.length - 1; i >= 0; i--) {
+                    blinks[i].style.visibility = visibility;
+                }
+                visibility = 'hidden';
+            }, 5000);
+        })();
+    </script>
+    <blink>{{message}} </blink>
 
-    <tr><th>Дата регистрации: </th><td>{{user.date_register}}</td></tr>
-</table>
-
-<p><th>Заказы пользователя:</th><td>{{user.user_name}}</td>
-
-{{#if resultNotEmpty}}
-    <table width="100%" border="1">
-       <td>Дата заказа</td><td>Цена заказа</td><td>Статус заказа</td>
-        {{#each rows}}
+    <table class="table table-hover">
+        <div class="form-group">
             <tr>
-               <td><a href="/user_order/{{id}}">{{order_date}}</td></a><td>{{price}} руб.</td><td>{{order_status}}</td>
+                <form action="/user_update_name" method="post">
+                    <th>Имя пользователя:</th>
+                    <td><input type="text" name="name" value="{{user.user_name}}"></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-sm">Сохранить изменения</button>
+                    </td>
+                </form>
             </tr>
-        {{/each}}
-    </table>
-{{else}}
-    <p>Ни сделано ни одного заказа</p>
-{{/if}}
+        </div>
+        <div class="form-group">
+            <tr>
+                <form action="/user_update_lastname" method="post">
 
-</body></h5>
+                    <th>Фамилия :</th>
+                    <td><input type="text" name="last_name" value="{{user.last_name}}"></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-sm">Сохранить изменения</button>
+                    </td>
+                </form>
+            </tr>
+        </div>
+        <div class="form-group">
+            <tr>
+                <form action="/user_update_email" method="post">
+
+                    <th>Почтовый ящик:</th>
+                    <td><input type="text" name="email" value="{{user.email}}"></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-sm">Сохранить изменения</button>
+                    </td>
+                </form>
+            </tr>
+        </div>
+        <div class="form-group">
+            <tr>
+                <form action="/user_update_phone" method="post">
+
+                    <th>Номер телефона:</th>
+                    <td><input type="text" name="phone" value="{{user.phone}}"></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-sm">Сохранить изменения</button>
+                    </td>
+                </form>
+            </tr>
+        </div>
+        <div class="form-group">
+            <tr>
+                <th>Дата регистрации:</th>
+                <td>{{user.date_register}}</td>
+            </tr>
+        </div>
+    </table>
+
+    <th>Заказы пользователя:</th>
+    <td>{{user.user_name}}</td>
+    {{#if resultNotEmpty}}
+        <table class="table table-hover">
+            <td>Дата заказа</td>
+            <td>Цена заказа</td>
+            <td>Статус заказа</td>
+            {{#each rows}}
+                <tr>
+                    <td><a href="/user_order/{{id}}">{{order_date}}</td>
+                    </a>
+                    <td>{{price}} руб.</td>
+                    <td>{{order_status}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    {{else}}
+        <p>Ни сделано ни одного заказа</p>
+    {{/if}}
+
+    </body>
+</h5>

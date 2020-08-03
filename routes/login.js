@@ -11,7 +11,7 @@ app.get('/login', (request,response) => {
 
 
      response.render('./layouts/login.hbs', {
-                 title: "Страница админа",
+                 title: "Страница авторизации",
                  'message' : request.flash('info')
                  })
              response.statusCode = 200;

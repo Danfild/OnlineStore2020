@@ -19,6 +19,7 @@ app.get('/users', (request,response) => {
              response.render('layouts/users.hbs',
              {
              title: "Пользователи",
+             'adminId': adminId,
              'rows' : result.rows,
              'resultNotEmpty': result.rows.length !== 0
               });
@@ -26,8 +27,13 @@ app.get('/users', (request,response) => {
     });
  });
 
-
 app.get('/users/:id', (request,response) => {
+        var adminId;
+        if (request.user){
+          adminId = request.user.is_admin
+        } else {
+          adminId = null
+        };
          const user_id_to_show = request.params.id
          const values = [user_id_to_show]
          const orders_query = `select shop.product.orders.address as address,
@@ -56,6 +62,7 @@ app.get('/users/:id', (request,response) => {
               {
               title: 'Пользователь ' + user.user_name,
               'message' : request.flash('info'),
+              'adminId': adminId,
               'user': user,
               'rows' : orders_result.rows,
               'resultNotEmpty': orders_result.rows.length !== 0
@@ -63,7 +70,16 @@ app.get('/users/:id', (request,response) => {
          response.statusCode = 200;
                   }
                     else {
-                    response.send('Вы смотрите страницу другого пользователя');
+                    const user = result.rows[0];
+                    response.render('layouts/user_info.hbs',
+                    {
+                    title: 'Пользователь ' + user.user_name,
+                    'message' : request.flash('info'),
+                    'adminId': adminId,
+                    'user': user,
+                    'rows' : orders_result.rows,
+                    'resultNotEmpty': orders_result.rows.length !== 0
+                    })
                     response.statusCode = 200;
                     }
          });
