@@ -28,7 +28,8 @@ app.get('/users', (request,response) => {
 
 
 app.get('/users/:id', (request,response) => {
-         const values = [request.params.id]
+         const user_id_to_show = request.params.id
+         const values = [user_id_to_show]
          const orders_query = `select shop.product.orders.address as address,
                                       shop.product.orders.id as id,
                                 shop.product.orders.price as price,
@@ -48,6 +49,8 @@ app.get('/users/:id', (request,response) => {
 
          connect.queryDB(query, values, function (result) {
          connect.queryDB(orders_query, values, function (orders_result) {
+         if (user_id_to_show == request.user.id ){
+
                const user = result.rows[0];
               response.render('layouts/users_id.hbs',
               {
@@ -58,6 +61,11 @@ app.get('/users/:id', (request,response) => {
               'resultNotEmpty': orders_result.rows.length !== 0
                });
          response.statusCode = 200;
+                  }
+                    else {
+                    response.send('Вы смотрите страницу другого пользователя');
+                    response.statusCode = 200;
+                    }
          });
      });
   });

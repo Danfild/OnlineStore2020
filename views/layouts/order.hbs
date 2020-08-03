@@ -30,7 +30,9 @@
     </table>
     <h6>
         <form action="/order" method="post">
-        <input  type="text" name="user_id" value="{{userId}}" hidden/>
+        <input  type="text" name="user_id" value="{{userId}}" />
+        <input  type="text" name="email" value="{{user.email}}" />
+        <input  type="text" name="name" value="{{user.user_name}}" />
         <p>Имя получателя:<input type="text" name="user_name" value="{{username}}"/></p>
         <p>Адрес получателя:</p>
             <input required type="text" name="address"  value="{{address}}"/>

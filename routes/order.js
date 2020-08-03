@@ -1,6 +1,10 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
 
+var API_KEY = '61a2a5c98415ef7254a7718dfb18b8d2-a65173b1-b7a11065';
+var DOMAIN = 'sandbox418a125f2b3b481f83772bef160ce34b.mailgun.org';
+var mailgun = require('mailgun-js')({apiKey: API_KEY, domain: DOMAIN});
+
 
 module.exports = function(app) {
 
@@ -21,7 +25,8 @@ app.get('/order', (request,response) => {
         const query = `select shop.product.items.id       as good_id,
                        shop.product.goods.name            as good_name,
                        shop.product.goods.price           as good_price,
-                       shop.product.users.username        as user_name
+                       shop.product.users.username        as user_name,
+                       shop.product.users.email           as email
 
                        from shop.product.items
                        join shop.product.goods on items.good_id = goods.id
@@ -29,6 +34,7 @@ app.get('/order', (request,response) => {
                        where shop.product.users.id = $1`
 
         connect.queryDB(query, values, function (result) {
+        const user = result.rows[0];
         const total = result.rows.map(function(row) {
                            return row.good_price;
                          }).reduce((a, b) => a + b, 0)
@@ -36,6 +42,7 @@ app.get('/order', (request,response) => {
               title: "Корзина",
               'total': total,
               'userId' : userId,
+              'user' : user,
               'username': username,
               'message' : request.flash('info'),
               'rows' : result.rows,
@@ -55,14 +62,28 @@ app.post('/order', (request,response) => {
             const items_query =`update shop.product.items
                                 set order_id = $1, is_sold = true, booked_by_user = null
                                 where booked_by_user = $2`;
+             const email = [request.body.email]
+             const data = {
+             from: 'Excited User <me@samples.mailgun.org>',
+             to: email,
+             subject: 'Информация о заказе',
+             text: 'Спасибо за покупку в нашем магазине,курьер в скором времени свяжется с вами для уточнения деталей получения заказа.'
+             };
 
             connect.queryDB(order_query, values, function (result) {
                 order_id = [result.rows[0].id, request.user.id]
+
                     connect.queryDB(items_query, order_id, function (result) {
 
                     request.flash('info', 'Заказ оформлен');
                     response.redirect('back');
                      })
+                      mailgun.messages().send(data, (error, body) => {
+                                   if (error){
+                                   console.log(error)
+                                   }
+                                 console.log(body);
+                                 });
                 });
 
             });
@@ -108,6 +129,7 @@ app.post('/update_order', (request,response) => {
             });
 
 }
+
 
 
 

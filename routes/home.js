@@ -6,7 +6,10 @@ const logger = require ('../config/logger').logger;
 module.exports = function (app) {
 
 //домашняя страница
-//app.use('/home', cfg.checkAuth());
+app.get('/', (request,response) =>{
+        response.redirect('/home');
+        response.statusCode = 200;
+});
 app.get('/home', (request,response) => {
         const query = fs.readFileSync("./sql/top5_per_category.sql" ).toString('utf-8');
         var adminId;
@@ -49,8 +52,7 @@ app.get('/home', (request,response) => {
                                            });
                                logger.info('Отображена главная страница. Показано товаров: %d',all_results.length );
                                response.statusCode = 200;
-                              // response.set({ 'content-type': 'application/json; charset=utf-8' });
-                              // response.send(JSON.stringify(all_results).toString('utf-8'));
+
 
                            });
                       });
