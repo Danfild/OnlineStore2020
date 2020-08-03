@@ -1,46 +1,69 @@
-<h5><body>
-<script type="text/javascript">
-    (function () {
-        var blinks = document.getElementsByTagName('blink');
-        var visibility = 'hidden';
-        window.setInterval(function () {
-            for (var i = blinks.length - 1; i >= 0; i--) {
-                blinks[i].style.visibility = visibility;
-            }
-            visibility = 'hidden';
-        }, 5000);
-    })();
-</script>
-<blink>{{message}} </blink>
+<h5>
+    <body>
+    <script type="text/javascript">
+        (function () {
+            var blinks = document.getElementsByTagName('blink');
+            var visibility = 'hidden';
+            window.setInterval(function () {
+                for (var i = blinks.length - 1; i >= 0; i--) {
+                    blinks[i].style.visibility = visibility;
+                }
+                visibility = 'hidden';
+            }, 5000);
+        })();
+    </script>
+    <blink>{{message}} </blink>
 
-{{#if resultNotEmpty}}
-    <table width="100%" border="1">
-        <td>Номер заказа</td><td>Имя</td> <td>Номер телефона</td><td>Адрес</td><td>Дата заказа</td><td>Цена заказа</td><td>Статус заказа</td><td></td><td></td>
-        {{#each rows}}
-            <tr><form action="/update_order" method="post">
-                <input type="text" name="id" hidden value="{{id}}" ><td>{{id}}</td> <td>{{username}}</td> <td>{{phone}}</td><td>{{address}}</td><td>{{date}}</td><td>{{price}} руб.</td>
-                <td><div class="form-group">
-                <select class="form-control" id="exampleFormControlSelect1 " name="order_status">
-                    <option value="{{status}}">{{status}}</option>
-                    <option value="created">Создан</option>
-                    <option value="send">Отправлен</option>
-                    <option value="delivered">Доставляется</option>
-                    <option value="canceled">Отменен</option>
-                </select>
-            </div></td>
-                <td><p>
-                    <a class="waves-effect waves-light btn-small">
-                    <input  type="submit"   value="Изменить статус"/>
-                    </a></p>
-                </form></td><td>
-                <form action="/user_order/{{id}}"><p>
-                    <a class="waves-effect waves-light btn-small">
-                        <input  type="submit"   value="Перейти к заказу"/>
-                    </a></p></form></td>
+    {{#if resultNotEmpty}}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Номер заказа</th>
+                <th>Имя</th>
+                <th>Номер телефона</th>
+                <th>Адрес</th>
+                <th>Дата заказа</th>
+                <th>Цена заказа</th>
+                <th>Статус заказа</th>
             </tr>
-        {{/each}}
-    </table>
-{{else}}
-    <p>Страница заказов пуста</p>
-{{/if}}
-</body></h5>
+            </thead>
+            {{#each rows}}
+                <tbody>
+                <tr>
+                    <form action="/update_order" method="post">
+                        <input type="text" name="id" hidden value="{{id}}">
+                        <td>{{id}}</td>
+                        <td>{{username}}</td>
+                        <td>{{phone}}</td>
+                        <td>{{address}}</td>
+                        <td>{{date}}</td>
+                        <td>{{price}} руб.</td>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-control" id="exampleFormControlSelect1 " name="order_status">
+                                    <option value="{{status}}">{{status}}</option>
+                                    <option value="created">Создан</option>
+                                    <option value="send">Отправлен</option>
+                                    <option value="delivered">Доставляется</option>
+                                    <option value="canceled">Отменен</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary btn-sm">Изменить статус</button>
+                        </td>
+                    </form>
+                    <td>
+                    <form action="/user_order/{{id}}">
+                            <button type="submit" class="btn btn-primary btn-sm">Перейти к заказу</button>
+                    </form>
+                    </td>
+                </tr>
+                </tbody>
+            {{/each}}
+        </table>
+    {{else}}
+        <p>Страница заказов пуста</p>
+    {{/if}}
+    </body>
+</h5>

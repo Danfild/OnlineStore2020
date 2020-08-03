@@ -1,43 +1,35 @@
-<h5><body>
-<style type="text/css">
-    TABLE {
-        border-collapse: collapse; /* Убираем двойные линии между ячейками */
+<h5>
+    <body>
 
-    }
-    TH {
+    {{#if resultNotEmpty}}
+        <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Название товара</th>
 
-        text-align: left; /* Выравнивание по левому краю */
-    }
-    TD {
-        background: #fff; /* Цвет фона ячеек */
-        text-align: center; /* Выравнивание по центру */
-    }
-    TH, TD {
-        /* Параметры рамки */
-        /* Поля вокруг текста */
-        width: 300px;
-    }
-
-</style>
-{{#if resultNotEmpty}}
-    <table width="100%" border="1">
-       <tr><th>Название товара</th> <th></th><th>Цена</th></tr>
+            <th>Цена</th>
+        </tr>
         {{#each rows}}
             <tr>
-               <th><a href="/goods/{{good_id}}">{{good_name}}<img src="/{{image}}" width="10%"></a></th><th></th><th>{{price}} руб.</th>
+                <th><a href="/goods/{{good_id}}">{{good_name}}<img src="/{{image}}" width="10%"></a></th>
+
+                <th>{{price}} руб.</th>
             </tr>
         {{/each}}
+
+    {{else}}
+        <p>Нет данных</p>
+    {{/if}}
+    </thead>
+        <tbody>
+        <tr>
+            <th>Общая сумма заказа :</th>
+            <th>{{price}} руб.</th>
+        </tr>
+        </tbody>
+
+
     </table>
-{{else}}
-    <p>Нет данных</p>
-{{/if}}
-<table width="100%" border="1">
-    <tr>
-    <th>Общая сумма заказа :</th> <th></th><th>{{price}} руб.</th>
-    </tr>
-
-
-
-</table>
-</body></h5>
+    </body>
+</h5>
 <br>

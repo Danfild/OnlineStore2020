@@ -50,7 +50,6 @@ app.get('/order', (request,response) => {
               })
               response.statusCode = 200;
               });
-
     });
 
 app.post('/order', (request,response) => {
@@ -90,14 +89,14 @@ app.post('/order', (request,response) => {
 
 app.use('/orders', cfg.checkAdmin());
 app.get('/orders', (request,response) => {
-            const query = `select max(shop.product.users.email)                                        as email,
-                                  max(shop.product.orders.id)                                          as id,
-                                  max(shop.product.users.username)                                     as username,
-                                  max(shop.product.users.phone_num)                                    as phone,
-                                  max(shop.product.orders.address)                                     as address,
-                                  to_char(max(shop.product.orders.order_date), 'DD Mon YYYY HH:MI:SS') as date,
-                                  max(shop.product.orders.price)                                       as price,
-                                  max(shop.product.orders.order_status)                                as status
+            const query = `select (shop.product.users.email)                                      as email,
+                                  (shop.product.orders.id)                                        as id,
+                                  (shop.product.users.username)                                   as username,
+                                  (shop.product.users.phone_num)                                  as phone,
+                                  (shop.product.orders.address)                                   as address,
+                                  to_char(shop.product.orders.order_date, 'DD Mon YYYY HH:MI:SS') as date,
+                                  (shop.product.orders.price)                                     as price,
+                                  (shop.product.orders.order_status)                              as status
 
 
                            from shop.product.items

@@ -8,20 +8,16 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Почтовый ящик</th>
                 <th>Имя</th>
                 <th>Фамилия</th>
-                <th>Номер телефона</th>
                 <th>Дата регистрации</th>
             </tr>
             </thead>
             <tbody id="myTable">
             {{#each rows}}
                 <tr>
-                    <td><a href="/users/{{id}}">{{email}}</td>
                     <td><a href="/users/{{id}}">{{username}}</td>
                     <td><a href="/users/{{id}}">{{last_name}}</td>
-                    <td><a href="/users/{{id}}">{{phone_num}}</td>
                     <td>{{date}}</td>
                 </tr>
             {{/each}}
