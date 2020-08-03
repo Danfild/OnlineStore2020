@@ -19,6 +19,9 @@ app.get('/catalog', (request,response) => {
         response.statusCode = 200;
     });
 
+app.get('/catalog/favicon.ico', (request, response) => {
+            response.redirect('/catalog');
+})
 app.get('/catalog/:id', (request,response) => {
        const values = [request.params.id]
        const query= `with free_items as (select id, good_id from product.items where is_sold = false and booked_by_user is null)
