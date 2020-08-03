@@ -1,11 +1,6 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
 
-var API_KEY = '61a2a5c98415ef7254a7718dfb18b8d2-a65173b1-b7a11065';
-var DOMAIN = 'sandbox418a125f2b3b481f83772bef160ce34b.mailgun.org';
-var mailgun = require('mailgun-js')({apiKey: API_KEY, domain: DOMAIN});
-
-
 module.exports = function(app) {
 
 //заказы
@@ -62,12 +57,6 @@ app.post('/order', (request,response) => {
                                 set order_id = $1, is_sold = true, booked_by_user = null
                                 where booked_by_user = $2`;
              const email = [request.body.email]
-             const data = {
-             from: 'Excited User <me@samples.mailgun.org>',
-             to: email,
-             subject: 'Информация о заказе',
-             text: 'Спасибо за покупку в нашем магазине,курьер в скором времени свяжется с вами для уточнения деталей получения заказа.'
-             };
 
             connect.queryDB(order_query, values, function (result) {
                 order_id = [result.rows[0].id, request.user.id]
@@ -77,12 +66,6 @@ app.post('/order', (request,response) => {
                     request.flash('info', 'Заказ оформлен');
                     response.redirect('back');
                      })
-                      mailgun.messages().send(data, (error, body) => {
-                                   if (error){
-                                   console.log(error)
-                                   }
-                                 console.log(body);
-                                 });
                 });
 
             });

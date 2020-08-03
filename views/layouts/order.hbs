@@ -1,54 +1,53 @@
+<h5>
+    <body>
+    <script type="text/javascript">
+        (function () {
+            var blinks = document.getElementsByTagName('blink');
+            var visibility = 'hidden';
+            window.setInterval(function () {
+                for (var i = blinks.length - 1; i >= 0; i--) {
+                    blinks[i].style.visibility = visibility;
+                }
+                visibility = 'hidden';
+            }, 5000);
+        })();
+    </script>
+    <blink>{{message}} </blink>
 
-<h5><body>
-<script type="text/javascript">
-    (function () {
-        var blinks = document.getElementsByTagName('blink');
-        var visibility = 'hidden';
-        window.setInterval(function () {
-            for (var i = blinks.length - 1; i >= 0; i--) {
-                blinks[i].style.visibility = visibility;
-            }
-            visibility = 'hidden';
-        }, 5000);
-    })();
-</script>
-<blink>{{message}} </blink>
+    <table class="table table-hover">
+    {{#if resultNotEmpty}}
 
-<h6>
-{{#if resultNotEmpty}}
-    <table class="highlight">
-        <p>Заказаные товары</p>
-        <td>Наименование товара</td>
-        <td> Стоимость товара</td>
-        <td></td>
+            <thead>
+            <th>Наименование товара</th>
+            <th> Стоимость товара</th>
+            <th>Действия с заказом</th>
+
+            </thead>
         {{#each rows}}
-            <tr>
-                <td>{{good_name}}</td>
-                <td>{{good_price}} руб.</td>
-            </tr>
+
+                <tr>
+                    <th>{{good_name}}</th>
+                    <th>{{good_price}} руб.</th>
+                </tr>
         {{/each}}
-    </table>
-    <h6>
-        <form action="/order" method="post">
-        <input  type="text" name="user_id" value="{{userId}}" />
-        <input  type="text" name="email" value="{{user.email}}" />
-        <input  type="text" name="name" value="{{user.user_name}}" />
-        <p>Имя получателя:<input type="text" name="user_name" value="{{username}}"/></p>
-        <p>Адрес получателя:</p>
-            <input required type="text" name="address"  value="{{address}}"/>
-        <p> Общая сумма заказа: {{total}}</p>
+            <tbody>
+
+            <form action="/order" method="post">
+            <td>Адрес доставки: <input required type="text" name="address" value="{{address}}"/></p></td>
+            <td> Общая сумма заказа: {{total}}</td>
+            <td><button type="submit" class="btn btn-primary btn-sm">Оформить заказ</button></td>
+            <input type="text" name="user_id" value="{{userId}}" hidden/>
+            <input type="text" name="email" value="{{user.email}}" hidden/>
+            <input type="text" name="name" value="{{user.user_name}}" hidden/>
             <input type="number" name="price" value="{{total}}" руб. hidden/>
+            </form>
 
-            <a class="waves-effect waves-light btn-small">
-            <input type="submit" value="Оформить заказ"/>
-        </a>
-    </form>
-    </h6>
+            </tbody>
+        </table>
 
-{{else}}
-    <p>Вы еще не добавили в свою корнзину ни одного товара!</p>
-{{/if}}
-</h6>
-
-</body></h5>
+    {{else}}
+        <p>Вы еще не добавили в свою корнзину ни одного товара!</p>
+    {{/if}}
+    </body>
+</h5>
 <br>
