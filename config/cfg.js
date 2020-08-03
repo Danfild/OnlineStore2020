@@ -28,7 +28,7 @@ module.exports.checkAdmin = function () {
 
 // проверка юзера по имени из бд
 module.exports.getUser = function (username, done) {
-      const query = 'SELECT *  FROM shop.product.users WHERE username = $1::text';
+      const query = 'SELECT *  FROM shop.product.users WHERE email = $1::text';
       const  params = [username];
       connect.queryDB(query, params, done)
   };

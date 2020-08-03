@@ -11,8 +11,8 @@ function telephoneCheck(str) {
 
 
 app.post('/register', (request,response) => {
-     const query = `select exists (select 1 from shop.product.users where username = $1)`;
-     const values = [request.body.username]
+     const query = `select exists (select 1 from shop.product.users where email= $1)`;
+     const values = [request.body.email]
 
      connect.queryDB(query, values , function (user_exists) {
           if  (user_exists.rows[0].exists != true){
@@ -21,7 +21,7 @@ app.post('/register', (request,response) => {
                 const query = `insert into product.users (email,username,last_name,password,phone_num,date_register, is_admin) values ($1, $2, $3, $4, $5, 'now', false)`
                 const passwordToSave = bcrypt.hashSync(request.body.password, '$2b$10$1rLs8U9ML1jEMpekTBFX3.');
                 const values = [request.body.email , request.body.username, request.body.last_name, passwordToSave, request.body.phone_num];
-                const username = request.body.username;
+                const username = request.body.email;
 
                  connect.queryDB(query, values, function (result) {
                  request.flash('registration_complete', 'Регистарация завершена ' + username);
@@ -32,7 +32,7 @@ app.post('/register', (request,response) => {
              response.redirect('back');
             }
           }else{
-          request.flash('info', 'Пользователь с таким именем уже существует');
+          request.flash('info', 'Пользователь с таким логином ' + values + ' уже существует');
           response.redirect('back');
           }
      })
