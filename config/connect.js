@@ -2,19 +2,20 @@ const { Pool , Client } = require('pg');
 const pool = new Pool();
 const cfg = require('./cfg');
 const bcrypt = require('bcryptjs');
+const logger = require ('../config/logger').logger;
 
 //коннект к базе
 module.exports.queryDB = function (query, params, resultHandler) {
     pool.connect(function (err, client, done) {
         if (err) {
-            console.log("Cannot connect to the DB" + err);
+            logger.error("Cannot connect to the DB" + err);
         }
         client.query(query, params, function (err, result) {
             done();
             if (err) {
-             console.log("Cannot query  the DB" + err);
-             console.log("query: " + query);
-             console.log("params: " + params);
+             logger.error("Cannot query  the DB" + err);
+             logger.error("query: " + query);
+             logger.error("params: " + params);
             }
             resultHandler(result)
         })
