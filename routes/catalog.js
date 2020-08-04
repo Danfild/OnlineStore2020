@@ -1,6 +1,6 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
-
+const logger = require ('../config/logger').logger;
 
 module.exports = function (app) {
 //каталог товаров
@@ -15,13 +15,12 @@ app.get('/catalog', (request,response) => {
             'userId' : request.user ? request.user.id : null,
             'resultNotEmpty': result.rows.length !== 0
             });
+
+
         });
         response.statusCode = 200;
     });
 
-app.get('/catalog/favicon.ico', (request, response) => {
-            response.redirect('/catalog');
-})
 app.get('/catalog/:id', (request,response) => {
        const values = [request.params.id]
        const query= `with free_items as (select id, good_id from product.items where is_sold = false and booked_by_user is null)
@@ -47,6 +46,11 @@ app.get('/catalog/:id', (request,response) => {
              userId = null
              adminId = null
               }
+             if (values == 'favicon.ico' ){
+                   response.redirect('/catalog')
+                   }else{
+
+
         connect.queryDB(query, values, function (result) {
 
             response.render('layouts/catalog_per_category.hbs',
@@ -58,7 +62,9 @@ app.get('/catalog/:id', (request,response) => {
             'userId' :  userId,
             'resultNotEmpty': result.rows.length !== 0
             });
+            logger.info('catalog values: ' + values.toString());
         });
+        }
         response.statusCode = 200;
     });
 }

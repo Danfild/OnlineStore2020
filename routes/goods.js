@@ -25,9 +25,9 @@ app.get('/goods/:id', (request,response) =>  {
                               left join free_items on goods.id = free_items.good_id
                      where goods.id = $1
                      order by name;`
-                    console.log(values)
-       if (values == ['favicon.ico'] ){
-       response.redirect('/goods')
+
+       if (values == 'favicon.ico' ){
+       response.redirect('/catalog')
        }else{
 
        connect.queryDB(query, values, function (result) {
@@ -40,13 +40,12 @@ app.get('/goods/:id', (request,response) =>  {
           'adminId' : adminId,
           'userId' :  request.user ? request.user.id : null,
            });
-            logger.info('result: ' + result.toString());
-            logger.info('result: ' + result.rows[0].toString());
-            logger.info('values: ' + request.params.toString());
+            logger.info('goods values: ' + values.toString());
         });
         }
            response.statusCode = 200;
       });
+
 
 
 app.post ('/good_update_price', (request,response) =>{
