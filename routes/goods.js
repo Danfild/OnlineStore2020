@@ -3,7 +3,6 @@ const connect = require('../config/connect');
 const logger = require ('../config/logger').logger;
 
 module.exports = function(app) {
-app.get('/favicon.ico', (req, res) => res.status(204));
 app.get('/goods/:id', (request,response) =>  {
       const values = [request.params.id]
       var adminId;
@@ -12,8 +11,6 @@ app.get('/goods/:id', (request,response) =>  {
       } else {
       adminId = null
       }
-
-
       const query = `with free_items as (select id, good_id from product.items where is_sold = false and booked_by_user is null)
                      select MAX(shop.product.goods.id)          as id,
                             MAX(shop.product.goods.name)        as name,
@@ -28,7 +25,7 @@ app.get('/goods/:id', (request,response) =>  {
                               left join free_items on goods.id = free_items.good_id
                      where goods.id = $1
                      order by name;`
-       if (request.params.favicon){
+       if (request.params == 'favicon.ico'){
        response.redirect('/goods')
        }else{
 
@@ -49,8 +46,14 @@ app.get('/goods/:id', (request,response) =>  {
         }
            response.statusCode = 200;
       });
-
+app.get('/favicon.ico', (request, response) => response.status(204));
 app.get('/goods/favicon.ico', (request, response) => {
+            response.redirect('/goods');
+})
+app.get('/goods/favicon.ico/:id', (request, response) => {
+            response.redirect('/goods');
+})
+app.get('/goods/:id/favicon.ico/', (request, response) => {
             response.redirect('/goods');
 })
 
