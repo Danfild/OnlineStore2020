@@ -25,7 +25,8 @@ app.get('/goods/:id', (request,response) =>  {
                               left join free_items on goods.id = free_items.good_id
                      where goods.id = $1
                      order by name;`
-       if (request.params == 'favicon.ico'){
+                    console.log(values)
+       if (values == ['favicon.ico'] ){
        response.redirect('/goods')
        }else{
 
@@ -46,16 +47,7 @@ app.get('/goods/:id', (request,response) =>  {
         }
            response.statusCode = 200;
       });
-app.get('/favicon.ico', (request, response) => response.status(204));
-app.get('/goods/favicon.ico', (request, response) => {
-            response.redirect('/goods');
-})
-app.get('/goods/favicon.ico/:id', (request, response) => {
-            response.redirect('/goods');
-})
-app.get('/goods/:id/favicon.ico/', (request, response) => {
-            response.redirect('/goods');
-})
+
 
 app.post ('/good_update_price', (request,response) =>{
             const query = `update shop.product.goods set price = $1 where id = $2;`;
