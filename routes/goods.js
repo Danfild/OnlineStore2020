@@ -44,6 +44,10 @@ app.get('/goods/:id', (request,response) =>  {
            response.statusCode = 200;
       });
 
+app.get('/goods/favicon.ico', (request, response) => {
+            response.redirect('/goods');
+})
+
 app.post ('/good_update_price', (request,response) =>{
             const query = `update shop.product.goods set price = $1 where id = $2;`;
             const values = [request.body.price, request.body.id]
