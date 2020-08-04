@@ -1,12 +1,13 @@
 <body>
 
+
 <div class=" text-center">
     <h3>Самые продаваемые товары</h3>
     <p></p>
 </div>
 <h5>
 <table class="table table-hover">
-    <thead>
+    <thead class="thead-dark">
     <tr>
         <th>Название товара</th>
         <th>Описание</th>
@@ -16,7 +17,7 @@
     </thead>
     {{#if resultNotEmpty}}
         {{#each all_results}}
-            <tbody>
+            <tbody class="tbody-dark">
             {{#each rows}}
                 <tr>
                     <td><a href="/goods/{{good_id}}">{{name}}</td>

@@ -19,9 +19,6 @@
             <thead>
             <tr>
                 <th>Номер заказа</th>
-                <th>Имя</th>
-                <th>Номер телефона</th>
-                <th>Адрес</th>
                 <th>Дата заказа</th>
                 <th>Цена заказа</th>
                 <th>Статус заказа</th>
@@ -33,9 +30,6 @@
                     <form action="/update_order" method="post">
                         <input type="text" name="id" hidden value="{{id}}">
                         <td>{{id}}</td>
-                        <td>{{username}}</td>
-                        <td>{{phone}}</td>
-                        <td>{{address}}</td>
                         <td>{{date}}</td>
                         <td>{{price}} руб.</td>
                         <td>
@@ -45,17 +39,17 @@
                                     <option value="created">Создан</option>
                                     <option value="send">Отправлен</option>
                                     <option value="delivered">Доставляется</option>
-                                    <option value="canceled">Отменен</option>
+                                    <option value="canceled">Отменён</option>
                                 </select>
                             </div>
                         </td>
                         <td>
-                            <button type="submit" class="btn btn-primary btn-sm">Изменить статус</button>
+                            <button type="submit" class="btn btn-primary btn-sm btn-dark">Изменить статус</button>
                         </td>
                     </form>
                     <td>
-                    <form action="/user_order/{{id}}">
-                            <button type="submit" class="btn btn-primary btn-sm">Перейти к заказу</button>
+                    <form action="/orders/{{id}}">
+                            <button type="submit" class="btn btn-primary btn-sm btn-dark">Перейти к заказу</button>
                     </form>
                     </td>
                 </tr>

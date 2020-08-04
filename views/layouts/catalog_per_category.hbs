@@ -1,24 +1,5 @@
 <h5><body>
-<style type="text/css">
-    TABLE {
-        border-collapse: collapse; /* Убираем двойные линии между ячейками */
 
-    }
-    TH {
-
-        text-align: left; /* Выравнивание по левому краю */
-    }
-    TD {
-        background: #fff; /* Цвет фона ячеек */
-        text-align: center; /* Выравнивание по центру */
-    }
-    TH, TD {
-        /* Параметры рамки */
-        /* Поля вокруг текста */
-        width: 300px;
-    }
-
-</style>
 <script type="text/javascript">
     (function() {
         var blinks = document.getElementsByTagName('blink');
@@ -30,15 +11,30 @@
             visibility =  'hidden' ;
         }, 2000);
     })();
+
+    $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
 </script>
 <blink>{{message}} </blink>
 
+<p></p>
+<tr><input class="form-control" id="myInput" type="text" placeholder="Search.." value="Поиск товара "></tr>
 {{#if resultNotEmpty}}
-    <table class="highlight" >
-        <p><th>Название товара</th><td>Описание</td> <td>Цена</td> </p>
+    <table class="table table-hover" id="myTable">
+
         {{#each rows}}
-            <tr>
-                <th><a href="/goods/{{good_id}}">{{name}}</a></th><td>{{description}}</td><td>{{price}} руб.</td><td><a href="/goods/{{good_id}}"><img src="/{{image_url}}" width="125"></a></td>
+
+            <tr><td><a href="/goods/{{good_id}}"><img src="/{{image_url}}" width="125" class="rounded" alt="Cinque Terre"></a></td>
+                <th><a href="/goods/{{good_id}}">{{name}}</a></th><td>{{description}}</td>
+                <td>{{price}} руб.</td>
+
                 <td hidden>{{../userId}}</td>
                 {{#if ../userId}}
                     <th>{{> form_add_in_cart }}</th>
@@ -47,6 +43,7 @@
                     <th>{{> form_delete_good }}</th>
                 {{/if}}
             </tr>
+
         {{/each}}
     </table>
 {{else}}

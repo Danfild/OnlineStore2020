@@ -6,13 +6,14 @@
         <thead>
         <tr>
             <th>Название товара</th>
-
+            <th>Описание</th>
             <th>Цена</th>
+
         </tr>
         {{#each rows}}
             <tr>
-                <th><a href="/goods/{{good_id}}">{{good_name}}<img src="/{{image}}" width="10%"></a></th>
-
+                <th><a href="/goods/{{good_id}}"><img src="/{{image}}" width="10%" class="rounded" alt="Cinque Terre">{{good_name}}</a></th>
+                <th>{{info}}</th>
                 <th>{{price}} руб.</th>
             </tr>
         {{/each}}
@@ -24,6 +25,7 @@
         <tbody>
         <tr>
             <th>Общая сумма заказа :</th>
+            <th></th>
             <th>{{price}} руб.</th>
         </tr>
         </tbody>

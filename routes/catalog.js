@@ -6,13 +6,26 @@ module.exports = function (app) {
 //каталог товаров
 app.get('/catalog', (request,response) => {
         const query = 'SELECT name, id, image_url FROM shop.product.categories;';
+        var adminId;
+        if (request.user){
+        adminId = request.user.is_admin
+        } else {
+        adminId = null
+        }
+        var userId;
+        if(request.user){
+        userId = request.user.id
+        }else{
+        userId = null
+        }
 
         connect.queryDB(query, [], function (result) {
             response.render('layouts/catalog.hbs',
             {
             title: "Каталог товаров",
             'rows' : result.rows,
-            'userId' : request.user ? request.user.id : null,
+            'userId' : userId,
+            'adminId' : adminId,
             'resultNotEmpty': result.rows.length !== 0
             });
 
@@ -37,15 +50,18 @@ app.get('/catalog/:id', (request,response) => {
                      where  goods.category_id = $1
                      group by goods.id
                      order by name;`
-            var adminId;
-            var userId;
-            if (request.user ){
-            userId = request.user.id
-            adminId= request.user.is_admin
-             } else {
-             userId = null
-             adminId = null
-              }
+        var adminId;
+        if (request.user){
+        adminId = request.user.is_admin
+        } else {
+        adminId = null
+        }
+        var userId;
+        if(request.user){
+        userId = request.user.id
+        }else{
+        userId = null
+        }
              if (values == 'favicon.ico' ){
                    response.redirect('/catalog')
                    }else{

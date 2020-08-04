@@ -9,7 +9,18 @@ module.exports = function(app)  {
 //корзина
 app.use('/cart', cfg.checkAuth());
 app.get('/cart', (request,response) => {
-
+        var adminId;
+        if (request.user){
+        adminId = request.user.is_admin
+        } else {
+        adminId = null
+        }
+        var userId;
+        if(request.user){
+        userId = request.user.id
+        }else{
+        userId = null
+        }
        const values = [request.user.id];
         const query = `select shop.product.items.id       as good_id,
                               shop.product.goods.name     as good_name,
@@ -29,7 +40,8 @@ app.get('/cart', (request,response) => {
                 response.render('./layouts/cart.hbs', {
                       title: "Корзина",
                       'total': total,
-                      'userId' : request.user ? request.user.id : null,
+                      'userId' : userId,
+                      'adminIdId' : adminId,
                       'rows' : result.rows,
                       'message' : request.flash('info'),
                       'resultNotEmpty': result.rows.length !== 0,

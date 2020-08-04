@@ -13,13 +13,16 @@ app.get('/', (request,response) =>{
 app.get('/home', (request,response) => {
         const query = fs.readFileSync("./sql/top5_per_category.sql" ).toString('utf-8');
         var adminId;
+        if (request.user){
+        adminId = request.user.is_admin
+        } else {
+        adminId = null
+        }
         var userId;
-        if (request.user ){
+        if(request.user){
         userId = request.user.id
-        adminId= request.user.is_admin
-         } else {
-         userId = null
-         adminId = null
+        }else{
+        userId = null
         }
      const category_query = 'select id,name from shop.product.categories'
      connect.queryDB(category_query, [],  function  (result) {
@@ -44,7 +47,7 @@ app.get('/home', (request,response) => {
                                response.render('layouts/top_items.hbs',{
 
                                             title: "Техностор",
-                                           'userId' :  request.user ? request.user.id : null,
+                                           'userId' :  userId,
                                            'adminId': adminId,
                                            'all_results' : all_results,
                                            'message' : request.flash('info'),

@@ -17,12 +17,12 @@
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Админ Меню
                 </a>
-            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-
+            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu ">
                 <a class="dropdown-item" href=/analitycs>Аналитика</a>
                 <a class="dropdown-item" href="/admin/create_items">Добавление товара</a>
                 <a class="dropdown-item" href="/users">Пользователи</a>
                 <a class="dropdown-item" href="/orders">Заказы</a>
+
             {{else}}
 
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -36,9 +36,7 @@
                 <a class="dropdown-item" href="/orders">Заказы</a>
 
             {{/if}}
-
-        </div>
-
+            </div>
 
             <li class="nav-item ">
                 <a class="nav-link" href="/catalog">Каталог товара <span class="sr-only">(current)</span></a>
@@ -58,9 +56,8 @@
                     <a class="nav-link" href="/cart">Корзина</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="/users">Пользователи</a>
+                    <a class="nav-link" href="/users">Профиль</a>
                 </li>
-
                 <li class="nav-item">
                     <a  class="nav-link" href="/logout">Выйти</a>
                 </li>

@@ -4,9 +4,9 @@
     <input  name="userId" value="{{userId}}"  hidden/>
 
         {{#if good.is_available}}
-            <td><button type="submit" class="btn btn-primary" >Добавить в корзину</td>
+            <td><button type="submit" class="btn btn-primary btn-sm btn-dark" >В корзину</button></td>
         {{else}}
-        <button type="submit" class="btn btn-primary" disabled>Нет в наличии</button>
+            <td> <button type="submit" class="btn btn-primary btn-sm btn-dark" disabled>Нет в наличии</button></td>
         {{/if}}
 
 </form>

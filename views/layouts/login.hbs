@@ -11,7 +11,7 @@
     })();
 </script>
 
-<blink>{{message}} </blink>
+<blink class="alert alert-danger" role="alert" >{{message}} </blink>
 
 <form action="/login" method="post">
     <label for="exampleInputLogin1">Логин</label>
@@ -22,5 +22,5 @@
         <input required type="password" name="password" class="form-control"  placeholder="Введите пароль">
     </div>
 
-    <button type="submit" class="btn btn-primary">Авторизоваться</button>
+    <button type="submit" class="btn btn-primary btn-dark">Авторизоваться</button>
 </form>

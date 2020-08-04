@@ -11,6 +11,12 @@ app.get('/goods/:id', (request,response) =>  {
       } else {
       adminId = null
       }
+      var userId;
+      if(request.user){
+      userId = request.user.id
+      }else{
+      userId = null
+      }
       const query = `with free_items as (select id, good_id from product.items where is_sold = false and booked_by_user is null)
                      select MAX(shop.product.goods.id)          as id,
                             MAX(shop.product.goods.name)        as name,
@@ -29,7 +35,6 @@ app.get('/goods/:id', (request,response) =>  {
        if (values == 'favicon.ico' ){
        response.redirect('/catalog')
        }else{
-
        connect.queryDB(query, values, function (result) {
        const good = result.rows[0];
         response.render('layouts/good.hbs',
@@ -38,7 +43,7 @@ app.get('/goods/:id', (request,response) =>  {
           'good' : good,
           'message' : request.flash('info'),
           'adminId' : adminId,
-          'userId' :  request.user ? request.user.id : null,
+          'userId' :  userId,
            });
             logger.info('goods values: ' + values.toString());
         });

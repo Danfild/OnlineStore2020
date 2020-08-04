@@ -1,0 +1,52 @@
+<h5>
+    <body>
+    <div class="form-group" >
+        <label >Имя заказчика</label>
+        <input  class="form-control" value="{{username}}" disabled>
+    </div>
+    <div class="form-group">
+        <label >Номер телефона</label>
+        <input  class="form-control" value="{{phone}}" disabled>
+    </div>
+    <div class="form-group">
+        <label >Почтовый ящик</label>
+        <input class="form-control"  value="{{email}}" disabled>
+    </div>
+    <div class="form-group">
+        <label >Адрес доставки</label>
+        <input  class="form-control" value="{{address}}" disabled>
+    </div>
+<!--    <div class="form-group">-->
+<!--        <label >Цена заказа</label>-->
+<!--        <input class="form-control" value="{{order_price}} руб." disabled>-->
+<!--    </div>-->
+
+    {{#if resultNotEmpty}}
+        <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Название товара</th>
+            <th>Цена</th>
+        </tr>
+        {{#each rows}}
+            <tr>
+                <th><a href="/goods/{{good_id}}">{{good_name}}</a></th>
+
+                <th>{{good_price}} руб.</th>
+            </tr>
+            </thead>
+        {{/each}}
+
+    {{else}}
+            <p>Нет данных</p>
+    {{/if}}
+    <tbody>
+    <tr>
+        <th>Цена заказа</th>
+        <th>{{order_price}} руб.</th>
+    </tr>
+    </tbody>
+    </table>
+    </body>
+</h5>
+<br>

@@ -4,7 +4,7 @@ const connect = require('../config/connect');
 
 
 module.exports = function(app) {
-app.use('/users', cfg.checkAuth());
+app.use('/users', cfg.checkAdmin());
 app.get('/users', (request,response) => {
         const query = `select id, email, username, last_name, phone_num, to_char((date_register), 'DD Mon YYYY ') as date
                        from shop.product.users;`
@@ -28,12 +28,12 @@ app.get('/users', (request,response) => {
  });
 
 app.get('/users/:id', (request,response) => {
-        var adminId;
-        if (request.user){
-          adminId = request.user.is_admin
-        } else {
-          adminId = null
-        };
+              var userId;
+              if(request.user){
+              userId = request.user.id
+              }else{
+              userId = null
+              }
          const user_id_to_show = request.params.id
          const values = [user_id_to_show]
          const orders_query = `select shop.product.orders.address as address,
@@ -62,7 +62,7 @@ app.get('/users/:id', (request,response) => {
               {
               title: 'Пользователь ' + user.user_name,
               'message' : request.flash('info'),
-              'adminId': adminId,
+              'userId': userId,
               'user': user,
               'rows' : orders_result.rows,
               'resultNotEmpty': orders_result.rows.length !== 0
@@ -75,7 +75,6 @@ app.get('/users/:id', (request,response) => {
                     {
                     title: 'Пользователь ' + user.user_name,
                     'message' : request.flash('info'),
-                    'adminId': adminId,
                     'user': user,
                     'rows' : orders_result.rows,
                     'resultNotEmpty': orders_result.rows.length !== 0
@@ -95,7 +94,8 @@ app.get('/user_order/:id', (request,response) => {
                               goods.name as good_name,
                               goods.id as good_id,
                               goods.image_url as image,
-                              goods.price as price
+                              goods.price as price,
+                              goods.description as info
                        from shop.product.orders
                                 join shop.product.items on orders.id = items.order_id
                                 join shop.product.goods on items.good_id = goods.id

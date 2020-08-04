@@ -1,15 +1,6 @@
 <h5>
-    <body>
-    <style>
-        textarea {
-            height: 8rem;
-        }
 
-        label {
-            font-size: 18px;
-            color: black;
-        }
-    </style>
+    <body>
     {{message}}
 
 
@@ -18,16 +9,16 @@
         <h3>{{good.name}}</h3>
         </div>
 
-        <img src="/{{good.image_url}}">
+        <img src="/{{good.image_url}}" class="rounded" alt="Cinque Terre">
         <h6>
             <div class="form-group">
                 <form action="/user_update_description" method="post">
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Описание товара</label>
+
                         <input type="text" name="id" value="{{good.id}}" hidden>
                         <input type="text" name="description" class="form-control" value="{{good.description}}">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-dark">Сохранить изменения</button>
                 </form>
             </div>
         </h6>
@@ -37,22 +28,22 @@
                     <input type="text" name="id" value="{{good.id}}" hidden>
                 </label>
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1" >Полное описание</label>
+
                     <textarea type="text" name="full" class="form-control"  >{{good.full}}</textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                <button type="submit" class="btn btn-primary btn-sm btn-dark">Сохранить изменения</button>
             </form>
         </h6>
 
 
             <h4>
                 <form action="/good_update_price" method="post">
-                    <label for="exampleFormControlTextarea1">Цена товара</label>
+
                     <input type="text" name="id" value="{{good.id}}" hidden>
                     <div class="form-group">
                     <input type="text" name="price" value="{{good.price}}">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    <button type="submit" class="btn btn-primary btn-sm btn-dark">Сохранить изменения</button>
                 </form>
             </h4>
 

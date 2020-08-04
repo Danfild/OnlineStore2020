@@ -7,16 +7,25 @@ module.exports = function(app) {
 app.use('/order', cfg.checkAuth());
 app.get('/order', (request,response) => {
          const values = [request.user.id];
-
           var username;
-          var userId;
           if (request.user && request.user.username ){
-           userId = request.user.id,
            username = request.user.username
           } else {
-           userId = null,
            username = null
           }
+          var adminId;
+          if (request.user){
+          adminId = request.user.is_admin
+          } else {
+          adminId = null
+          }
+          var userId;
+          if(request.user){
+          userId = request.user.id
+          }else{
+          userId = null
+          }
+
         const query = `select shop.product.items.id       as good_id,
                        shop.product.goods.name            as good_name,
                        shop.product.goods.price           as good_price,
@@ -72,20 +81,35 @@ app.post('/order', (request,response) => {
 
 app.use('/orders', cfg.checkAdmin());
 app.get('/orders', (request,response) => {
-            const query = `select (shop.product.users.email)                                      as email,
-                                  (shop.product.orders.id)                                        as id,
-                                  (shop.product.users.username)                                   as username,
-                                  (shop.product.users.phone_num)                                  as phone,
-                                  (shop.product.orders.address)                                   as address,
+            var adminId;
+            if (request.user){
+            adminId = request.user.is_admin
+            } else {
+            adminId = null
+            }
+            var userId;
+            if(request.user){
+            userId = request.user.id
+            }else{
+            userId = null
+            }
+            const query = `select shop.product.users.email                                     as email,
+                                  shop.product.orders.id                                       as id,
+                                  shop.product.users.username                                   as username,
+                                  shop.product.users.phone_num                                 as phone,
+                                  shop.product.orders.address                                 as address,
                                   to_char(shop.product.orders.order_date, 'DD Mon YYYY HH:MI:SS') as date,
-                                  (shop.product.orders.price)                                     as price,
-                                  (shop.product.orders.order_status)                              as status
+                                  shop.product.orders.price                                   as price,
+                                  shop.product.orders.order_status                             as status
 
 
-                           from shop.product.items
-                                    join shop.product.orders on items.order_id = orders.id
-                                    join shop.product.users on orders.user_id = users.id`
+                           from shop.product.orders
+                                    join shop.product.users on orders.user_id = users.id
+                                    order by date`
+            const status_dictionary = {'created':'Создан','send': 'Отправлен','delivered':'Доставляется','canceled':'Отменён'}
+
 connect.queryDB(query, [], function (result) {
+        result.rows.forEach( row => {row.status = status_dictionary[row.status]})
         response.render('./layouts/admin_orders.hbs',
         {
             title: "Информация о заказах",
@@ -97,6 +121,49 @@ connect.queryDB(query, [], function (result) {
      });
     });
 
+app.get('/orders/:id', (request,response) => {
+        const values = [request.params.id]
+        const query = `select shop.product.orders.id                                          as id,
+                              shop.product.users.username                                     as username,
+                              shop.product.users.phone_num                                    as phone,
+                              shop.product.users.email                                        as email,
+                              shop.product.orders.address                                     as address,
+                              to_char(shop.product.orders.order_date, 'DD Mon YYYY HH:MI:SS') as date,
+                              shop.product.orders.price                                       as price,
+                              shop.product.orders.order_status                                as status,
+                              shop.product.goods.name                                         as good_name,
+                              shop.product.goods.price                                        as good_price,
+                              shop.product.goods.image_url                                    as image,
+                              shop.product.items.good_id                                      as good_id
+
+                       from shop.product.orders
+                                join shop.product.users on orders.user_id = users.id
+                                join shop.product.items on orders.id = items.order_id
+                                join shop.product.goods on items.good_id = goods.id
+                       where orders.id = $1`
+
+        connect.queryDB(query, values, function (result) {
+              const  date = result.rows[0].date;
+              const  address = result.rows[0].address;
+              const  username = result.rows[0].username;
+              const  email = result.rows[0].email;
+              const  phone = result.rows[0].phone;
+              const  order_price = result.rows[0].price;
+             response.render('layouts/admin_order_info.hbs',
+             {
+             title: "Заказ от " + date,
+             'date' : date,
+             'address' : address,
+             'phone' : phone,
+             'username' : username,
+             'email' : email,
+             'order_price': order_price,
+             'rows' : result.rows,
+             'resultNotEmpty': result.rows.length !== 0
+              });
+        response.statusCode = 200;
+    });
+ });
 
 app.post('/update_order', (request,response) => {
         const values = [request.body.id,request.body.order_status ];
