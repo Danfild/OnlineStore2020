@@ -10,8 +10,12 @@
         }, 2000);
     })();
 </script>
+{{#if message}}
+    <p><div class="form-group"><blink class="alert alert-success alert-dismissible fade show" role="alert" >{{message}}</blink></div></p>
+{{/if}}
 
-<blink class="alert alert-danger" role="alert" >{{message}} </blink>
+
+
 
 <form action="/login" method="post">
     <label for="exampleInputLogin1">Логин</label>

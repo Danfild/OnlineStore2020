@@ -24,15 +24,15 @@ app.post('/register', (request,response) => {
                 const username = request.body.email;
 
                  connect.queryDB(query, values, function (result) {
-                 request.flash('registration_complete', 'Регистарация завершена ' + username);
+                 request.flash('registration', 'Регистарация завершена ' + username);
                  response.redirect('/login');
                   });
             }else{
-             request.flash('info', 'Номер телефона задан не корректно');
+             request.flash('danger', 'Номер телефона задан не корректно');
              response.redirect('back');
             }
           }else{
-          request.flash('info', 'Пользователь с таким логином ' + values + ' уже существует');
+          request.flash('danger', 'Пользователь с таким логином ' + values + ' уже существует');
           response.redirect('back');
           }
      })
@@ -43,7 +43,7 @@ app.get('/register', (request,response) => {
 
     response.render('./layouts/register.hbs' , {
             title: 'Регистарация пользователя',
-            'message' : request.flash('info')
+            'message' : request.flash('danger')
         });
         response.statusCode = 200;
 });

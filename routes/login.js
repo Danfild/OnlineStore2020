@@ -12,7 +12,7 @@ app.get('/login', (request,response) => {
 
      response.render('./layouts/login.hbs', {
                  title: "Страница авторизации",
-                 'message' : request.flash('info')
+                 'message' : request.flash('registration')
                  })
              response.statusCode = 200;
 });

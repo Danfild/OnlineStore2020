@@ -9,11 +9,6 @@
             visibility = 'hidden';
         }, 2000);
     })();
-    $(function(){
-        window.setTimeout(function(){
-            $('#my-alert').alert('close');
-        },5000);
-    });
     function ValidMail() {
         var re = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
         var myMail = document.getElementById('email').value;
@@ -25,9 +20,13 @@
     }
 </script>
 
-    <blink  class="alert alert-danger alert-dismissible fade show" role="alert">{{message}} </blink>
+{{#if message}}
+    <p><div class="form-group"><blink class="alert alert-danger alert-dismissible fade show" role="alert" >{{message}}</blink></div></p>
 
+{{/if}}
+{{#if message_registration}}
     <blink  class="alert alert-danger alert-dismissible fade show" role="alert">{{message_registration}}</blink>
+{{/if}}
 
 <p></p>
 <label  id="my-alert" class="alert alert-danger alert-dismissible fade show" role="alert">Пожалуйста, заполните все поля формы!</label>

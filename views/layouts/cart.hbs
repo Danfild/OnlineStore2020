@@ -24,10 +24,11 @@
                 <tr>
                     <td>{{good_name}}</td>
                     <td>{{price}} руб.</td>
+                    <td>{{quantity}} шт.</td>
                     <td>
                         <form action="/cart" method="post">
                             <input name="good_name" value="{{good_name}}" hidden/>
-                            <input name="good_id" value="{{good_id}}" hidden/>
+                            <input name="item_id" value="{{item_id}}" hidden/>
                             <a class="waves-effect waves-light btn-small">
                                 <input type="submit" value="Убрать из корзины"/>
                             </a>

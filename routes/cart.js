@@ -22,15 +22,17 @@ app.get('/cart', (request,response) => {
         userId = null
         }
        const values = [request.user.id];
-        const query = `select shop.product.items.id       as good_id,
-                              shop.product.goods.name     as good_name,
-                              shop.product.goods.price    as price,
-                              shop.product.users.username as user_name
+        const query = `select max(shop.product.items.id) as item_id,
+                              shop.product.goods.name    as good_name,
+                              shop.product.goods.price   as price,
+                              count(1) as quantity
 
                        from shop.product.items
                                 join shop.product.goods on items.good_id = goods.id
                                 join shop.product.users on items.booked_by_user = users.id
-                       where shop.product.users.id = $1`
+                       where shop.product.users.id = $1
+
+                       group by 2, 3`
 
 
         connect.queryDB(query,values, function (result) {
@@ -52,7 +54,7 @@ app.get('/cart', (request,response) => {
 });
 
 app.post('/cart', (request,response) => {
-        const values = [request.user.id, request.body.good_id];
+        const values = [request.user.id, request.body.item_id];
         const good_name = request.body.good_name;
         const query = `update shop.product.items set booked_by_user = null
                        where shop.product.items.booked_by_user = $1 and shop.product.items.id = $2`
