@@ -43,7 +43,7 @@ app.get('/home', (request,response) => {
 
                                response.render('layouts/top_items.hbs',{
 
-                                            title: "Главная Страница",
+                                            title: "Техностор",
                                            'userId' :  request.user ? request.user.id : null,
                                            'adminId': adminId,
                                            'all_results' : all_results,
