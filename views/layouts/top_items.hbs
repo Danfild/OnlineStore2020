@@ -1,5 +1,20 @@
 <body>
-
+<script type="text/javascript">
+<script type="text/javascript">
+    (function() {
+        var blinks = document.getElementsByTagName('blink');
+        var visibility = 'hidden';
+        window.setInterval(function() {
+            for (var i = blinks.length - 1; i >= 0; i--) {
+                blinks[i].style.visibility = visibility;
+            }
+            visibility =  'hidden' ;
+        }, 2000);
+    })();
+</script>
+{{#if message}}
+    <blink class="alert alert-info alert-dismissible fade show" role="alert" >{{message}} </blink>
+{{/if}}
 
 <div class=" text-center">
     <h3>Самые продаваемые товары</h3>
