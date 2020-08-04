@@ -15,32 +15,34 @@
     <blink>{{message}} </blink>
 
     {{#if resultNotEmpty}}
-        <table class="highlight">
-            <p>Заказаные товары</p>
+        <table class="table table-hover">
+            <thead><tr>
             <td>Наименование товара</td>
             <td> Стоимость товара</td>
-            <td></td>
+            <td>Количество</td>
+            </tr>
+            </thead>
             {{#each rows}}
+                <tbody>
                 <tr>
-                    <td>{{good_name}}</td>
+                    <td><a href="/goods/{{good_id}}">{{good_name}}</td>
                     <td>{{price}} руб.</td>
                     <td>{{quantity}} шт.</td>
                     <td>
                         <form action="/cart" method="post">
                             <input name="good_name" value="{{good_name}}" hidden/>
                             <input name="item_id" value="{{item_id}}" hidden/>
-                            <a class="waves-effect waves-light btn-small">
-                                <input type="submit" value="Убрать из корзины"/>
-                            </a>
+                            <button type="submit" class="btn btn-primary btn-dark" >Убрать из корзины</button>
+
                         </form>
                     </td>
-
                 </tr>
+                </tbody>
             {{/each}}
         </table>
         <form action="/order" method="get">
             <p> Общая сумма заказа: {{total}} руб.</p>
-            <button type="submit" class="btn btn-primary btn-dark" >Перейти к оформлению заказа.
+            <button type="submit" class="btn btn-primary btn-dark" >Перейти к оформлению заказа.</button>
         </form>
     {{else}}
         <p>В корзине пусто</p>

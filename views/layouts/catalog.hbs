@@ -1,20 +1,16 @@
 <h5>
     <body>
     {{#if resultNotEmpty}}
+    <p></p>
         <table class="table table-hover">
-            <thead>
-            <tr>Название категории</tr>
-            <p></p>
-            </thead>
-            <tbody>
+
             {{#each rows}}
                 <tr>
-                    <td><a href="/catalog/{{id}}">{{name}}</td>
                     <td><a href="/catalog/{{id}}"><img src="/{{image_url}}" class="rounded" alt="Cinque Terre"></a></td>
-
+                    <td><a href="/catalog/{{id}}">{{name}}</td>
                 </tr>
             {{/each}}
-            </tbody>
+
         </table>
     {{else}}
         <p>Нет данных</p>

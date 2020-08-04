@@ -24,6 +24,7 @@ app.get('/cart', (request,response) => {
        const values = [request.user.id];
         const query = `select max(shop.product.items.id) as item_id,
                               shop.product.goods.name    as good_name,
+                              shop.product.goods.id as   good_id,
                               shop.product.goods.price   as price,
                               count(1) as quantity
 
