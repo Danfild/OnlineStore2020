@@ -3,6 +3,7 @@ const connect = require('../config/connect');
 const logger = require ('../config/logger').logger;
 
 module.exports = function(app) {
+app.get('/favicon.ico', (req, res) => res.status(204));
 app.get('/goods/:id', (request,response) =>  {
       const values = [request.params.id]
       var adminId;
@@ -27,9 +28,6 @@ app.get('/goods/:id', (request,response) =>  {
                               left join free_items on goods.id = free_items.good_id
                      where goods.id = $1
                      order by name;`
-       if (request.params.favicon){
-       response.redirect('/goods')
-       }else{
 
        connect.queryDB(query, values, function (result) {
        const good = result.rows[0];
@@ -45,7 +43,7 @@ app.get('/goods/:id', (request,response) =>  {
             logger.info('result: ' + result.rows[0].toString());
             logger.info('values: ' + request.params.toString());
         });
-        }
+
            response.statusCode = 200;
       });
 
