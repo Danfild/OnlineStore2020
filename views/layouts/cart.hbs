@@ -37,15 +37,13 @@
                 </tr>
             {{/each}}
         </table>
+        <form action="/order" method="get">
+            <p> Общая сумма заказа: {{total}} руб.</p>
+            <button type="submit" class="btn btn-primary" >Перейти к оформлению заказа.
+        </form>
     {{else}}
         <p>В корзине пусто</p>
     {{/if}}
-
-    <form action="/order" method="get">
-        <p> Общая сумма заказа: {{total}} руб.</p>
-        <button type="submit" class="btn btn-primary" >Перейти к оформлению заказа.
-    </form>
-
 
     </body>
 </h5>
