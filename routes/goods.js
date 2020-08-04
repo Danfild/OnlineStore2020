@@ -1,5 +1,6 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
+const logger = require ('../config/logger').logger;
 
 module.exports = function(app) {
 app.get('/goods/:id', (request,response) =>  {
@@ -29,7 +30,6 @@ app.get('/goods/:id', (request,response) =>  {
 
 
        connect.queryDB(query, values, function (result) {
-
        const good = result.rows[0];
         response.render('layouts/good.hbs',
           {
@@ -38,13 +38,15 @@ app.get('/goods/:id', (request,response) =>  {
           'message' : request.flash('info'),
           'adminId' : adminId,
           'userId' :  request.user ? request.user.id : null,
-
            });
+            logger.info('result: ' + result.toString());
+            logger.info('result: ' + result.rows[0].toString());
+            logger.info('values: ' + request.params.toString());
         });
            response.statusCode = 200;
       });
 
-app.get('/goods/favicon.ico', (request, response) => {
+app.get('/goods/favicon.ico/:id', (request, response) => {
             response.redirect('/goods');
 })
 
