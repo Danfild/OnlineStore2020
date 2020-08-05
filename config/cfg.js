@@ -4,7 +4,7 @@ const connect = require('./connect');
 
 
 
-
+module.exports.hostname = 'http://ec2-34-229-98-104.compute-1.amazonaws.com:3000';
 //проверка авторизации
 module.exports.checkAuth = function () {
        return (req, res, next) => {

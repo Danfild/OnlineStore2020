@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ru">
-<head>
+<head >
 
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -23,19 +23,23 @@
 
     <title>{{ title }}</title>
     <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
         body {
             font-family: Gill Sans Extrabold cursive, sans-serif ;
+            margin-bottom: 60px; /* Margin bottom by footer height */
         }
 
         footer {
-            padding: 50px;
+
             position: fixed; /* Фиксированное положение */
             left: 0; bottom: 0; /* Левый нижний угол */
             color: #fff; /* Цвет текста */
             width: 100%; /* Ширина слоя */
-            height: 50px;
+            height: 35px;
         }
-
     </style>
 
 </head>

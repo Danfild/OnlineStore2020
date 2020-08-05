@@ -1,8 +1,8 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
+const send_new_order_mail = require ('../config/mail.js').send_new_order_mail;
 
 module.exports = function(app) {
-
 //заказы
 app.use('/order', cfg.checkAuth());
 app.get('/order', (request,response) => {
@@ -57,21 +57,25 @@ app.get('/order', (request,response) => {
     });
 
 app.post('/order', (request,response) => {
+            const email = [request.body.email]
+            const name = request.body.name;
+            const user_id = request.body.user_id;
+            const total = request.body.price;
 
-            const values = [request.user.id , request.body.address, request.body.price];
+            const values = [user_id , request.body.address, total];
             const order_query = `insert into shop.product.orders (user_id, address, price, order_date)
                           values ($1, $2, $3, 'now') returning orders.id`;
 
             const items_query =`update shop.product.items
                                 set order_id = $1, is_sold = true, booked_by_user = null
                                 where booked_by_user = $2`;
-             const email = [request.body.email]
+
 
             connect.queryDB(order_query, values, function (result) {
                 order_id = [result.rows[0].id, request.user.id]
 
                     connect.queryDB(items_query, order_id, function (result) {
-
+                    send_new_order_mail(email,name,user_id, total);
                     request.flash('info', 'Заказ оформле,информация о заказе поступила на вашу почту.');
                     response.redirect('/home');
                      })

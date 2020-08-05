@@ -62,7 +62,7 @@ app.get('/users/:id', (request,response) => {
 
          connect.queryDB(query, values, function (result) {
          connect.queryDB(orders_query, values, function (orders_result) {
-         if (user_id_to_show == userId ){
+         if (user_id_to_show == userId || adminId){
                const user = result.rows[0];
               response.render('layouts/users_id.hbs',
               {
