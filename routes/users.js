@@ -127,7 +127,7 @@ app.post ('/user_update_name', (request,response) =>{
             });
 });
 app.post ('/user_update_lastname', (request,response) =>{
-            const query = `update shop.product.users set username=$1  where users.id = $2;`;
+            const query = `update shop.product.users set last_name=$1  where users.id = $2;`;
             const values = [request.body.last_name, request.user.id]
             connect.queryDB(query, values, function (result) {
 
