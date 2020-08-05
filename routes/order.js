@@ -72,8 +72,8 @@ app.post('/order', (request,response) => {
 
                     connect.queryDB(items_query, order_id, function (result) {
 
-                    request.flash('info', 'Заказ оформлен');
-                    response.redirect('back');
+                    request.flash('info', 'Заказ оформле,информация о заказе поступила на вашу почту.');
+                    response.redirect('/home');
                      })
                 });
 

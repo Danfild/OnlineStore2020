@@ -4,7 +4,7 @@ const connect = require('../config/connect');
 
 
 module.exports = function(app) {
-app.use('/users', cfg.checkAdmin());
+
 app.get('/users', (request,response) => {
         const query = `select id, email, username, last_name, phone_num, to_char((date_register), 'DD Mon YYYY ') as date
                        from shop.product.users;`
@@ -26,14 +26,20 @@ app.get('/users', (request,response) => {
         response.statusCode = 200;
     });
  });
-
+app.use('/users', cfg.checkAuth())
 app.get('/users/:id', (request,response) => {
-              var userId;
-              if(request.user){
-              userId = request.user.id
-              }else{
-              userId = null
-              }
+      var adminId;
+      if (request.user){
+      adminId = request.user.is_admin
+      } else {
+      adminId = null
+      }
+      var userId;
+      if(request.user){
+      userId = request.user.id
+      }else{
+      userId = null
+      }
          const user_id_to_show = request.params.id
          const values = [user_id_to_show]
          const orders_query = `select shop.product.orders.address as address,
@@ -45,6 +51,7 @@ app.get('/users/:id', (request,response) => {
                                from shop.product.orders where user_id = $1`;
 
          const query = `select shop.product.users.email                                            as email,
+                               shop.product.users.id                                               as id,
                                shop.product.users.username                                         as user_name,
                                shop.product.users.last_name                                        as last_name,
                                shop.product.users.phone_num                                        as phone,
@@ -55,14 +62,14 @@ app.get('/users/:id', (request,response) => {
 
          connect.queryDB(query, values, function (result) {
          connect.queryDB(orders_query, values, function (orders_result) {
-         if (user_id_to_show == request.user.id ){
-
+         if (user_id_to_show == userId ){
                const user = result.rows[0];
               response.render('layouts/users_id.hbs',
               {
               title: 'Пользователь ' + user.user_name,
               'message' : request.flash('info'),
               'userId': userId,
+              'adminId' : adminId,
               'user': user,
               'rows' : orders_result.rows,
               'resultNotEmpty': orders_result.rows.length !== 0
@@ -70,15 +77,7 @@ app.get('/users/:id', (request,response) => {
          response.statusCode = 200;
                   }
                     else {
-                    const user = result.rows[0];
-                    response.render('layouts/user_info.hbs',
-                    {
-                    title: 'Пользователь ' + user.user_name,
-                    'message' : request.flash('info'),
-                    'user': user,
-                    'rows' : orders_result.rows,
-                    'resultNotEmpty': orders_result.rows.length !== 0
-                    })
+                    response.redirect('back')
                     response.statusCode = 200;
                     }
          });
