@@ -110,7 +110,6 @@ INSERT INTO product.goods ("name",price,category_id,image_url,description)VALUES
 INSERT INTO product.goods ("name",price,category_id,image_url,description)VALUES ('Intel D5 P4320 Series','127999',5,'P4320.jpg','ССд на 7680гб от Intel');
 INSERT INTO product.goods ("name",price,category_id,image_url,description)VALUES ('Intel D3-S4610 Series','89999',5,'S4610.jpg','ССд на 3840гб от Intel');
 
-
 do $$
 begin
 for r in 0..499 loop
@@ -118,4 +117,3 @@ insert into product.items (good_id) values(r/10+1);
 end loop;
 end;
 $$;
-
