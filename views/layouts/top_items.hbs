@@ -1,19 +1,21 @@
 <body>
 <script type="text/javascript">
-<script type="text/javascript">
-    (function() {
-        var blinks = document.getElementsByTagName('blink');
-        var visibility = 'hidden';
-        window.setInterval(function() {
-            for (var i = blinks.length - 1; i >= 0; i--) {
-                blinks[i].style.visibility = visibility;
-            }
-            visibility =  'hidden' ;
-        }, 2000);
-    })();
+    <
+    script
+    type = "text/javascript" >
+            (function () {
+                var blinks = document.getElementsByTagName('blink');
+                var visibility = 'hidden';
+                window.setInterval(function () {
+                    for (var i = blinks.length - 1; i >= 0; i--) {
+                        blinks[i].style.visibility = visibility;
+                    }
+                    visibility = 'hidden';
+                }, 2000);
+            })();
 </script>
 {{#if message}}
-    <blink class="alert alert-info alert-dismissible fade show" role="alert" >{{message}} </blink>
+    <blink class="alert alert-info alert-dismissible fade show" role="alert">{{message}} </blink>
 {{/if}}
 
 <div class=" text-center">
@@ -21,13 +23,15 @@
     <p></p>
 </div>
 <h5>
-<table class="table table-hover" >
+    {{#if userId}}
+<table class="table table-hover">
     <thead class="thead-dark">
     <tr>
         <th>Название товара</th>
         <th>Описание</th>
         <th>Цена</th>
         <th>Изображение</th>
+        <th></th>
     </tr>
     </thead>
     {{#if resultNotEmpty}}
@@ -40,6 +44,20 @@
                     <td>{{price}} руб.</td>
                     <td><a href="/goods/{{good_id}}">
                         <img src="/{{image_url}}" width="125"></a></td>
+                    <td>
+                        <form action="/book_good" method="post">
+                            <input name="goodId" value="{{good_id}}" hidden/>
+                            <input name="name" value="{{name}}" hidden/>
+                            <input name="userId" value="{{../userId}}" hidden/>
+                                {{#if is_available}}
+                                    <button type="submit" class="btn btn-primary btn-sm btn-dark">В корзину</button>
+                                {{else}}
+                                    <button type="submit" class="btn btn-primary btn-sm btn-dark" disabled>Нет в
+                                        наличии
+                                    </button>
+                                {{/if}}
+                        </form>
+                    </td>
                 </tr>
             {{/each}}
             </tbody>
@@ -49,5 +67,41 @@
     {{else}}
         <p>Нет данных</p>
     {{/if}}</h5>
+    {{else}}
+
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Название товара</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Изображение</th>
+                <th></th>
+            </tr>
+            </thead>
+        {{#if resultNotEmpty}}
+            {{#each all_results}}
+                    <tbody class="tbody-dark">
+                    {{#each rows}}
+                        <tr>
+                            <td><a href="/goods/{{good_id}}">{{name}}</td>
+                            <td>{{description}}</td>
+                            <td>{{price}} руб.</td>
+                            <td><a href="/goods/{{good_id}}">
+                                <img src="/{{image_url}}" width="125"></a></td>
+                            <td>
+                               <p>Для покупки авторизуйтесь</p>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+            {{/each}}
+            </table>
+            <br>
+        {{else}}
+            <p>Нет данных</p>
+        {{/if}}</h5>
+    {{/if}}
 </body>
 

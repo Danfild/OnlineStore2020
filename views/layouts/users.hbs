@@ -1,4 +1,28 @@
 <h5>
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        (function() {
+            var blinks = document.getElementsByTagName('blink');
+            var visibility = 'hidden';
+            window.setInterval(function() {
+                for (var i = blinks.length - 1; i >= 0; i--) {
+                    blinks[i].style.visibility = visibility;
+                }
+                visibility =  'hidden' ;
+            }, 2000);
+        })();
+    </script>
+
+    {{#if message}}
+        <p><div class="form-group"><blink class="alert alert-danger alert-dismissible fade show" role="alert" >{{message}}</blink></div></p>
+    {{/if}}
 
     <p>Поиск пользователя </p>
     <input class="form-control" id="myInput" type="text" placeholder="Search..">
@@ -19,6 +43,11 @@
                     <td><a href="/users/{{id}}">{{username}}</td>
                     <td><a href="/users/{{id}}">{{last_name}}</td>
                     <td>{{date}}</td>
+
+            <td>
+                <form action="/user_delete" method="post"><input type="name" name="id" value="{{id}}" hidden>
+                    <button type="submit" class="btn btn-primary btn-sm btn-danger">Удалить пользователя</button>
+                </form></td>
                 </tr>
             {{/each}}
             </tbody>
@@ -26,15 +55,6 @@
     {{else}}
         <p>Нет данных</p>
     {{/if}}
-    <script>
-        $(document).ready(function(){
-            $("#myInput").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-    </script>
+
     </body>
 </h5>

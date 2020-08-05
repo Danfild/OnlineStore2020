@@ -32,11 +32,10 @@ app.get('/cart', (request,response) => {
                                 join shop.product.goods on items.good_id = goods.id
                                 join shop.product.users on items.booked_by_user = users.id
                        where shop.product.users.id = $1
-
                        group by 2, 3`
 
 
-        connect.queryDB(query,values, function (result) {
+        connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
                  const total = result.rows.map(function(row) {
                    return row.price;
                  }).reduce((a, b) => a + b, 0)
@@ -60,7 +59,7 @@ app.post('/cart', (request,response) => {
         const query = `update shop.product.items set booked_by_user = null
                        where shop.product.items.booked_by_user = $1 and shop.product.items.id = $2`
 
-              connect.queryDB(query, values, function (result) {
+              connect.queryDB(query, values, cfg.error_handler(request,response),  function (result) {
 
                   request.flash('info', 'Товар убран из корзины ' + good_name);
                   response.redirect('back');

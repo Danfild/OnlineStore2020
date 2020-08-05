@@ -10,7 +10,7 @@ app.post('/book_good',  (request,response) => {
 
       const values = [request.user.id , request.body.goodId];
       const good_name = request.body.name;
-      connect.queryDB(query, values, function (result) {
+      connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
           request.flash('info', 'Добавлено в корзину: ' + good_name);
           response.redirect('back');

@@ -2,7 +2,6 @@ const cfg = require('../config/cfg');
 const connect = require('../config/connect');
 
 
-
 module.exports = function(app) {
 app.use('/users', cfg.checkAuth())
 app.get('/users', (request,response) => {
@@ -20,11 +19,12 @@ app.get('/users', (request,response) => {
          }else{
          userId = null
          }
-        connect.queryDB(query, [], function (result) {
+        connect.queryDB(query, [], cfg.error_handler(request,response), function (result) {
 
              response.render('layouts/users.hbs',
              {
              title: "Пользователи",
+             'message': request.flash('info'),
              'adminId': adminId,
              'userId': userId,
              'rows' : result.rows,
@@ -67,8 +67,8 @@ app.get('/users/:id', (request,response) => {
                         from shop.product.users
                         where id = $1`;
 
-         connect.queryDB(query, values, function (result) {
-         connect.queryDB(orders_query, values, function (orders_result) {
+         connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+         connect.queryDB(orders_query, values, cfg.error_handler(request,response), function (orders_result) {
          if (user_id_to_show == userId || adminId){
                const user = result.rows[0];
               response.render('layouts/users_id.hbs',
@@ -93,6 +93,18 @@ app.get('/users/:id', (request,response) => {
 
 app.use('/user_order/:id', cfg.checkAuth());
 app.get('/user_order/:id', (request,response) => {
+        var adminId;
+              if (request.user){
+              adminId = request.user.is_admin
+              } else {
+              adminId = null
+              }
+              var userId;
+              if(request.user){
+              userId = request.user.id
+              }else{
+              userId = null
+              }
         const values = [request.params.id]
         const query = `select orders.price as order_price,
                               orders.order_status as order_status,
@@ -107,7 +119,7 @@ app.get('/user_order/:id', (request,response) => {
                                 join shop.product.goods on items.good_id = goods.id
                        where orders.id =$1`
 
-        connect.queryDB(query, values, function (result) {
+        connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
               const  date = result.rows[0].date;
               const  status = result.rows[0].order_status;
 
@@ -116,6 +128,8 @@ app.get('/user_order/:id', (request,response) => {
              title: "Заказ от " + date,
              'status': status,
              'date' : date,
+             'adminId': adminId,
+             'userId':userId,
              'price': result.rows[0].order_price,
              'rows' : result.rows,
              'resultNotEmpty': result.rows.length !== 0
@@ -127,7 +141,7 @@ app.get('/user_order/:id', (request,response) => {
 app.post ('/user_update_name', (request,response) =>{
             const query = `update shop.product.users set username=$1  where users.id = $2;`;
             const values = [request.body.name, request.user.id]
-            connect.queryDB(query, values, function (result) {
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
             request.flash('info', 'Имя пользователя изменено');
             response.redirect('back');
@@ -136,7 +150,7 @@ app.post ('/user_update_name', (request,response) =>{
 app.post ('/user_update_lastname', (request,response) =>{
             const query = `update shop.product.users set last_name=$1  where users.id = $2;`;
             const values = [request.body.last_name, request.user.id]
-            connect.queryDB(query, values, function (result) {
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
             request.flash('info', 'Фамилия изменена');
             response.redirect('back');
@@ -145,7 +159,7 @@ app.post ('/user_update_lastname', (request,response) =>{
 app.post ('/user_update_email', (request,response) =>{
             const query = `update shop.product.users set email=$1  where users.id = $2;`;
             const values = [request.body.email, request.user.id]
-            connect.queryDB(query, values, function (result) {
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
             request.flash('info', 'Почтовый адрес измнен');
             response.redirect('back');
@@ -154,9 +168,20 @@ app.post ('/user_update_email', (request,response) =>{
 app.post ('/user_update_phone', (request,response) =>{
             const query = `update shop.product.users set phone_num=$1  where users.id = $2;`;
             const values = [request.body.phone, request.user.id]
-            connect.queryDB(query, values, function (result) {
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
             request.flash('info', 'Номер телефона изменен');
+            response.redirect('back');
+            });
+});
+
+
+app.post ('/user_delete', (request,response) =>{
+            const query = `delete from shop.product.users where id = $1;;`;
+            const values = [request.body.id]
+            const name = [request.body.name]
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+            request.flash('info', 'Пользователь ' + name + 'удален!' );
             response.redirect('back');
             });
 });

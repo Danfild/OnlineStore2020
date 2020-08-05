@@ -22,7 +22,9 @@
     });
 
 </script>
-<blink>{{message}} </blink>
+{{#if message}}
+    <blink class="alert alert-info alert-dismissible fade show" role="alert">{{message}} </blink>
+{{/if}}
 
 <p></p>
 <tr><input class="form-control" id="myInput" type="text" placeholder="Поиск по каталогу" "></tr>

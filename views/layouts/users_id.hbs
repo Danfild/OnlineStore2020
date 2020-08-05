@@ -12,6 +12,7 @@
     </style>
 
     <script type="text/javascript">
+
         (function () {
             var blinks = document.getElementsByTagName('blink');
             var visibility = 'hidden';
@@ -23,7 +24,10 @@
             }, 5000);
         })();
     </script>
-    <blink>{{message}} </blink>
+    {{#if message}}
+        <p><div class="form-group"><blink class="alert alert-success alert-dismissible fade show" role="alert" >{{message}}</blink></div></p>
+    {{/if}}
+
     <table class="table table-hover">
         <div class="form-group">
             <tr>

@@ -3,6 +3,7 @@ const connect = require('../config/connect');
 const fs = require("fs");
 const logger = require ('../config/logger').logger;
 
+
 module.exports = function (app) {
 
 //домашняя страница
@@ -25,19 +26,19 @@ app.get('/home', (request,response) => {
         userId = null
         }
      const category_query = 'select id,name from shop.product.categories'
-     connect.queryDB(category_query, [],  function  (result) {
+     connect.queryDB(category_query, [], cfg.error_handler(request,response),function  (result) {
          all_results = result.rows;
-         connect.queryDB(query, [1],  function  (result) {
+         connect.queryDB(query, [1],  cfg.error_handler(request,response), function  (result) {
              cat_result1 = result.rows;
-              connect.queryDB(query, [2],  function  (result) {
+              connect.queryDB(query, [2],   cfg.error_handler(request,response),function  (result) {
                   cat_result2 = result.rows;
-                  connect.queryDB(query, [3],  function  (result) {
+                  connect.queryDB(query, [3],  cfg.error_handler(request,response), function  (result) {
                       cat_result3 = result.rows;
-                      connect.queryDB(query, [4],  function  (result) {
+                      connect.queryDB(query, [4],  cfg.error_handler(request,response), function  (result) {
                           cat_result4 = result.rows;
-                           connect.queryDB(query, [5],  function  (result) {
+                           connect.queryDB(query, [5],   cfg.error_handler(request,response),function  (result) {
                                cat_result5 = result.rows;
-
+                    console.log(userId)
                                all_results[0].rows = cat_result1
                                all_results[1].rows = cat_result2
                                all_results[2].rows = cat_result3

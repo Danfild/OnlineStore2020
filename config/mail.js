@@ -51,3 +51,18 @@ send_mail([user_email], mail_content, subj);
 module.exports.send_new_order_mail = send_new_order_mail;
 
 
+const send_order_status_mail = function(user_email, user_name, user_id, order_status){
+var order_created_mail_html = fs.readFileSync('./views/layouts/order_status_mail.hbs', 'utf8');
+var order_created_mail_template = Handlebars.compile(order_created_mail_html);
+
+var mail_data_status = { "user_name": user_name, "user_email": user_email, 'order_status': order_status, "hostname": hostname, 'user_id':user_id};
+var mail_content_status = order_created_mail_template(mail_data_status);
+const subj = 'Обновлен статус вашего заказа на сайте Техностор';
+send_mail([user_email], mail_content_status, subj);
+}
+
+module.exports.send_order_status_mail = send_order_status_mail;
+
+
+
+

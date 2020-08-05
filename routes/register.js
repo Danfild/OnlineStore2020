@@ -14,7 +14,7 @@ app.post('/register', (request,response) => {
      const query = `select exists (select 1 from shop.product.users where email= $1)`;
      const values = [request.body.email]
 
-     connect.queryDB(query, values , function (user_exists) {
+     connect.queryDB(query, values , cfg.error_handler(request,response),function (user_exists) {
           if  (user_exists.rows[0].exists != true){
                 if (telephoneCheck(request.body.phone_num))
                 {
@@ -23,7 +23,7 @@ app.post('/register', (request,response) => {
                 const values = [request.body.email , request.body.username, request.body.last_name, passwordToSave, request.body.phone_num];
                 const username = request.body.email;
 
-                 connect.queryDB(query, values, function (result) {
+                 connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
                  request.flash('registration', 'Регистарация завершена ' + username);
                  response.redirect('/login');
                   });

@@ -35,7 +35,7 @@ app.get('/goods/:id', (request,response) =>  {
        if (values == 'favicon.ico' ){
        response.redirect('/catalog')
        }else{
-       connect.queryDB(query, values, function (result) {
+       connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
        const good = result.rows[0];
         response.render('layouts/good.hbs',
           {
@@ -57,7 +57,7 @@ app.post ('/good_update_price', (request,response) =>{
             const query = `update shop.product.goods set price = $1 where id = $2;`;
             const values = [request.body.price, request.body.id]
 
-            connect.queryDB(query, values, function (result) {
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
             request.flash('info', 'Цена товара изменена');
             response.redirect('back');
@@ -67,7 +67,7 @@ app.post ('/user_update_description', (request,response) =>{
             const query = `update shop.product.goods set description = $1 where id = $2;`;
             const values = [request.body.description, request.body.id]
 
-            connect.queryDB(query, values, function (result) {
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
             request.flash('info', 'Описание изменено');
             response.redirect('back');
@@ -77,7 +77,7 @@ app.post ('/user_update_full', (request,response) =>{
             const query = `update shop.product.goods set full_description = $1 where id = $2`;
             const values = [request.body.full, request.body.id]
 
-            connect.queryDB(query, values, function (result) {
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
             request.flash('info', 'Полное описание товара изменено');
             response.redirect('back');

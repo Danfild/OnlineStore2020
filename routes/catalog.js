@@ -19,7 +19,7 @@ app.get('/catalog', (request,response) => {
         userId = null
         }
 
-        connect.queryDB(query, [], function (result) {
+        connect.queryDB(query, [], cfg.error_handler(request,response), function (result) {
             response.render('layouts/catalog.hbs',
             {
             title: "Каталог товаров",
@@ -67,7 +67,7 @@ app.get('/catalog/:id', (request,response) => {
                    }else{
 
 
-        connect.queryDB(query, values, function (result) {
+        connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
             response.render('layouts/catalog_per_category.hbs',
             {

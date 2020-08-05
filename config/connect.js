@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const logger = require ('../config/logger').logger;
 
 //коннект к базе
-module.exports.queryDB = function (query, params, resultHandler) {
+module.exports.queryDB = function (query, params, error_handler_with_response,resultHandler) {
     pool.connect(function (err, client, done) {
         if (err) {
             logger.error("Cannot connect to the DB" + err);
@@ -16,8 +16,10 @@ module.exports.queryDB = function (query, params, resultHandler) {
              logger.error("Cannot query  the DB" + err);
              logger.error("query: " + query);
              logger.error("params: " + params);
-            }
+             error_handler_with_response(err)
+            }else{
             resultHandler(result)
+            }
         })
     })
 };

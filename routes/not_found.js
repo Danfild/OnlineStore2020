@@ -1,6 +1,10 @@
+const logger = require ('../config/logger').logger;
+
+module.exports.test = function(){
+console.log('fdfd')
+}
 
 module.exports = function(app){
-
 
 app.get('*', function(request, response){
             var adminId;
@@ -21,6 +25,5 @@ app.get('*', function(request, response){
                   'adminId': adminId,
                 })
 });
-
 
 }

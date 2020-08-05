@@ -17,7 +17,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-const host = '172.31.34.41';
+const host = '127.0.0.1';
 const port = 3000;
 const cfg = require('./config/cfg');
 const connect = require('./config/connect');
@@ -28,7 +28,6 @@ const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: 'hbs'
 });
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -64,8 +63,9 @@ require('./routes/analitycs')(app);
 require('./routes/order')(app);
 require('./routes/cart')(app);
 require('./routes/home')(app);
-require('./routes/not_found')(app);
 require('./routes/delete_good')(app);
+require('./routes/not_found')(app);
+
 
 
 

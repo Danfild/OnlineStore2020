@@ -51,7 +51,7 @@ app.post('/create_items', (request,response) => {
                                          CROSS  JOIN LATERAL (SELECT $2::int) t`
 
 
-            connect.queryDB(create_good_query,create_good_values, function (result) {
+            connect.queryDB(create_good_query,create_good_values, cfg.error_handler(request,response), function (result) {
                 const create_items_values = [ request.body.count , result.rows[0].id]
                 connect.queryDB(create_items_query, create_items_values, function (ignored) {
                     request.flash('info','Товар ' + name + 'добавлен в каталог.');
@@ -62,20 +62,6 @@ app.post('/create_items', (request,response) => {
 
 });
 
-
- //страницы администратора
- app.use('/admin', cfg.checkAdmin());
- app.get('/admin', (request,response) => {
-
-              response.render('./layouts/create_items.hbs',
-              {
-              title: "Страница админа",
-              'userId' : request.user ? request.user.id : null,
-              'adminId': request.user.is_admin,
-              isIndex: true
-              });
-         response.statusCode = 200;
-         });
  }
 
 

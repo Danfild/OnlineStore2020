@@ -1,6 +1,8 @@
 const cfg = require('../config/cfg');
 const connect = require('../config/connect');
 const send_new_order_mail = require ('../config/mail.js').send_new_order_mail;
+const send_order_status_mail = require ('../config/mail.js').send_order_status_mail;
+
 
 module.exports = function(app) {
 //заказы
@@ -37,7 +39,7 @@ app.get('/order', (request,response) => {
                        join shop.product.users on items.booked_by_user = users.id
                        where shop.product.users.id = $1`
 
-        connect.queryDB(query, values, function (result) {
+        connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
         const user = result.rows[0];
         const total = result.rows.map(function(row) {
                            return row.good_price;
@@ -71,10 +73,10 @@ app.post('/order', (request,response) => {
                                 where booked_by_user = $2`;
 
 
-            connect.queryDB(order_query, values, function (result) {
+            connect.queryDB(order_query, values, cfg.error_handler(request,response), function (result) {
                 order_id = [result.rows[0].id, request.user.id]
 
-                    connect.queryDB(items_query, order_id, function (result) {
+                    connect.queryDB(items_query, order_id, cfg.error_handler(request,response), function (result) {
                     send_new_order_mail(email,name,user_id, total);
                     request.flash('info', 'Заказ оформле,информация о заказе поступила на вашу почту.');
                     response.redirect('/home');
@@ -112,7 +114,7 @@ app.get('/orders', (request,response) => {
                                     order by date`
             const status_dictionary = {'created':'Создан','send': 'Отправлен','delivered':'Доставляется','canceled':'Отменён'}
 
-connect.queryDB(query, [], function (result) {
+connect.queryDB(query, [], cfg.error_handler(request,response), function (result) {
         result.rows.forEach( row => {row.status = status_dictionary[row.status]})
         response.render('./layouts/admin_orders.hbs',
         {
@@ -148,7 +150,7 @@ app.get('/orders/:id', (request,response) => {
                                 join shop.product.goods on items.good_id = goods.id
                        where orders.id = $1`
 
-        connect.queryDB(query, values, function (result) {
+        connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
               const  date = result.rows[0].date;
               const  address = result.rows[0].address;
               const  username = result.rows[0].username;
@@ -176,10 +178,22 @@ app.post('/update_order', (request,response) => {
         const query = `update shop.product.orders
                        set order_status = $2
                        where id = $1;`
-        connect.queryDB(query, values, function (result) {
+        const email = request.body.email;
+        const user_id = request.body.user_id;
+        const name = request.body.username;
+        const order_id = request.body.id;
+        const order_status = request.body.order_status;
 
+        connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+
+        const query_reset_items = `update shop.product.items
+                                set booked_by_user = null, order_id = null,
+                                is_sold = false where order_id = $1`
+        connect.queryDB(query_reset_items, [request.body.id], cfg.error_handler(request,response), function (result) {
+                send_order_status_mail(email,name,order_id, order_status);
                 request.flash('info', 'Стасус заказа обновлен');
                 response.redirect('back');
+                })
                 })
             });
 
