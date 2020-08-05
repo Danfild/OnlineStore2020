@@ -118,6 +118,8 @@ connect.queryDB(query, [], function (result) {
         {
             title: "Информация о заказах",
             'rows' : result.rows,
+            'userId': userId,
+            'adminId' : adminId,
             'message' :request.flash('info'),
             'resultNotEmpty': result.rows.length !== 0
              });

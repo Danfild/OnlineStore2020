@@ -4,7 +4,7 @@ const connect = require('../config/connect');
 
 
 module.exports = function(app) {
-
+app.use('/users', cfg.checkAuth())
 app.get('/users', (request,response) => {
         const query = `select id, email, username, last_name, phone_num, to_char((date_register), 'DD Mon YYYY ') as date
                        from shop.product.users;`
@@ -14,19 +14,26 @@ app.get('/users', (request,response) => {
          } else {
            adminId = null
          }
+         var userId;
+         if(request.user){
+         userId = request.user.id
+         }else{
+         userId = null
+         }
         connect.queryDB(query, [], function (result) {
 
              response.render('layouts/users.hbs',
              {
              title: "Пользователи",
              'adminId': adminId,
+             'userId': userId,
              'rows' : result.rows,
              'resultNotEmpty': result.rows.length !== 0
               });
         response.statusCode = 200;
     });
  });
-app.use('/users', cfg.checkAuth())
+
 app.get('/users/:id', (request,response) => {
       var adminId;
       if (request.user){
