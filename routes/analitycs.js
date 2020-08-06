@@ -5,9 +5,22 @@ const connect = require('../config/connect');
 
 module.exports = function(app) {
 
-//страница аналитики
-//app.use('/analitycs', cfg.checkAdmin());
+
+app.use('/analitycs', cfg.checkAdmin());
 app.get('/analitycs', (request,response) => {
+        var adminId;
+        if (request.user){
+        adminId = request.user.is_admin
+        } else {
+        adminId = null
+        }
+        var userId;
+        if(request.user){
+        userId = request.user.id
+        }else{
+        userId = null
+        }
+
         const query= `with sold_items as (select id, good_id from product.items where is_sold = true)
 
                       select MAX(shop.product.goods.name) as good_name,
@@ -40,7 +53,6 @@ app.get('/analitycs', (request,response) => {
             const data_good_name = result.rows.map(function(row){
             return '/' + row.good_name + '/'
             })
-            console.log(data_good_name);
         connect.queryDB(total_query,[], cfg.error_handler(request,response), function (result) {
             const month  = result.rows.map(function(row){
             return row.month
@@ -49,8 +61,10 @@ app.get('/analitycs', (request,response) => {
             return row.total
             });
 
-        response.render('./layouts/test.hbs',{
+        response.render('./layouts/analitycs.hbs',{
                 title: 'Аналитическая сводка',
+                'userId' : userId,
+                 'adminId' : adminId,
                 'data_set': data_set,
                 'good_name': data_good_name,
                 'month': month,

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 navbar-expand-lg fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" >
     <a class="navbar-brand " href="/home">
         <img src="/logo.svg" width="30" height="30" class="d-inline-block align-top">
         Техностор
@@ -16,35 +16,34 @@
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Админ Меню
                 </a>
-                <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu ">
-                    <a class="dropdown-item" href=/analitycs>Аналитика</a>
-                    <a class="dropdown-item" href="/admin/create_items">Добавление товара</a>
-                    <a class="dropdown-item" href="/users">Пользователи</a>
-                    <a class="dropdown-item" href="/orders">Заказы</a>
-                </div>
+            <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu ">
+                <a class="dropdown-item" href=/analitycs>Аналитика</a>
+                <a class="dropdown-item" href="/admin/create_items">Добавление товара</a>
+                <a class="dropdown-item" href="/users">Пользователи</a>
+                <a class="dropdown-item" href="/orders">Заказы</a>
+            </div>
             {{else}}
 
             {{/if}}
         </ul>
 
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item "><a class="nav-link" href="/catalog">Каталог товара </a></li>
-        <li class="nav-item "><a class="nav-link" href=/analitycs>Аналитика</a></li>
-        {{#if userId}}
-            <li class="nav-item"><a class="nav-link" href="/cart">Корзина</a></li>
-            <li class="nav-item "><a class="nav-link" href="/users/{{userId}}">Личный кабинет</a></li>
-        </ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item " ><a class="nav-link" href="/catalog">Каталог товара </a></li>
+            {{#if userId}}
+                <li class="nav-item" ><a class="nav-link" href="/cart">Корзина</a></li>
+                <li class="nav-item "> <a class="nav-link" href="/users/{{userId}}">Личный кабинет</a></li>
+            </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="/logout">Выйти</a></li>
             </ul>
-        {{else}}
-            <li class="nav-item"><a class="nav-link" href="/cart" hidden>Корзина</a></li>
-            <li class="nav-item "><a class="nav-link" href="/users/{{userId}}" hidden>Личный кабинет</a></li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
+            {{else}}
+                <li class="nav-item" ><a class="nav-link" href="/cart" hidden>Корзина</a></li>
+                <li class="nav-item "> <a class="nav-link" href="/users/{{userId}}" hidden>Личный кабинет</a></li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="/login">Авторизация</a></li>
                 <li class="nav-item"><a class="nav-link" href="/register">Регистрация</a></li>
-            </ul>
-        {{/if}}
+                </ul>
+            {{/if}}
     </div>
 </nav>

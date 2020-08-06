@@ -21,9 +21,13 @@
             <tr>
                 <th>Номер заказа</th>
                 <th>Дата заказа</th>
-                <th>Цена заказа</th><th></th>
+                <th>Цена заказа</th>
                 <th>Статус заказа</th>
-                <th></th><th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Действия</th>
+                <th>с заказом</th>
             </tr>
             </thead>
             {{#each rows}}
@@ -34,9 +38,6 @@
                         <td>{{id}}</td>
                         <td>{{date}}</td>
                         <td>{{price}} руб.</td>
-                        <td><input type="text" name="email" value="{{email}}" hidden></td>
-                        <td><input type="text" name="username" value="{{username}}" hidden></td>
-                        <td><input type="text" name="user_id" value="{{user_id}}" hidden></td>
                         <td>
                             <div class="form-group">
                                 <select class="form-control" id="exampleFormControlSelect1 " name="order_status">
@@ -48,6 +49,9 @@
                                 </select>
                             </div>
                         </td>
+                        <td><input type="text" name="email" value="{{email}}" hidden></td>
+                        <td><input type="text" name="username" value="{{username}}" hidden></td>
+                        <td><input type="text" name="user_id" value="{{user_id}}" hidden></td>
                         <td>
                             <button type="submit" class="btn btn-primary btn-sm btn-success">Изменить статус</button>
                         </td>

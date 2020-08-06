@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+</head>
+<body>
+
+<div >
+    <canvas id="myChartA" class="myChart"></canvas>
+</div>
+<br>
+<div>
+    <canvas id="myChartB" class="myChart"></canvas>
+</div>
+    <script>
+        var ctxA = document.getElementById("myChartA").getContext("2d");
+        var ctxB = document.getElementById("myChartB").getContext("2d");
+
+        Chart.defaults.global.defaultFontFamily = 'Lato';
+         Chart.defaults.global.defaultFontSize = 12;
+        Chart.defaults.global.defaultFontColor = '#777';
+
+        var myChartA = new Chart(ctxA,{
+            type :'bar',  // bar,horizontalBar,pie,line,doughnut,radar,polarArea
+            data:{
+                labels: [{{good_name}}],
+                datasets:[{
+                    label:'Проданные товары',
+                    data:[{{data_set}}, 12 ],
+                    backgroundColor: [
+                        'rgba(243,4,4,0.56)',
+                        'rgba(6,10,243,0.56)',
+                        'rgba(239,101,9,0.56)',
+                        'rgba(79,192,75,0.56)',
+                        'rgba(193,245,5,0.56)',
+                        'rgba(7,165,250,0.56)',
+                        'rgba(88,22,210,0.56)',
+                        'rgba(198,47,160,0.56)',
+                        'rgba(226,10,241,0.56)',
+                        'rgba(232,102,255,0.56)',
+                        'rgba(255, 159, 64,0.56)'
+                    ],
+                    borderWidth: 1,
+                    borderColor: '#777',
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: '000'
+                }]
+
+            },
+            options: {
+                title:{
+                    display: true,
+                    text:'Самые продаваемые товары',
+                    fontSize: 20
+                },
+                legend:{
+                    display: false,
+                    position : 'right',
+                    labels:{
+                        fontColor: '#000'
+                    }
+                },
+                layout:{
+                    padding:{
+                        left:50,
+                        right:0,
+                        bottom:0,
+                        top:0
+                    }
+                },
+                tooltips:{
+                    enabled:false
+                }
+            }
+        });
+
+        var myChartB = new Chart(ctxB,{
+            type :'bar',  // bar,horizontalBar,pie,line,doughnut,radar,polarArea
+            data:{
+                labels: [{{month}}],
+                datasets:[{
+                    label:'Проданные товары',
+                    data:[{{total}}],
+                    backgroundColor: [
+                        'rgba(243,4,4,0.56)',
+                        'rgba(6,10,243,0.56)',
+                        'rgba(79,192,75,0.56)',
+
+                    ],
+                    borderWidth: 1,
+                    borderColor: '#777',
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: '000'
+                }]
+
+            },
+            options: {
+                title:{
+                    display: true,
+                    text:'Общая сумма проданых товаров за последние 3 месяца',
+                    fontSize: 20
+                },
+                legend:{
+                    display: false,
+                    position : 'right',
+                    labels:{
+                        fontColor: '#000'
+                    }
+                },
+                layout:{
+                    padding:{
+                        left:50,
+                        right:0,
+                        bottom:0,
+                        top:0
+                    }
+                },
+                tooltips:{
+                    enabled:false
+                }
+            }
+        });
+
+    </script>
+</div>
+</body>
+</html>
