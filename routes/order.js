@@ -75,10 +75,10 @@ app.post('/order', (request,response) => {
 
             connect.queryDB(order_query, values, cfg.error_handler(request,response), function (result) {
                 order_id = [result.rows[0].id, request.user.id]
-
-                    connect.queryDB(items_query, order_id, cfg.error_handler(request,response), function (result) {
                     send_new_order_mail(email,name,user_id, total);
-                    request.flash('info', 'Заказ оформле,информация о заказе поступила на вашу почту.');
+                    connect.queryDB(items_query, order_id, cfg.error_handler(request,response), function (result) {
+
+                    request.flash('info', 'Заказ оформлен,информация о заказе поступила на вашу почту ' + email + '.');
                     response.redirect('/home');
                      })
                 });
@@ -134,6 +134,7 @@ app.get('/orders/:id', (request,response) => {
         const query = `select shop.product.orders.id                                          as id,
                               shop.product.users.username                                     as username,
                               shop.product.users.phone_num                                    as phone,
+                              shop.product.users.id                                           as user_id,
                               shop.product.users.email                                        as email,
                               shop.product.orders.address                                     as address,
                               to_char(shop.product.orders.order_date, 'DD Mon YYYY HH:MI:SS') as date,
@@ -145,9 +146,9 @@ app.get('/orders/:id', (request,response) => {
                               shop.product.items.good_id                                      as good_id
 
                        from shop.product.orders
+                                left join shop.product.items on orders.id = items.order_id
                                 join shop.product.users on orders.user_id = users.id
-                                join shop.product.items on orders.id = items.order_id
-                                join shop.product.goods on items.good_id = goods.id
+                                left join shop.product.goods on items.good_id = goods.id
                        where orders.id = $1`
 
         connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
@@ -184,19 +185,28 @@ app.post('/update_order', (request,response) => {
         const order_id = request.body.id;
         const order_status = request.body.order_status;
 
-        connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+         console.log(order_status)
+          if (order_status != 'canceled'){
+       connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+            send_order_status_mail(email,name,order_id, order_status);
+                      request.flash('info', 'Стасус заказа обновлен');
+                      response.redirect('back');
+                      });
 
-        const query_reset_items = `update shop.product.items
-                                set booked_by_user = null, order_id = null,
-                                is_sold = false where order_id = $1`
+          }else{
+           connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+           const query_reset_items = `update shop.product.items
+                                      set booked_by_user = null, order_id = null,
+                                      is_sold = false where order_id = $1`
         connect.queryDB(query_reset_items, [request.body.id], cfg.error_handler(request,response), function (result) {
+
                 send_order_status_mail(email,name,order_id, order_status);
                 request.flash('info', 'Стасус заказа обновлен');
                 response.redirect('back');
                 })
                 })
-            });
-
+            }
+})
 }
 
 

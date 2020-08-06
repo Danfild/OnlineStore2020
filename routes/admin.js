@@ -53,7 +53,7 @@ app.post('/create_items', (request,response) => {
 
             connect.queryDB(create_good_query,create_good_values, cfg.error_handler(request,response), function (result) {
                 const create_items_values = [ request.body.count , result.rows[0].id]
-                connect.queryDB(create_items_query, create_items_values, function (ignored) {
+                connect.queryDB(create_items_query, create_items_values,cfg.error_handler(request,response), function (ignored) {
                     request.flash('info','Товар ' + name + 'добавлен в каталог.');
                     response.redirect('back');
                     });

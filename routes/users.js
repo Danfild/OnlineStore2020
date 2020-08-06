@@ -106,18 +106,26 @@ app.get('/user_order/:id', (request,response) => {
               userId = null
               }
         const values = [request.params.id]
-        const query = `select orders.price as order_price,
-                              orders.order_status as order_status,
-                              to_char((shop.product.orders.order_date), 'DD Mon YYYY ') as date,
-                              goods.name as good_name,
-                              goods.id as good_id,
-                              goods.image_url as image,
-                              goods.price as price,
-                              goods.description as info
+        const query = `select shop.product.orders.id                                          as id,
+                              shop.product.users.username                                     as username,
+                              shop.product.users.phone_num                                    as phone,
+                              shop.product.users.id                                   as user_id,
+
+                              shop.product.users.email                                        as email,
+                              shop.product.orders.address                                     as address,
+                              to_char(shop.product.orders.order_date, 'DD Mon YYYY HH:MI:SS') as date,
+                              shop.product.orders.price                                       as price,
+                              shop.product.orders.order_status                                as status,
+                              shop.product.goods.name                                         as good_name,
+                              shop.product.goods.price                                        as good_price,
+                              shop.product.goods.image_url                                    as image,
+                              shop.product.items.good_id                                      as good_id
+
                        from shop.product.orders
-                                join shop.product.items on orders.id = items.order_id
-                                join shop.product.goods on items.good_id = goods.id
-                       where orders.id =$1`
+                                left join shop.product.items on orders.id = items.order_id
+                                join shop.product.users on orders.user_id = users.id
+                                left join shop.product.goods on items.good_id = goods.id
+                       where orders.id = $1;`
 
         connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
               const  date = result.rows[0].date;
