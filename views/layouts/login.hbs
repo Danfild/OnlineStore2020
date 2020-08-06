@@ -1,3 +1,4 @@
+<body>
 <script type="text/javascript">
     (function() {
         var blinks = document.getElementsByTagName('blink');
@@ -10,11 +11,14 @@
         }, 2000);
     })();
 </script>
+<br>
 {{#if message}}
     <p><div class="form-group"><blink class="alert alert-success alert-dismissible fade show" role="alert" >{{message}}</blink></div></p>
 {{/if}}
-
+<p></p>
+<br>
 <form action="/login" method="post">
+    <br>
     <label for="exampleInputLogin1">Логин</label>
     <input type="name" name="username" class="form-control" id="exampleInputLogin1"  placeholder="Введите свой почтовый ящик">
     <small id="emailHelp" class="form-text text-muted">Мы никогда не передадим ваши данные кому-либо еще.</small>
@@ -25,3 +29,4 @@
 
     <button type="submit" class="btn btn-primary btn-dark">Авторизоваться</button>
 </form>
+</body>

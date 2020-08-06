@@ -36,6 +36,7 @@ app.get('/cart', (request,response) => {
 
 
         connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+        console.log(result.rows)
                  const total = result.rows.map(function(row) {
                    return row.price;
                  }).reduce((a, b) => a + b, 0)
@@ -43,7 +44,7 @@ app.get('/cart', (request,response) => {
                       title: "Корзина",
                       'total': total,
                       'userId' : userId,
-                      'adminIdId' : adminId,
+                      'adminId' : adminId,
                       'rows' : result.rows,
                       'message' : request.flash('info'),
                       'resultNotEmpty': result.rows.length !== 0,

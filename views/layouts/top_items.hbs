@@ -1,8 +1,5 @@
 <body>
 <script type="text/javascript">
-    <
-    script
-    type = "text/javascript" >
             (function () {
                 var blinks = document.getElementsByTagName('blink');
                 var visibility = 'hidden';
@@ -20,35 +17,34 @@
 
 <div class=" text-center">
     <h3>Самые продаваемые товары</h3>
-    <p></p>
+    <br>
 </div>
 <h5>
-    {{#if userId}}
-<table class="table table-hover">
-    <thead class="thead-dark">
-    <tr>
-        <th>Название товара</th>
-        <th>Описание</th>
-        <th>Цена</th>
-        <th>Изображение</th>
-        <th></th>
-    </tr>
-    </thead>
+{{#if userId}}
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Изображение</th>
+            <th></th>
+            <th>Название товара</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th></th>
+
+        </tr>
+        </thead>
     {{#if resultNotEmpty}}
         {{#each all_results}}
-            <tbody class="tbody-dark">
-            {{#each rows}}
-                <tr>
-                    <td><a href="/goods/{{good_id}}">{{name}}</td>
-                    <td>{{description}}</td>
-                    <td>{{price}} руб.</td>
-                    <td><a href="/goods/{{good_id}}">
-                        <img src="/{{image_url}}" width="125"></a></td>
-                    <td>
-                        <form action="/book_good" method="post">
-                            <input name="goodId" value="{{good_id}}" hidden/>
-                            <input name="name" value="{{name}}" hidden/>
-                            <input name="userId" value="{{../userId}}" hidden/>
+                <tbody class="tbody-dark">
+                {{#each rows}}
+                    <tr>
+                        <td><a href="/goods/{{good_id}}"><img src="/{{image_url}}" width="125" class="rounded" alt="Cinque Terre"></a><td>
+                        <td><a href="/goods/{{good_id}}">{{name}}</td>
+                        <td>{{description}}</td>
+                        <td>{{price}} руб.</td>
+                        <td>
+                            <form action="/book_good" method="post">
+
                                 {{#if is_available}}
                                     <button type="submit" class="btn btn-primary btn-sm btn-dark">В корзину</button>
                                 {{else}}
@@ -56,52 +52,56 @@
                                         наличии
                                     </button>
                                 {{/if}}
-                        </form>
-                    </td>
-                </tr>
-            {{/each}}
-            </tbody>
+                                <input name="goodId" value="{{good_id}}" hidden/>
+                                <input name="name" value="{{name}}" hidden/>
+                                <input name="userId" value="{{../userId}}" hidden/>
+                            </form>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
         {{/each}}
-    </table>
+        </table>
+            <br>
+    {{else}}
+            <p>Нет данных</p>
+    {{/if}}</h5>
+{{else}}
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Изображение</th>
+            <th></th>
+            <th>Название товара</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th></th>
+            <th></th>
+
+        </tr>
+        </thead>
+    {{#if resultNotEmpty}}
+        {{#each all_results}}
+                <tbody class="tbody-dark">
+                {{#each rows}}
+                    <tr>
+                        <td><a href="/goods/{{good_id}}"><img src="/{{image_url}}" width="125" class="rounded" alt="Cinque Terre"></a><td>
+                        <td><a href="/goods/{{good_id}}">{{name}}</td>
+                        <td>{{description}}</td>
+                        <td>{{price}} руб.</td>
+                        <td>
+                        <td>
+                            <p>Для покупки авторизуйтесь</p>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+        {{/each}}
+        </table>
         <br>
     {{else}}
         <p>Нет данных</p>
     {{/if}}</h5>
-    {{else}}
-
-
-        <table class="table table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th>Название товара</th>
-                <th>Описание</th>
-                <th>Цена</th>
-                <th>Изображение</th>
-                <th></th>
-            </tr>
-            </thead>
-        {{#if resultNotEmpty}}
-            {{#each all_results}}
-                    <tbody class="tbody-dark">
-                    {{#each rows}}
-                        <tr>
-                            <td><a href="/goods/{{good_id}}">{{name}}</td>
-                            <td>{{description}}</td>
-                            <td>{{price}} руб.</td>
-                            <td><a href="/goods/{{good_id}}">
-                                <img src="/{{image_url}}" width="125"></a></td>
-                            <td>
-                               <p>Для покупки авторизуйтесь</p>
-                            </td>
-                        </tr>
-                    {{/each}}
-                    </tbody>
-            {{/each}}
-            </table>
-            <br>
-        {{else}}
-            <p>Нет данных</p>
-        {{/if}}</h5>
-    {{/if}}
+{{/if}}
 </body>
 

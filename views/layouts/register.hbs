@@ -1,3 +1,4 @@
+<body>
 <script type="text/javascript">
     (function () {
         var blinks = document.getElementsByTagName('blink');
@@ -19,16 +20,17 @@
         return output;
     }
 </script>
-
+<br>
 {{#if message}}
     <p><div class="form-group"><blink class="alert alert-danger alert-dismissible fade show" role="alert" >{{message}}</blink></div></p>
 {{/if}}
-
+<br>
 {{#if message_registration}}
     <blink  class="alert alert-danger alert-dismissible fade show" role="alert">{{message_registration}}</blink>
 {{/if}}
 
 <p></p>
+<br>
 <label  id="my-alert" class="alert alert-danger alert-dismissible fade show" role="alert">Пожалуйста, заполните все поля формы!</label>
 <form action="/register" method="post" onsubmit="return ValidMail()">
     <div class="form-group">
@@ -55,3 +57,4 @@
     <button type="submit" class="btn btn-primary btn-dark">Зарегистрироваться</button>
 
 </form>
+</body>
