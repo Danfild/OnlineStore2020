@@ -36,10 +36,12 @@ app.get('/cart', (request,response) => {
 
 
         connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
-        console.log(result.rows)
+                const quantity = result.rows.length
                  const total = result.rows.map(function(row) {
                    return row.price;
-                 }).reduce((a, b) => a + b, 0)
+                 }).reduce((a, b) => a * quantity + b, 0)
+
+
                 response.render('./layouts/cart.hbs', {
                       title: "Корзина",
                       'total': total,
