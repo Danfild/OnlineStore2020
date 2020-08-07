@@ -78,7 +78,7 @@ app.post('/order', (request,response) => {
                     send_new_order_mail(email,name,user_id, total);
                     connect.queryDB(items_query, order_id, cfg.error_handler(request,response), function (result) {
 
-                    request.flash('info', 'Заказ оформлен,информация о заказе поступила на вашу почту ' + email + '.');
+                    request.flash('info', 'Заказ оформлен. Информация о заказе поступила на вашу почту ' + email + '.');
                     response.redirect('/home');
                      })
                 });

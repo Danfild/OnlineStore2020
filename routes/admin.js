@@ -36,6 +36,43 @@ const storageConfig = multer.diskStorage({
   });
 
 
+app.use('/bd', cfg.checkAdmin());
+app.get('/bd',(request,response) =>{
+             var adminId;
+              var userId;
+                 if (request.user ){
+                 userId = request.user.id
+                 adminId= request.user.is_admin
+                 } else {
+                 userId = null
+                 adminId = null
+                  }
+            response.render('./layouts/bd.hbs',{
+            title: 'Структура базы данных',
+            'adminId': adminId,
+            'userId' : userId
+            })
+            response.statusCode = 200;
+});
+
+app.use('/mail', cfg.checkAdmin());
+app.get('/mail',(request,response) =>{
+             var adminId;
+              var userId;
+                 if (request.user ){
+                 userId = request.user.id
+                 adminId= request.user.is_admin
+                 } else {
+                 userId = null
+                 adminId = null
+                  }
+            response.render('./layouts/mail.hbs',{
+            title: 'Пример отправки писем',
+            'adminId': adminId,
+            'userId' : userId
+            })
+            response.statusCode = 200;
+});
 //app.use(multer({storage:storageConfig}).single("image_url"));
 //app.use(multer({dest:"uploads"}).single("image_url"));
 app.post('/create_items', (request,response) => {

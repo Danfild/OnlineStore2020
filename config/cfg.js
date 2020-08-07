@@ -19,8 +19,8 @@ module.exports.error_handler = error_handler =   function (request, response){
            }else{
            userId = null
            }
-     response.render('./layouts/not_found', {
-        title: "404 Not Found",
+     response.render('./layouts/500.hbs', {
+        title: "500 internal server error",
         'userId' :  userId,
         'adminId': adminId,
         })

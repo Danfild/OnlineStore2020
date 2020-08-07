@@ -44,7 +44,9 @@ app.get('/analitycs', (request,response) => {
                              select EXTRACT(MONTH FROM now()) - 2 as month, coalesce(sum(price), 0) as total
                              from shop.product.orders
                              where EXTRACT(YEAR FROM now()) = EXTRACT(YEAR FROM order_date)
-                               and EXTRACT(MONTH FROM now()) - 2 = EXTRACT(MONTH FROM order_date);`
+                               and EXTRACT(MONTH FROM now()) - 2 = EXTRACT(MONTH FROM order_date)
+                             order by  month asc ;`
+            const month_dictionary ={'6':'/Июнь/', '7': '/Июль/','8':'/Август/','9':'Сентрябрь' }
 
         connect.queryDB(query, [], cfg.error_handler(request,response), function (result) {
             const data_set = result.rows.map(function(row){
@@ -54,6 +56,7 @@ app.get('/analitycs', (request,response) => {
             return '/' + row.good_name + '/'
             })
         connect.queryDB(total_query,[], cfg.error_handler(request,response), function (result) {
+         result.rows.forEach( row => {row.month = month_dictionary[row.month]})
             const month  = result.rows.map(function(row){
             return row.month
             });
@@ -67,7 +70,7 @@ app.get('/analitycs', (request,response) => {
                  'adminId' : adminId,
                 'data_set': data_set,
                 'good_name': data_good_name,
-                'month': month,
+                'month':   month  ,
                 'total': total
         });
         response.statusCode = 200;

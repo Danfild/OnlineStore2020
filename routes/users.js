@@ -169,7 +169,7 @@ app.post ('/user_update_email', (request,response) =>{
             const values = [request.body.email, request.user.id]
             connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
 
-            request.flash('info', 'Почтовый адрес измнен');
+            request.flash('info', 'Почтовый адрес изменен');
             response.redirect('back');
             });
 });
