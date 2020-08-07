@@ -53,6 +53,20 @@ app.get('/goods/:id', (request,response) =>  {
 
 
 
+app.post ('/add_good', (request,response) =>{
+
+            const values = [ request.body.count, request.body.good_id]
+            const query = `INSERT into product.items (good_id)
+                           SELECT t.*
+                           FROM   generate_series(1,$1) i
+                           CROSS  JOIN LATERAL (SELECT $2::int) t`
+            connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+            logger.info(`Товар ${request.body.good_id} успешно добавлен на склад. Количество: ${request.body.count}`)
+            request.flash('info', `Товар успешно добавлен на склад. Количество: ${request.body.count}`);
+            response.redirect('back');
+            });
+});
+
 app.post ('/good_update_price', (request,response) =>{
             const query = `update shop.product.goods set price = $1 where id = $2;`;
             const values = [request.body.price, request.body.id]

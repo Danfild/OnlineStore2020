@@ -40,6 +40,10 @@
                 <td hidden>{{../userId}}</td>
                 {{#if ../userId}}
                     <th>{{> form_add_in_cart }}</th>
+                    {{else}}
+                    <td>
+                        <p><a href="/login">Авторизуйтесь</a> чтобы заказать товар.</p>
+                    </td>
                 {{/if}}
                 {{#if ../adminId}}
                     <th>{{> form_delete_good }}</th>
