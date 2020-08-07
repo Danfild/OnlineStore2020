@@ -97,7 +97,12 @@
 
     {{#if userId}}
         {{> form_add_good }}
+        {{else}}
+        <td>
+            <p><a href="/login">Авторизуйтесь</a> чтобы заказать товар.</p>
+        </td>
     {{/if}}
+
 
 
     </body>
