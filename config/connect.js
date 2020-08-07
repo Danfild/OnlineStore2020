@@ -16,6 +16,7 @@ module.exports.queryDB = function (query, params, error_handler_with_response,re
              logger.error("Cannot query  the DB" + err);
              logger.error("query: " + query);
              logger.error("params: " + params);
+             logger.error('Cannot read property ' + params)
              error_handler_with_response(err)
             }else{
             resultHandler(result)

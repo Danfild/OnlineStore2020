@@ -68,6 +68,9 @@ app.get('/users/:id', (request,response) => {
                         where id = $1`;
 
          connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
+         if(result.rows.length == 0){
+         response.redirect('8')
+         }else{
          connect.queryDB(orders_query, values, cfg.error_handler(request,response), function (orders_result) {
          if (user_id_to_show == userId || adminId){
                const user = result.rows[0];
@@ -88,6 +91,7 @@ app.get('/users/:id', (request,response) => {
                     response.statusCode = 200;
                     }
          });
+         }
      });
   });
 
