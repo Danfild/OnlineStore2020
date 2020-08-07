@@ -62,6 +62,18 @@
         <hr>
 
         <h4><label for="exampleFormControlTextarea1">Товаров в наличии: {{good.in_stock}} шт.</label></h4>
+        <form action="/add_good" method="post">
+            <p>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Количество товара</label>
+                <input type="number" name="good_id" value="{{good.id}}" hidden>
+                <input required type="number" name="count">
+            <button type="submit" class="btn btn-primary btn-sm btn-dark">Добавить товар на склад</button>
+
+        </div></p>
+        </form>
+
+
     {{else}}
         <h3>{{good.name}}</h3>
 

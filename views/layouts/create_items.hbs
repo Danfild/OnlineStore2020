@@ -11,6 +11,10 @@
     })();
 </script>
 
+{{#if message}}
+    <blink class="alert alert-info alert-dismissible fade show" role="alert">{{message}} </blink>
+{{/if}}
+
     <form  action="/create_items"   method="post">
         <div class="form-group">
         <label >Название товара</label>

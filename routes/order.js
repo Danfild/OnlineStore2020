@@ -112,7 +112,7 @@ app.get('/orders', (request,response) => {
                            from shop.product.orders
                                     join shop.product.users on orders.user_id = users.id
                                     order by date`
-            const status_dictionary = {'created':'Создан','send': 'Отправлен','delivered':'Доставляется','canceled':'Отменён'}
+            const status_dictionary = {'created':'Создан','send': 'Отправлен','delivered':'Доставлен','canceled':'Отменён'}
 
 connect.queryDB(query, [], cfg.error_handler(request,response), function (result) {
         result.rows.forEach( row => {row.status = status_dictionary[row.status]})
