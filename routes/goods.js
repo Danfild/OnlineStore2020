@@ -37,6 +37,9 @@ app.get('/goods/:id', (request,response) =>  {
        }else{
        connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
        const good = result.rows[0];
+       if(good.id == null ){
+       response.redirect('/not_found')
+        }else{
         response.render('layouts/good.hbs',
           {
           title: good.name,
@@ -45,10 +48,12 @@ app.get('/goods/:id', (request,response) =>  {
           'adminId' : adminId,
           'userId' :  userId,
            });
+           response.statusCode = 200;
             logger.info('goods values: ' + values.toString());
+            }
         });
         }
-           response.statusCode = 200;
+
       });
 
 

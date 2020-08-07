@@ -6,6 +6,7 @@ console.log('fdfd')
 
 module.exports = function(app){
 
+
 app.get('*', function(request, response){
             var adminId;
             if (request.user){

@@ -69,7 +69,7 @@ app.get('/users/:id', (request,response) => {
 
          connect.queryDB(query, values, cfg.error_handler(request,response), function (result) {
          if(result.rows.length == 0){
-         response.redirect('*')
+         response.redirect('/not_found')
          }else{
          connect.queryDB(orders_query, values, cfg.error_handler(request,response), function (orders_result) {
          if (user_id_to_show == userId || adminId){
